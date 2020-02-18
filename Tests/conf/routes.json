@@ -1,0 +1,7 @@
+[
+	{
+		"route" : "/test2/",
+		"callback" : "test2",
+		"method" : "GET"
+	}
+]

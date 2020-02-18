@@ -1,0 +1,33 @@
+{
+	"name": "mezon/service",
+	"description": "Small service script",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Dodonov Alexey",
+			"email": "alexey@dodonov.pro",
+			"homepage": "http://gdzone.ru",
+			"role": "Founder"
+		}
+	],
+	"require": {
+		"php": ">=7.2.0",
+		"mezon/router" : ">=1.0.0",
+		"mezon/functional": ">=1.0.0",
+		"mezon/pdo": ">=1.0.0",
+		"mezon/dns-client": ">=1.0.0"
+	},
+	"support": {
+		"email": "alexey@dodonov.pro",
+		"issues": "https://github.com/alexdodonov/mezon-service/issues",
+		"source": "https://github.com/alexdodonov/mezon-service"
+	},
+	"minimum-stability": "dev",
+	"homepage": "https://github.com/alexdodonov/mezon-service",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"Mezon\\Service\\": ""
+		}
+	}
+}
