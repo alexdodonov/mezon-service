@@ -19,6 +19,8 @@ namespace Mezon\Service;
 class CustomFieldsModel
 {
 
+    use \Mezon\PdoCrud\ConnectionTrait;
+
     /**
      * Table name
      */
@@ -33,18 +35,6 @@ class CustomFieldsModel
     public function __construct(string $tableName)
     {
         $this->tableName = $tableName;
-    }
-
-    /**
-     * Method returns connection to the DB.
-     *
-     * @return bool|\Mezon\PdoCrud\PdoCrud - PDO DB connection or false on error.
-     */
-    protected function getConnection(): \Mezon\PdoCrud\PdoCrud
-    {
-        // @codeCoverageIgnoreStart
-        return \Mezon\Mezon\Mezon::getDbConnection();
-        // @codeCoverageIgnoreEnd
     }
 
     /**

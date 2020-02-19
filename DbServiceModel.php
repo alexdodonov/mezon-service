@@ -18,6 +18,8 @@ namespace Mezon\Service;
  */
 class DbServiceModel extends \Mezon\Service\ServiceModel
 {
+    
+    use \Mezon\PdoCrud\ConnectionTrait;
 
     /**
      * Table name
@@ -81,18 +83,6 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
             $tableName = "`$tableName`";
         }
         $this->tableName = $tableName;
-    }
-
-    /**
-     * Method returns connection to the DB
-     *
-     * @return \Mezon\PdoCrud\PdoCrud - PDO DB connection
-     */
-    protected function getConnection(): \Mezon\PdoCrud\PdoCrud
-    {
-        // @codeCoverageIgnoreStart
-        return \Mezon\Mezon\Mezon::getDbConnection();
-        // @codeCoverageIgnoreEnd
     }
 
     /**
