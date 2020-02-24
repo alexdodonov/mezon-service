@@ -17,7 +17,8 @@
 		"mezon/pdocrud": "^1.0.1",
 		"mezon/dns-client": "^1.0.0",
 		"mezon/custom-client": "^1.0.0",
-		"mezon/gui" : "^1.0.0"
+		"mezon/gui" : "^1.0.0",
+		"mezon/rest-exception": "^1.0.0"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",

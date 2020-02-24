@@ -44,7 +44,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
                 $serviceLogic,
                 $method
             ], $params);
-        } catch (\Mezon\Service\ServiceRestTransport\RestException $e) {
+        } catch (\Mezon\Rest\Exception $e) {
             return $this->errorResponse($e);
         } catch (\Exception $e) {
             return $this->parentErrorResponse($e);
@@ -77,7 +77,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
                 $serviceLogic,
                 $method
             ], $params);
-        } catch (\Mezon\Service\ServiceRestTransport\RestException $e) {
+        } catch (\Mezon\Rest\Exception $e) {
             return $this->errorResponse($e);
         } catch (\Exception $e) {
             return $this->parentErrorResponse($e);
@@ -111,7 +111,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
             'host' => 'console'
         ];
 
-        if ($e instanceof \Mezon\Service\ServiceRestTransport\RestException) {
+        if ($e instanceof \Mezon\Rest\Exception) {
             $return['http_code'] = $e->getHttpCode();
             $return['http_body'] = $e->getHttpBody();
         }

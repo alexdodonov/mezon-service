@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4f966a268d48274f061457d97bb23df",
+    "content-hash": "e1754f656eb2041ffae2911fa0e55030",
     "packages": [
         {
             "name": "mezon/conf",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-conf.git",
-                "reference": "3ac7aaea53345d4e08ff255c04739cd71225009a"
+                "reference": "63b9100effd581fb2f3ea9f9e9855254d1bad151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-conf/zipball/3ac7aaea53345d4e08ff255c04739cd71225009a",
-                "reference": "3ac7aaea53345d4e08ff255c04739cd71225009a",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-conf/zipball/63b9100effd581fb2f3ea9f9e9855254d1bad151",
+                "reference": "63b9100effd581fb2f3ea9f9e9855254d1bad151",
                 "shasum": ""
             },
             "require": {
@@ -43,7 +43,7 @@
             ],
             "description": "Small conf routine",
             "homepage": "https://github.com/alexdodonov/mezon-conf",
-            "time": "2020-02-17T19:07:09+00:00"
+            "time": "2020-02-24T10:08:55+00:00"
         },
         {
             "name": "mezon/custom-client",
@@ -164,16 +164,16 @@
         },
         {
             "name": "mezon/gui",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-gui.git",
-                "reference": "46efbbd421e5997f60da0f41f0c27e01824c5497"
+                "reference": "b08c6fdc3526a6943815db27c9bd4630e5f95994"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-gui/zipball/46efbbd421e5997f60da0f41f0c27e01824c5497",
-                "reference": "46efbbd421e5997f60da0f41f0c27e01824c5497",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-gui/zipball/b08c6fdc3526a6943815db27c9bd4630e5f95994",
+                "reference": "b08c6fdc3526a6943815db27c9bd4630e5f95994",
                 "shasum": ""
             },
             "require": {
@@ -202,20 +202,20 @@
             ],
             "description": "Small gui script",
             "homepage": "https://github.com/alexdodonov/mezon-gui",
-            "time": "2020-02-18T21:29:32+00:00"
+            "time": "2020-02-24T09:46:24+00:00"
         },
         {
             "name": "mezon/pdocrud",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-pdocrud.git",
-                "reference": "066e0ec245946bcfd97dd6d911fe61a3f897d6a9"
+                "reference": "d048081a77e3acf3cc93f0428828caf973138652"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-pdocrud/zipball/066e0ec245946bcfd97dd6d911fe61a3f897d6a9",
-                "reference": "066e0ec245946bcfd97dd6d911fe61a3f897d6a9",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-pdocrud/zipball/d048081a77e3acf3cc93f0428828caf973138652",
+                "reference": "d048081a77e3acf3cc93f0428828caf973138652",
                 "shasum": ""
             },
             "require": {
@@ -242,7 +242,46 @@
             ],
             "description": "Simple PDO wrapper",
             "homepage": "https://github.com/alexdodonov/mezon-pdocrud",
-            "time": "2020-02-19T15:04:45+00:00"
+            "time": "2020-02-19T19:22:11+00:00"
+        },
+        {
+            "name": "mezon/rest-exception",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexdodonov/mezon-rest-exception.git",
+                "reference": "0c3303e628c7b4514b39fe90cca1990cece2e2ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-rest-exception/zipball/0c3303e628c7b4514b39fe90cca1990cece2e2ea",
+                "reference": "0c3303e628c7b4514b39fe90cca1990cece2e2ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mezon\\Rest\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dodonov Alexey",
+                    "email": "alexey@dodonov.pro",
+                    "homepage": "http://gdzone.ru",
+                    "role": "Founder"
+                }
+            ],
+            "description": "Small rest-exception script",
+            "homepage": "https://github.com/alexdodonov/mezon-rest-exception",
+            "time": "2020-02-19T20:34:07+00:00"
         },
         {
             "name": "mezon/router",

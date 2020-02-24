@@ -40,7 +40,7 @@ class ServiceMockSecurityProvider implements \Mezon\Service\ServiceSecurityProvi
      *            Login
      * @param string $password
      *            Password
-     * @return string Session id of the created session
+     * @return string Random md5 hash as session id
      */
     public function connect(string $login, string $password): string
     {

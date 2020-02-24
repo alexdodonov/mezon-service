@@ -50,4 +50,16 @@ class ServiceMockSecurityProviderUnitTest extends \PHPUnit\Framework\TestCase
 
         $this->addToAssertionCount(1);
     }
+
+    /**
+     * Testing connect method
+     */
+    public function testConnect(): void
+    {
+        $provider = new \Mezon\Service\ServiceMockSecurityProvider();
+
+        $hash = $provider->connect('l', 'p');
+
+        $this->assertEquals(32, strlen($hash));
+    }
 }

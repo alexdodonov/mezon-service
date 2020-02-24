@@ -20,7 +20,7 @@ class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
 
     public function methodRestException()
     {
-        throw (new \Mezon\Service\ServiceRestTransport\RestException('Msg', 0, 1, 1));
+        throw (new \Mezon\Rest\Exception('Msg', 0, 1, 1));
     }
 }
 
@@ -46,7 +46,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
         $mock->expects($this->once())
             ->method('header');
         $mock->method('errorResponse')->willThrowException(
-            new \Mezon\Service\ServiceRestTransport\RestException('Msg', 0, 1, 1));
+            new \Mezon\Rest\Exception('Msg', 0, 1, 1));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
         return $mock;
@@ -282,7 +282,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     public function testErrorResponseRestException(): void
     {
         // setup
-        $e = new \Mezon\Service\ServiceRestTransport\RestException('msg', 1,200, 'body');
+        $e = new \Mezon\Rest\Exception('msg', 1,200, 'body');
         $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
 
         // test body
