@@ -62,4 +62,14 @@ class ServiceMockSecurityProviderUnitTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(32, strlen($hash));
     }
+
+    /**
+     * Testing hasPermit method
+     */
+    public function testHasPermit(): void
+    {
+        $provider = new \Mezon\Service\ServiceMockSecurityProvider();
+
+        $this->assertTrue($provider->hasPermit('t', 'p'));
+    }
 }
