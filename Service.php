@@ -24,22 +24,22 @@ class Service extends \Mezon\Service\ServiceBase
     /**
      * Constructor
      *
-     * @param mixed $serviceTransport
-     *            Service's transport
-     * @param mixed $securityProvider
-     *            Service's security provider
      * @param mixed $serviceLogic
      *            Service's logic
      * @param mixed $serviceModel
      *            Service's model
+     * @param mixed $securityProvider
+     *            Service's security provider
+     * @param mixed $serviceTransport
+     *            Service's transport
      */
     public function __construct(
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
         $serviceLogic = \Mezon\Service\ServiceLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class)
+        $serviceModel = \Mezon\Service\ServiceModel::class,
+        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
-        parent::__construct($serviceTransport, $securityProvider, $serviceLogic, $serviceModel);
+        parent::__construct($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
 
         $this->initCommonRoutes();
     }
@@ -61,29 +61,29 @@ class Service extends \Mezon\Service\ServiceBase
      *
      * @param Service|string $service
      *            name of the service class or the service object itself
-     * @param \Mezon\Service\ServiceTransport|string $serviceTransport
-     *            name of the service transport class or the service transport itself
-     * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
-     *            name of the service security provider class or the service security provider itself
      * @param \Mezon\Service\ServiceLogic|string $serviceLogic
      *            Logic of the service
      * @param \Mezon\Service\ServiceModel|string $serviceModel
      *            Model of the service
+     * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
+     *            name of the service security provider class or the service security provider itself
+     * @param \Mezon\Service\ServiceTransport|string $serviceTransport
+     *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
-     * @return Service Created service
+     * @return \Mezon\Service\Service Created service
      * @deprecated See Service::run
      */
     public static function launch(
         $service,
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
         $serviceLogic = \Mezon\Service\ServiceLogic::class,
         $serviceModel = \Mezon\Service\ServiceModel::class,
+        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
         bool $runService = true): \Mezon\Service\ServiceBase
     {
         if (is_string($service)) {
-            $service = new $service($serviceTransport, $securityProvider, $serviceLogic, $serviceModel);
+            $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
         }
 
         if ($runService === false) {
@@ -110,7 +110,7 @@ class Service extends \Mezon\Service\ServiceBase
      *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
-     * @return Service Created service
+     * @return \Mezon\Service\Service Created service
      */
     public static function start(
         $service,
@@ -121,7 +121,7 @@ class Service extends \Mezon\Service\ServiceBase
         bool $runService = true): \Mezon\Service\ServiceBase
     {
         if (is_string($service)) {
-            $service = new $service($serviceTransport, $securityProvider, $serviceLogic, $serviceModel);
+            $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
         }
 
         if ($runService === false) {

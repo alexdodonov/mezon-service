@@ -38,20 +38,20 @@ class ServiceBase
     /**
      * Constructor
      *
-     * @param mixed $serviceTransport
-     *            Service's transport
-     * @param mixed $securityProvider
-     *            Service's security provider
      * @param mixed $serviceLogic
      *            Service's logic
      * @param mixed $serviceModel
      *            Service's model
+     * @param mixed $securityProvider
+     *            Service's security provider
+     * @param mixed $serviceTransport
+     *            Service's transport
      */
     public function __construct(
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
         $serviceLogic = \Mezon\Service\ServiceBaseLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class)
+        $serviceModel = \Mezon\Service\ServiceModel::class,
+        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
         $this->initTransport($serviceTransport, $securityProvider);
 
@@ -184,7 +184,7 @@ class ServiceBase
 
     /**
      * Method returns logic
-     * 
+     *
      * @return \Mezon\Service\ServiceLogic|array
      */
     public function getLogic()

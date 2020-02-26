@@ -38,7 +38,8 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
             'connect',
             'setToken',
             'getParam',
-            'validatePermit'
+            'validatePermit',
+            'hasPermit'
         ])
             ->getMock();
 
@@ -170,6 +171,24 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
 
         // test body and assertions
         $logic->validatePermit('admin');
+        $this->addToAssertionCount(1);
+    }
+
+    /**
+     * Testing hasPermit method
+     */
+    public function testHasPermit()
+    {
+        // setup
+        $securityProviderMock = $this->getSecurityProviderMock();
+        $securityProviderMock->method('hasPermit')->with($this->equalTo('value'), $this->equalTo('admin'));
+
+        $serviceLogicClassName = $this->className;
+
+        $logic = new $serviceLogicClassName(new \Mezon\Service\Tests\MockParamsFetcher(), $securityProviderMock);
+
+        // test body and assertions
+        $logic->hasPermit('admin');
         $this->addToAssertionCount(1);
     }
 }
