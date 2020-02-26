@@ -56,3 +56,49 @@ And it will be available via this URL:
 ```
 http://localhost/?r=long-enpoint
 ```
+
+## Introducing logic
+
+In the concept of Mezon framework service class is only a container for logic, model, transport, security providerrs and so on.
+
+So we may want to fetch all logic to the separate class. Then we shall do it in this way:
+
+```PHP
+/**
+ * Logic implementation
+ *
+ * @author Dodonov A.A.
+ */
+class TodoLogic extends \Mezon\Service\ServiceBaseLogic
+{
+
+    /**
+     * First endpoint
+     */
+    public function actionPing()
+    {
+        return ('I am alive!');
+    }
+}
+```
+
+And then we shall modify service class like this:
+
+```PHP
+/**
+ * Service class
+ *
+ * @author Dodonov A.A.
+ */
+class TodoService extends \Mezon\Service\ServiceBase
+{
+}
+
+\Mezon\Service\Service::start(TodoService::class, TodoLogic::class);
+```
+
+But as you see - we have empty service class with only base functionality. So we can completely remove it and change our code:
+
+```PHP
+\Mezon\Service\Service::start(\Mezon\Service\ServiceBase::class, TodoLogic::class);
+```

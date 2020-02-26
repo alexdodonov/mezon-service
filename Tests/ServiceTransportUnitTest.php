@@ -243,4 +243,16 @@ class ServiceTransportUnitTest extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertTrue($serviceTransport->routeExists('/hello-world/'));
     }
+
+    /**
+     * Testing 'getParam' method
+     */
+    public function testGetParam(): void
+    {
+        // setup
+        $serviceTransport = new ConcreteServiceTransport();
+
+        // test body and assertions
+        $this->assertEquals(1, $serviceTransport->getParam('param'));
+    }
 }

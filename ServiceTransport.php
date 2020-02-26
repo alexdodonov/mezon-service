@@ -266,7 +266,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      */
     public function getParam(string $param, $default = false)
     {
-        return $this->paramsFetcher->getParam($param, $default);
+        return $this->getParamsFetcher()->getParam($param, $default);
     }
 
     /**
