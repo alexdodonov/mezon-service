@@ -30,19 +30,6 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
     protected $className = \Mezon\Service\Service::class;
 
     /**
-     * Constructor
-     *
-     * @param string $className
-     *            - Class name to be tested
-     */
-    public function __construct(string $className = \Mezon\Service\Service::class)
-    {
-        parent::__construct();
-
-        $this->className = $className;
-    }
-
-    /**
      * Testing initialization of the security provider
      */
     public function testInitSecurityProviderDefault()

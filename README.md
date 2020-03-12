@@ -102,3 +102,17 @@ But as you see - we have empty service class with only base functionality. So we
 ```PHP
 \Mezon\Service\Service::start(\Mezon\Service\ServiceBase::class, TodoLogic::class);
 ```
+
+## Multyple logic classes
+
+But you can split your functionality into several classes like in the next example:
+
+```PHP
+\Mezon\Service\Service::start(\Mezon\Service\ServiceBase::class, [
+    TodoSystemLogic::class,
+    TodoReadLogic::class,
+    TodoWriteLogic::class
+]);
+```
+
+Here you just pass several classes when creating service.

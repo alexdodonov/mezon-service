@@ -60,9 +60,9 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      *
      * @param string $method
      *            Necessary method
-     * @return \Mezon\Service\ServiceLogic Logic object
+     * @return \Mezon\Service\ServiceBaseLogicInterface Logic object
      */
-    protected function getNecessaryLogic(string $method): \Mezon\Service\ServiceLogic
+    protected function getNecessaryLogic(string $method): \Mezon\Service\ServiceBaseLogicInterface
     {
         if (is_object($this->serviceLogic)) {
             if (method_exists($this->serviceLogic, $method)) {
