@@ -116,3 +116,46 @@ But you can split your functionality into several classes like in the next examp
 ```
 
 Here you just pass several classes when creating service.
+
+## Complex routing
+
+You can create more complex routes. To do this you have to setup them in the routes.json config of your service. The content of this file must looks like this:
+
+```JS
+[
+	{
+		"route": "/user/[s:userName]/profile/articles/[i:articleId]/comments/[i:headCommentId]",
+		"callback": "userHeadComment",
+		"method": "GET",
+		"call_type": "public_call"
+	}
+]
+```
+
+And we need logic class for this route:
+
+```PHP
+class CommentLogic extends \Mezon\Service\ServiceBaseLogic
+{
+
+    /**
+     * Our endpoint
+     */
+    public function userHeadComment(string $route, array $params)
+    {
+        return [
+            // some data here
+        ];
+    }
+}
+```
+
+In this example the method userHeadComment handles routing processing. And this method receives array with routes parameters. Something like that:
+
+```PHP
+[
+    'userName' => 'name of the user',
+    'articleId' => 'id of the article',
+    'headCommentId' => 'comment's id'
+]
+```

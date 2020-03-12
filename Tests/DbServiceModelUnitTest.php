@@ -14,7 +14,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
             [
                 [
                     'id' => [
-                        'type' => 'intger',
+                        'type' => 'integer',
                     ],
                 ],
                 'id',
@@ -26,7 +26,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
             [
                 new \Mezon\Gui\FieldsAlgorithms([
                     'id' => [
-                        'type' => 'intger'
+                        'type' => 'integer'
                     ]
                 ]),
                 'id',
@@ -50,6 +50,8 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
 
         // assertions
         $this->assertTrue($model->hasField($origin), 'Invalid contruction');
+        $this->assertEquals($origin, $model->getFieldsNames());
+        $this->assertFalse($model->hasCustomFields(), 'Invalid contruction');
     }
 
     /**
@@ -61,4 +63,18 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
         $this->expectException(Exception::class);
         new \Mezon\Service\DbServiceModel(new stdClass(), 'entity_name');
     }
+
+    /**
+     * Testing getFieldsNames method
+     */
+    /*public function testGetFieldsNames():void{
+        // setup and test body
+        $model = new \Mezon\Service\DbServiceModel([
+            'id' => [
+                'type' => 'integer',
+            ],
+        ], 'entity_name');
+
+        // assertions
+    }*/
 }

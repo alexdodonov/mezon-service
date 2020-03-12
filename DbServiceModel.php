@@ -104,9 +104,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function hasField(string $fieldName): bool
     {
-        // @codeCoverageIgnoreStart
         return $this->fieldsAlgorithms->hasField($fieldName);
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -116,9 +114,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function hasCustomFields(): bool
     {
-        // @codeCoverageIgnoreStart
         return $this->fieldsAlgorithms->hasCustomFields();
-        // @codeCoverageIgnoreEnd
     }
 
     /**
