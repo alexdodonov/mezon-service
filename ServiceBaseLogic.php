@@ -43,14 +43,14 @@ class ServiceBaseLogic implements \Mezon\Service\ServiceBaseLogicInterface
      *
      * @param \Mezon\Service\ServiceRequestParamsInterface $paramsFetcher
      *            Params fetcher
-     * @param object $securityProvider
+     * @param \Mezon\Service\ServiceSecurityProviderInterface $securityProvider
      *            Security provider
      * @param mixed $model
      *            Service model
      */
     public function __construct(
         \Mezon\Service\ServiceRequestParamsInterface $paramsFetcher,
-        object $securityProvider,
+        \Mezon\Service\ServiceSecurityProviderInterface $securityProvider,
         $model = null)
     {
         $this->paramsFetcher = $paramsFetcher;

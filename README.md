@@ -159,3 +159,18 @@ In this example the method userHeadComment handles routing processing. And this 
     'headCommentId' => 'comment's id'
 ]
 ```
+
+But you can also store all route conofigs in PHP files like this:
+
+```PHP
+<?php
+
+return [
+    [
+    	"route" => "/user/[s:userName]/profile/articles/[i:articleId]/comments/[i:headCommentId]",
+		"callback" => "userHeadComment",
+		"method" => "GET",
+		"call_type" => "public_call"
+    ]
+];
+```

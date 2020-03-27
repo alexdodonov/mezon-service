@@ -38,7 +38,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
         $this->header('Content-type', 'application/json');
 
         try {
-            $params['SessionId'] = $this->createSession();
+            $params['SessionId'] = $this->createSession($this->paramsFetcher->getParam('session_id'));
 
             return call_user_func_array([
                 $serviceLogic,

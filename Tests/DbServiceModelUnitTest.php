@@ -4,6 +4,20 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
+     * Method returns field set
+     *
+     * @return array field set
+     */
+    private function getFieldSet(): array
+    {
+        return [
+            'id' => [
+                'type' => 'integer',
+            ],
+        ];
+    }
+
+    /**
      * Test data for testConstructor test
      *
      * @return array
@@ -12,11 +26,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                [
-                    'id' => [
-                        'type' => 'integer',
-                    ],
-                ],
+                $this->getFieldSet(),
                 'id',
             ],
             [
@@ -24,11 +34,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
                 '*',
             ],
             [
-                new \Mezon\Gui\FieldsAlgorithms([
-                    'id' => [
-                        'type' => 'integer'
-                    ]
-                ]),
+                new \Mezon\Gui\FieldsAlgorithms($this->getFieldSet()),
                 'id',
             ],
         ];
@@ -46,7 +52,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
     public function testConstructor($data, string $origin)
     {
         // setup and test body
-        $model = new \Mezon\Service\DbServiceModel($data, 'entity_name');
+        $model = new \Mezon\Service\DbServiceModel($data, 'entity_name_constructor');
 
         // assertions
         $this->assertTrue($model->hasField($origin), 'Invalid contruction');
@@ -61,20 +67,31 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup and test body
         $this->expectException(Exception::class);
-        new \Mezon\Service\DbServiceModel(new stdClass(), 'entity_name');
+        $model = new \Mezon\Service\DbServiceModel(new stdClass(), 'entity_name');
+        var_dump($model);
     }
 
     /**
      * Testing getFieldsNames method
      */
-    /*public function testGetFieldsNames():void{
+    public function testGetFieldsNames(): void
+    {
         // setup and test body
-        $model = new \Mezon\Service\DbServiceModel([
-            'id' => [
-                'type' => 'integer',
-            ],
-        ], 'entity_name');
+        $model = new \Mezon\Service\DbServiceModel($this->getFieldSet(), 'entity_name');
 
         // assertions
-    }*/
+        $this->assertEquals('id', implode('', $model->getFields()));
+    }
+
+    /**
+     * Testing tricky path of setting table name
+     */
+    public function testSetTableName(): void
+    {
+        // setup and test body
+        $model = new \Mezon\Service\DbServiceModel($this->getFieldSet(), 'entity-name');
+
+        // assertions
+        $this->assertEquals('`entity-name`', $model->getTableName());
+    }
 }

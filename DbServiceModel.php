@@ -18,7 +18,7 @@ namespace Mezon\Service;
  */
 class DbServiceModel extends \Mezon\Service\ServiceModel
 {
-    
+
     use \Mezon\PdoCrud\ConnectionTrait;
 
     /**
@@ -77,12 +77,23 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      * @param string $tableName
      *            Table name
      */
-    protected function setTableName(string $tableName = '')
+    protected function setTableName(string $tableName = ''): void
     {
         if (strpos($tableName, '-') !== false && strpos($tableName, '`') === false) {
             $tableName = "`$tableName`";
         }
+
         $this->tableName = $tableName;
+    }
+
+    /**
+     * Method returns table name
+     *
+     * @return string table name
+     */
+    public function getTableName(): string
+    {
+        return $this->tableName;
     }
 
     /**

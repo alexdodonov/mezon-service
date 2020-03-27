@@ -14,7 +14,7 @@ namespace Mezon\Service;
 /**
  * Class ServiceMockSecurityProvider - provides mockes for all security methods
  */
-class ServiceMockSecurityProvider implements \Mezon\Service\ServiceSecurityProviderInterface
+class ServiceMockSecurityProvider implements \Mezon\Service\ServiceAuthorizationSecurityProviderInterface
 {
 
     /**
@@ -24,7 +24,7 @@ class ServiceMockSecurityProvider implements \Mezon\Service\ServiceSecurityProvi
      *            Session token
      * @return string Session token
      */
-    public function createSession(string $token = null): string
+    public function createSession(string $token): string
     {
         if ($token === null) {
             return md5(microtime(true));
@@ -48,25 +48,11 @@ class ServiceMockSecurityProvider implements \Mezon\Service\ServiceSecurityProvi
     }
 
     /**
-     * Method sets session token
-     *
-     * @param string $token
-     *            Token
-     * @return string Session token id
-     */
-    public function setToken(string $token): string
-    {
-        return $token;
-    }
-
-    /**
      * Method returns id of the session user
      *
-     * @param string $token
-     *            Token
      * @return int id of the session user
      */
-    public function getSelfId(string $token): int
+    public function getSelfId(): int
     {
         return 1;
     }
@@ -74,11 +60,9 @@ class ServiceMockSecurityProvider implements \Mezon\Service\ServiceSecurityProvi
     /**
      * Method returns login of the session user
      *
-     * @param string $token
-     *            Token
      * @return string login of the session user
      */
-    public function getSelfLogin(string $token): string
+    public function getSelfLogin(): string
     {
         return 'admin@localhost';
     }

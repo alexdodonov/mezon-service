@@ -36,7 +36,6 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
             ->disableOriginalConstructor()
             ->setMethods([
             'connect',
-            'setToken',
             'getParam',
             'validatePermit',
             'hasPermit'
@@ -44,7 +43,6 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
             ->getMock();
 
         $mock->method('connect')->will($this->returnValue('valuevalue'));
-        $mock->method('setToken')->will($this->returnValue('token'));
 
         return $mock;
     }
@@ -96,7 +94,7 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
         $result = $logic->setToken();
 
         // assertions
-        $this->assertEquals('token', $result['session_id'], 'Setting token failed');
+        $this->assertEquals('value', $result['session_id'], 'Setting token failed');
     }
 
     /**

@@ -14,7 +14,7 @@ class TestingServiceLogicForHttpTransport extends \Mezon\Service\ServiceLogic
     {}
 }
 
-class ServiceHttpTransportTest extends \PHPUnit\Framework\TestCase
+class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -48,6 +48,15 @@ class ServiceHttpTransportTest extends \PHPUnit\Framework\TestCase
 
         $mock->expects($this->once())
             ->method('header');
+
+        $mock->paramsFetcher = $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
+            ->setMethods([
+            'getSessionIdFromHeaders'
+        ])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock->paramsFetcher->method('getSessionIdFromHeaders')->willReturn('token');
 
         return $mock;
     }
@@ -210,7 +219,7 @@ class ServiceHttpTransportTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing private call with createSession method.
      */
-    public function testPrivateCall()
+    public function testPrivateCallNoException()
     {
         $mock = $this->getTransportMock();
 

@@ -45,13 +45,9 @@ class HttpRequestParams implements \Mezon\Service\ServiceRequestParamsInterface
     protected function getSessionIdFromHeaders(array $headers)
     {
         if (isset($headers['Authorization'])) {
-            $token = str_replace('Basic ', '', $headers['Authorization']);
-
-            return $token;
+            return str_replace('Basic ', '', $headers['Authorization']);
         } elseif (isset($headers['Cgi-Authorization'])) {
-            $token = str_replace('Basic ', '', $headers['Cgi-Authorization']);
-
-            return $token;
+            return str_replace('Basic ', '', $headers['Cgi-Authorization']);
         }
 
         throw (new \Exception('Invalid session token', 2));

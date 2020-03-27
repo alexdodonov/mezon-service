@@ -117,7 +117,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             $serviceTransport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
             return new \Mezon\Service\ServiceLogic(
                 $serviceTransport->getParamsFetcher(),
-                new \stdClass(),
+                new \Mezon\Service\ServiceMockSecurityProvider(),
                 new \Mezon\Service\ServiceModel());
         }
         return null;

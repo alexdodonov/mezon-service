@@ -45,9 +45,17 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
 
         $mock->expects($this->once())
             ->method('header');
-        $mock->method('errorResponse')->willThrowException(
-            new \Mezon\Rest\Exception('Msg', 0, 1, 1));
+        $mock->method('errorResponse')->willThrowException(new \Mezon\Rest\Exception('Msg', 0, 1, 1));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
+
+        $mock->paramsFetcher = $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
+            ->setMethods([
+            'getSessionIdFromHeaders'
+        ])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mock->paramsFetcher->method('getSessionIdFromHeaders')->willReturn('token');
 
         return $mock;
     }
@@ -282,7 +290,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     public function testErrorResponseRestException(): void
     {
         // setup
-        $e = new \Mezon\Rest\Exception('msg', 1,200, 'body');
+        $e = new \Mezon\Rest\Exception('msg', 1, 200, 'body');
         $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
 
         // test body

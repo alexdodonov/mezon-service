@@ -23,6 +23,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      * Request params fetcher
      *
      * @var \Mezon\Service\ServiceRequestParamsInterface
+     * // TODO make it private
      */
     public $paramsFetcher = false;
 
@@ -30,6 +31,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      * Service's logic
      *
      * @var \Mezon\Service\ServiceLogic
+     * // TODO make it private
      */
     public $serviceLogic = false;
 
@@ -37,15 +39,9 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      * Router
      *
      * @var \Mezon\Router\Router
+     * // TODO make it private
      */
     protected $router = false;
-
-    /**
-     * Security provider
-     *
-     * @var \Mezon\Service\ServiceSecurityProviderInterface $securityProvider Provider of the securitty routines
-     */
-    public $securityProvider = null;
 
     /**
      * Constructor
@@ -94,9 +90,10 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      * @param bool|string $token
      *            Session token
      */
-    public function createSession(string $token = ''): string
+    public function createSession(string $token): string
     {
         // must be overriden
+        // TODO mark this method as abstract
         return $token;
     }
 
@@ -194,13 +191,10 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      *            Logic's parameters
      * @return mixed Result of the called method
      */
-    public function callLogic(
-        \Mezon\Service\ServiceBaseLogicInterface $serviceLogic,
-        string $method,
-        array $params = [])
+    public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
         try {
-            $params['SessionId'] = $this->createSession();
+            $params['SessionId'] = $this->createSession($this->getParamsFetcher()->getParam('session_id'));
 
             return call_user_func_array([
                 $serviceLogic,
