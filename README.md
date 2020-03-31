@@ -160,7 +160,7 @@ In this example the method userHeadComment handles routing processing. And this 
 ]
 ```
 
-But you can also store all route conofigs in PHP files like this:
+But you can also store all route configs in PHP files like this:
 
 ```PHP
 <?php
@@ -173,4 +173,20 @@ return [
 		"call_type" => "public_call"
     ]
 ];
+```
+
+## Authentication
+
+It is quite obvious that not all your endpoints will be public. Some of them should check credentials.
+
+First of all you should understand that framework knows nothing about your registry of users and their permissions and roles. So you have to provide information about that.
+
+Do it by implementing security provider like inthe listing below:
+
+```PHP
+// this is first step
+// but we have some more )
+class TodoSecurityProvider extends \Mezon\Service\ServiceAuthenticationSecurityProvider{
+    
+}
 ```

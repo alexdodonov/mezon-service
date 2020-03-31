@@ -1,4 +1,5 @@
 <?php
+define('MEZON_DEBUG', true);
 
 /**
  * Tests for the class ServiceTransport.
@@ -130,9 +131,9 @@ class ServiceTransportUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Testing call stack formatter.
+     * Testing call stack formatter
      */
-    public function testFormatCallStack(): void
+    public function testFormatCallStackDebug(): void
     {
         // setup
         $serviceTransport = new ConcreteServiceTransport();
@@ -142,7 +143,29 @@ class ServiceTransportUnitTest extends \PHPUnit\Framework\TestCase
         $format = $serviceTransport->errorResponse($exception);
 
         // assertions
-        $this->assertEquals(5, count($format), 'Invalid formatter');
+        $this->assertEquals(3, count($format), 'Invalid formatter');
+        $this->assertTrue(isset($format['call_stack']));
+    }
+
+    /**
+     * Testing call stack formatter
+     */
+    public function testFormatCallStackRelease(): void
+    {
+        // setup
+        $serviceTransport = $this->getMockBuilder(ConcreteServiceTransport::class)
+            ->setMethods([
+            'isDebug'
+        ])
+            ->getMock();
+        $serviceTransport->method('isDebug')->willReturn(false);
+        $exception = new Exception('Error message', - 1);
+
+        // test body
+        $format = $serviceTransport->errorResponse($exception);
+
+        // assertions
+        $this->assertFalse(isset($format['call_stack']));
     }
 
     /**
@@ -254,5 +277,25 @@ class ServiceTransportUnitTest extends \PHPUnit\Framework\TestCase
 
         // test body and assertions
         $this->assertEquals(1, $serviceTransport->getParam('param'));
+    }
+
+    /**
+     * Testing exception handling for unexisting route
+     */
+    public function testUnexistingRoute(): void
+    {
+        // setup and assertions
+        $serviceTransport = $this->getMockBuilder(ConcreteServiceTransport::class)
+            ->setMethods([
+            'handleException'
+        ])
+            ->getMock();
+        $serviceTransport->expects($this->once())
+            ->method('handleException');
+
+        // test body
+        ob_start();
+        $serviceTransport->getRouter()->callRoute('/unexisting/');
+        ob_end_clean();
     }
 }

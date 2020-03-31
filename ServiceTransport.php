@@ -22,24 +22,21 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     /**
      * Request params fetcher
      *
-     * @var \Mezon\Service\ServiceRequestParamsInterface
-     * // TODO make it private
+     * @var \Mezon\Service\ServiceRequestParamsInterface // TODO make it private
      */
     public $paramsFetcher = false;
 
     /**
      * Service's logic
      *
-     * @var \Mezon\Service\ServiceLogic
-     * // TODO make it private
+     * @var \Mezon\Service\ServiceLogic // TODO make it private
      */
     public $serviceLogic = false;
 
     /**
      * Router
      *
-     * @var \Mezon\Router\Router
-     * // TODO make it private
+     * @var \Mezon\Router\Router // TODO make it private
      */
     protected $router = false;
 
@@ -49,6 +46,13 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     public function __construct()
     {
         $this->router = new \Mezon\Router\Router();
+
+        $this->router->setNoProcessorFoundErrorHandler(
+            function (string $route) {
+                $exception = new \Exception('Route ' . $route . ' was not found', - 1);
+
+                $this->handleException($exception);
+            });
     }
 
     /**
@@ -194,7 +198,8 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
         try {
-            $params['SessionId'] = $this->createSession($this->getParamsFetcher()->getParam('session_id'));
+            $params['SessionId'] = $this->createSession($this->getParamsFetcher()
+                ->getParam('session_id'));
 
             return call_user_func_array([
                 $serviceLogic,
@@ -232,6 +237,14 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     }
 
     /**
+     * Method returns true if the debug omde is ON
+     */
+    protected function isDebug(): bool
+    {
+        return defined('MEZON_DEBUG') && MEZON_DEBUG === true;
+    }
+
+    /**
      * Error response compilator
      *
      * @param mixed $e
@@ -240,13 +253,16 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      */
     public function errorResponse($e): array
     {
-        return [
+        $result = [
             'message' => $e->getMessage(),
-            'code' => $e->getCode(),
-            'service' => 'service',
-            'call_stack' => $this->formatCallStack($e),
-            'host' => 'console'
+            'code' => $e->getCode()
         ];
+
+        if ($this->isDebug()) {
+            $result['call_stack'] = $this->formatCallStack($e);
+        }
+
+        return $result;
     }
 
     /**

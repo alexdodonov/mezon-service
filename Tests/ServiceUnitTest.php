@@ -27,8 +27,11 @@ class ServiceUnitTest extends \Mezon\Service\Tests\ServiceUnitTests
         $_GET['r'] = 'test2';
         $service->run();
 
-        $this->expectException(Exception::class);
         $_GET['r'] = 'test3';
+        ob_start();
         $service->run();
+        $content = ob_get_contents();
+        ob_end_clean();
+        $this->assertStringContainsString('{main}',$content);
     }
 }

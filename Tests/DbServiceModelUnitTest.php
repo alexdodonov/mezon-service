@@ -94,4 +94,41 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertEquals('`entity-name`', $model->getTableName());
     }
+
+    /**
+     * Testing getEntityName method
+     */
+    public function testGetEntityName(): void
+    {
+        // setup
+        $model = new \Mezon\Service\DbServiceModel($this->getFieldSet(), 'table-name', 'table-entity-name');
+
+        // test body and assertions
+        $this->assertEquals('table-entity-name', $model->getEntityName());
+    }
+
+    /**
+     * Testing getFieldType method
+     */
+    public function testGetFieldType(): void
+    {
+        // setup
+        $model = new \Mezon\Service\DbServiceModel($this->getFieldSet(), 'table-name');
+
+        // test body and assertions
+        $this->assertEquals('integer', $model->getFieldType('id'));
+    }
+
+    /**
+     * Testing validateFieldExistance method
+     */
+    public function testValidateFieldExistence(): void
+    {
+        // setup and assertions
+        $model = new \Mezon\Service\DbServiceModel($this->getFieldSet(), 'table-name');
+        $this->expectException(\Exception::class);
+
+        // test body
+        $model->validateFieldExistance('title');
+    }
 }

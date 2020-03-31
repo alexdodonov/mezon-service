@@ -136,9 +136,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function validateFieldExistance(string $field)
     {
-        // @codeCoverageIgnoreStart
         return $this->fieldsAlgorithms->validateFieldExistance($field);
-        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -158,9 +156,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function getEntityName(): string
     {
-        // @codeCoverageIgnoreStart
         return $this->entityName;
-        // @codeCoverageIgnoreEnd
     }
 
     /**
