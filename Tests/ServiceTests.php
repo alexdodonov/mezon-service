@@ -101,7 +101,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     {
         $options = [
             'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n" .
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0\r\n" .
                 ($this->sessionId !== false ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
                 ($this->headers !== false ? implode("\r\n", $this->headers) . "\r\n" : ''),
@@ -129,7 +129,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     {
         return [
             'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n" .
+                'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0\r\n" .
                 ($this->sessionId !== false ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
                 ($this->headers !== false ? implode("\r\n", $this->headers) . "\r\n" : ''),

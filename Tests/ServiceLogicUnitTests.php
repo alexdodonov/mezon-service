@@ -12,10 +12,43 @@ namespace Mezon\Service\Tests;
  */
 
 /**
+ * Mock parameter fetcher
+ *
+ * @author Dodonov A.A.
+ * @group baseTests
+ * @codeCoverageIgnore
+ */
+class MockParamsFetcher2 extends \Mezon\Service\Tests\MockParamsFetcher
+{
+
+    /**
+     * Method returns request parameter
+     *
+     * @param string $param
+     *            parameter name
+     * @param mixed $default
+     *            default value
+     * @return mixed Parameter value
+     */
+    public function getParam($param, $default = false)
+    {
+        if ($param == 'login') {
+            return '';
+        } elseif ($param == 'id' || $param == 'session_id') {
+            return $this->value;
+        }
+        else {
+            return null;
+        }
+    }
+}
+
+/**
  * Base class for service logic unit tests
  *
  * @author Dodonov A.A.
  * @group baseTests
+ * @codeCoverageIgnore
  */
 class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTests
 {
@@ -146,6 +179,25 @@ class ServiceLogicUnitTests extends \Mezon\Service\Tests\ServiceBaseLogicUnitTes
         $serviceLogicClassName = $this->className;
 
         $logic = new $serviceLogicClassName(new \Mezon\Service\Tests\MockParamsFetcher(), $securityProviderMock);
+
+        // test body
+        $result = $logic->loginAs();
+
+        // assertions
+        $this->assertEquals('value', $result['session_id'], 'Getting self login failed');
+    }
+
+    /**
+     * Testing loginAs method with id
+     */
+    public function testLoginAsById()
+    {
+        // setup
+        $securityProviderMock = $this->getSecurityProviderMock();
+
+        $serviceLogicClassName = $this->className;
+
+        $logic = new $serviceLogicClassName(new \Mezon\Service\Tests\MockParamsFetcher2(), $securityProviderMock);
 
         // test body
         $result = $logic->loginAs();

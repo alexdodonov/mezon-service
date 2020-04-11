@@ -26,14 +26,14 @@ class ServiceBase
      *
      * @var object Service transport object
      */
-    protected $serviceTransport = false;
+    private $serviceTransport = false;
 
     /**
      * Service's logic
      *
      * @var \Mezon\Service\ServiceLogic|array Login object or list of logic objects
      */
-    protected $serviceLogic = false;
+    private $serviceLogic = false;
 
     /**
      * Constructor
@@ -53,12 +53,24 @@ class ServiceBase
         $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
-        $this->initTransport($serviceTransport, $securityProvider);
+        try {
+            $this->initTransport($serviceTransport, $securityProvider);
 
-        $this->initServiceLogic($serviceLogic, $serviceModel);
+            $this->initServiceLogic($serviceLogic, $serviceModel);
 
-        $this->initCustomRoutes();
+            $this->initCustomRoutes();
 
+            $this->fetchActions();
+        } catch (\Exception $e) {
+            $this->getTransport()->handleException($e);
+        }
+    }
+
+    /**
+     * Method fetches actions if they are existing
+     */
+    protected function fetchActions(): void
+    {
         if ($this instanceof \Mezon\Service\ServiceBaseLogicInterface) {
             $this->serviceTransport->fetchActions($this);
         }
@@ -134,7 +146,7 @@ class ServiceBase
             $this->serviceLogic = $this->constructServiceLogic($serviceLogic, $serviceModel);
         }
 
-        $this->serviceTransport->serviceLogic = $this->serviceLogic;
+        $this->serviceTransport->setServiceLogic($this->serviceLogic);
     }
 
     /**

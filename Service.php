@@ -39,9 +39,13 @@ class Service extends \Mezon\Service\ServiceBase
         $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
-        parent::__construct($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
+        try {
+            parent::__construct($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
 
-        $this->initCommonRoutes();
+            $this->initCommonRoutes();
+        } catch (\Exception $e) {
+            $this->getTransport()->handleException($e);
+        }
     }
 
     /**
@@ -49,11 +53,11 @@ class Service extends \Mezon\Service\ServiceBase
      */
     protected function initCommonRoutes(): void
     {
-        $this->serviceTransport->addRoute('/connect/', 'connect', 'POST', 'public_call');
-        $this->serviceTransport->addRoute('/token/[a:token]/', 'setToken', 'POST');
-        $this->serviceTransport->addRoute('/self/id/', 'getSelfId', 'GET');
-        $this->serviceTransport->addRoute('/self/login/', 'getSelfLogin', 'GET');
-        $this->serviceTransport->addRoute('/login-as/', 'loginAs', 'POST');
+        $this->getTransport()->addRoute('/connect/', 'connect', 'POST', 'public_call');
+        $this->getTransport()->addRoute('/token/[a:token]/', 'setToken', 'POST');
+        $this->getTransport()->addRoute('/self/id/', 'getSelfId', 'GET');
+        $this->getTransport()->addRoute('/self/login/', 'getSelfLogin', 'GET');
+        $this->getTransport()->addRoute('/login-as/', 'loginAs', 'POST');
     }
 
     /**

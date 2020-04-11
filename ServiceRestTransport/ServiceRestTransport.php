@@ -35,10 +35,11 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
      */
     public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
-        $this->header('Content-type', 'application/json');
+        $this->header('Content-Type', 'application/json');
 
         try {
-            $params['SessionId'] = $this->createSession($this->paramsFetcher->getParam('session_id'));
+            $params['SessionId'] = $this->createSession($this->getParamsFetcher()
+                ->getParam('session_id'));
 
             return call_user_func_array([
                 $serviceLogic,
@@ -70,7 +71,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
         string $method,
         array $params = [])
     {
-        $this->header('Content-type', 'application/json');
+        $this->header('Content-Type', 'application/json');
 
         try {
             return call_user_func_array([
@@ -91,7 +92,9 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
      */
     public function run(): void
     {
-        print(json_encode($this->router->callRoute($_GET['r'])));
+        if (isset($_GET['r'])) {
+            print(json_encode($this->getRouter()->callRoute($_GET['r'])));
+        } else {}
     }
 
     /**
@@ -106,10 +109,12 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
         $return = [
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'service' => 'service',
-            'call_stack' => $this->formatCallStack($e),
-            'host' => 'console'
+            'service' => $_SERVER['HTTP_HOST'] ?? 'unknown'
         ];
+
+        if ($this->isDebug()) {
+            $return['call_stack'] = $this->formatCallStack($e);
+        }
 
         if ($e instanceof \Mezon\Rest\Exception) {
             $return['http_code'] = $e->getHttpCode();
@@ -132,16 +137,15 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
     }
 
     /**
-     * Method processes exception
+     * Method outputs exception data
      *
-     * @param $e \Exception
-     *            object
-     * @codeCoverageIgnore
+     * @param array $e
+     *            exception data
      */
-    public function handleException($e): void
+    public function outputException(array $e): void
     {
-        header('Content-type:application/json');
+        $this->header('Content-Type', 'application/json');
 
-        print(json_encode($this->errorResponse($e)));
+        print(json_encode($e));
     }
 }

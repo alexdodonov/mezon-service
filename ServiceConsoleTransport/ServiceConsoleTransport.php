@@ -28,8 +28,7 @@ class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
      * @param mixed $securityProvider
      *            Security provider
      */
-    public function __construct(
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
+    public function __construct($securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
     {
         parent::__construct();
 
@@ -47,7 +46,7 @@ class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
      */
     public function createFetcher(): \Mezon\Service\ServiceRequestParamsInterface
     {
-        return new \Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($this->router);
+        return new \Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($this->getRouter());
     }
 
     /**
@@ -55,6 +54,17 @@ class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
      */
     public function run(): void
     {
-        $this->result = $this->router->callRoute($_GET['r']);
+        $this->result = $this->getRouter()->callRoute($_GET['r']);
+    }
+
+    /**
+     * Method creates session
+     *
+     * @param bool|string $token
+     *            Session token
+     */
+    public function createSession(string $token): string
+    {
+        return $token;
     }
 }

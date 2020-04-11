@@ -12,12 +12,17 @@ class ServiceUnitTest extends \Mezon\Service\Tests\ServiceUnitTests
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
+        $transport = $this->getMockBuilder(\Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class)
+            ->setMethods([
+            'die'
+        ])
+            ->getMock();
+
         $service = new TestService(
             TestLogic::class,
             \Mezon\Service\ServiceModel::class,
             $this->getSecurityProvider(AS_STRING),
-            \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class
-            );
+            $transport);
 
         // route from routes.php
         $_GET['r'] = 'test';
@@ -32,6 +37,6 @@ class ServiceUnitTest extends \Mezon\Service\Tests\ServiceUnitTests
         $service->run();
         $content = ob_get_contents();
         ob_end_clean();
-        $this->assertStringContainsString('{main}',$content);
+        $this->assertStringContainsString('"message"', $content);
     }
 }

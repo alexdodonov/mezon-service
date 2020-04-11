@@ -44,7 +44,9 @@ class HttpRequestParams implements \Mezon\Service\ServiceRequestParamsInterface
      */
     protected function getSessionIdFromHeaders(array $headers)
     {
-        if (isset($headers['Authorization'])) {
+        if (isset($headers['Authentication'])) {
+            return str_replace('Basic ', '', $headers['Authentication']);
+        } elseif (isset($headers['Authorization'])) {
             return str_replace('Basic ', '', $headers['Authorization']);
         } elseif (isset($headers['Cgi-Authorization'])) {
             return str_replace('Basic ', '', $headers['Cgi-Authorization']);

@@ -14,6 +14,23 @@ class TestingBaseService extends \Mezon\Service\ServiceBase implements \Mezon\Se
     }
 }
 
+class ExceptionTestingBaseService extends TestingBaseService
+{
+
+    protected function initCustomRoutes(): void
+    {
+        // and here we emulate error
+        throw (new \Exception("msg", 1));
+    }
+}
+
+class TestingTransport extends \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport
+{
+
+    protected function die(): void
+    {}
+}
+
 class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -64,7 +81,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing fetchActions call
      */
-    public function testFetchActions(): void
+    public function testFetchActionsGet(): void
     {
         // setup
         $service = new TestingBaseService(
@@ -75,9 +92,52 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
 
         // test body
         $_GET['r'] = 'test';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
         $service->run();
 
         // assertions
         $this->assertEquals('Action!', $service->getTransport()->result);
+    }
+
+    /**
+     * Testing fetchActions call
+     */
+    public function testFetchActionsPost(): void
+    {
+        // setup
+        $service = new TestingBaseService(
+            \Mezon\Service\ServiceBaseLogic::class,
+            \Mezon\Service\ServiceModel::class,
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class);
+
+        // test body
+        $_GET['r'] = 'test';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $service->run();
+
+        // assertions
+        $this->assertEquals('Action!', $service->getTransport()->result);
+    }
+
+    /**
+     * Testing exception handling while constructor call
+     */
+    public function testExceptionWhileConstruction(): void
+    {
+        // setup and assertions
+        ob_start();
+        new ExceptionTestingBaseService(
+            \Mezon\Service\ServiceBaseLogic::class,
+            \Mezon\Service\ServiceModel::class,
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            \TestingTransport::class);
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertStringContainsString('"message"', $content);
+        $this->assertStringContainsString('"code"', $content);
+        $this->assertTrue(is_array(json_decode($content, true)));
     }
 }

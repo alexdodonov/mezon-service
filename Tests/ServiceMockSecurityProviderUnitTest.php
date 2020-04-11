@@ -8,10 +8,13 @@ class ServiceMockSecurityProviderUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateSession1(): void
     {
+        // setup
         $provider = new \Mezon\Service\ServiceMockSecurityProvider();
 
+        // test body
         $token = $provider->createSession(md5(1));
 
+        // assertions
         $this->assertEquals(32, strlen($token));
     }
 
@@ -20,23 +23,29 @@ class ServiceMockSecurityProviderUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateSession2(): void
     {
+        // setup
         $provider = new \Mezon\Service\ServiceMockSecurityProvider();
 
+        // test body
         $token = $provider->createSession('token');
 
+        // assertions
         $this->assertEquals('token', $token);
     }
-
+    
     /**
-     * Testing setting token
+     * Testing session with token creation
      */
-    public function testSetToken(): void
+    public function testCreateSession3(): void
     {
+        // setup
         $provider = new \Mezon\Service\ServiceMockSecurityProvider();
 
-        $token = $provider->createSession('token');
+        // test body
+        $token = $provider->createSession('');
 
-        $this->assertEquals('token', $token);
+        // assertions
+        $this->assertEquals(32, strlen($token));
     }
 
     /**

@@ -22,23 +22,23 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     /**
      * Request params fetcher
      *
-     * @var \Mezon\Service\ServiceRequestParamsInterface // TODO make it private
+     * @var \Mezon\Service\ServiceRequestParamsInterface
      */
-    public $paramsFetcher = false;
+    private $paramsFetcher = false;
 
     /**
      * Service's logic
      *
-     * @var \Mezon\Service\ServiceLogic // TODO make it private
+     * @var \Mezon\Service\ServiceLogic
      */
-    public $serviceLogic = false;
+    private $serviceLogic = false;
 
     /**
      * Router
      *
-     * @var \Mezon\Router\Router // TODO make it private
+     * @var \Mezon\Router\Router
      */
-    protected $router = false;
+    private $router = false;
 
     /**
      * Constructor
@@ -94,12 +94,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      * @param bool|string $token
      *            Session token
      */
-    public function createSession(string $token): string
-    {
-        // must be overriden
-        // TODO mark this method as abstract
-        return $token;
-    }
+    public abstract function createSession(string $token): string;
 
     /**
      * Method adds's route
@@ -305,7 +300,30 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      */
     public function run(): void
     {
+        if (isset($_GET['r']) === false) {
+            throw (new \Exception('Route name was not found in $_GET[\'r\']'));
+        }
+
         print($this->router->callRoute($_GET['r']));
+    }
+
+    /**
+     * Method kills execution thread
+     * @codeCoverageIgnore
+     */
+    protected function die(): void
+    {
+        die(0);
+    }
+
+    /**
+     * Method outputs exception data
+     *
+     * @param array $e
+     */
+    public function outputException(array $e): void
+    {
+        print(json_encode($e));
     }
 
     /**
@@ -317,7 +335,9 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      */
     public function handleException($e): void
     {
-        print('<pre>' . $e->getTraceAsString());
+        $this->outputException($this->errorResponse($e));
+
+        $this->die();
     }
 
     /**
@@ -366,6 +386,17 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     }
 
     /**
+     * Method constructs request data fetcher
+     *
+     * @param \Mezon\Service\ServiceRequestParamsInterface $paramsFetcher
+     *            Request data fetcher
+     */
+    public function setParamsFetcher(\Mezon\Service\ServiceRequestParamsInterface $paramsFetcher): void
+    {
+        $this->paramsFetcher = $paramsFetcher;
+    }
+
+    /**
      * Method returns true if the router exists
      *
      * @param string $route
@@ -385,5 +416,16 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     public function &getRouter(): \Mezon\Router\Router
     {
         return $this->router;
+    }
+
+    /**
+     * Method sets service logic
+     *
+     * @param
+     *            array|\Mezon\Service\ServiceBaseLogicInterface base logic object or array
+     */
+    public function setServiceLogic($serviceLogic): void
+    {
+        $this->serviceLogic = $serviceLogic;
     }
 }

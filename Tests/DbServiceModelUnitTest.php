@@ -34,7 +34,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
                 '*',
             ],
             [
-                new \Mezon\Gui\FieldsAlgorithms($this->getFieldSet()),
+                new \Mezon\FieldsSet($this->getFieldSet()),
                 'id',
             ],
         ];

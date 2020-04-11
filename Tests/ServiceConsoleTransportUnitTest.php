@@ -129,7 +129,7 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->never())
             ->method('createSession');
@@ -150,7 +150,7 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->once())
             ->method('createSession');
@@ -171,7 +171,7 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->never())
             ->method('createSession');

@@ -24,7 +24,7 @@ class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
     }
 }
 
-class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
+class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -48,14 +48,17 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
         $mock->method('errorResponse')->willThrowException(new \Mezon\Rest\Exception('Msg', 0, 1, 1));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
-        $mock->paramsFetcher = $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
-            ->setMethods([
-            'getSessionIdFromHeaders'
-        ])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mock->setParamsFetcher(
+            $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
+                ->setMethods([
+                'getSessionIdFromHeaders'
+            ])
+                ->disableOriginalConstructor()
+                ->getMock());
 
-        $mock->paramsFetcher->method('getSessionIdFromHeaders')->willReturn('token');
+        $mock->getParamsFetcher()
+            ->method('getSessionIdFromHeaders')
+            ->willReturn('token');
 
         return $mock;
     }
@@ -155,7 +158,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->never())
             ->method('createSession');
@@ -189,7 +192,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->once())
             ->method('createSession');
@@ -272,6 +275,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     public function testErrorResponseException(): void
     {
         // setup
+        $_SERVER['HTTP_HOST'] = 'http://service';
         $e = new Exception('msg', 1);
         $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
 
@@ -281,7 +285,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertEquals('msg', $result['message']);
         $this->assertEquals(1, $result['code']);
-        $this->assertEquals('service', $result['service']);
+        $this->assertEquals('http://service', $result['service']);
     }
 
     /**
@@ -290,6 +294,7 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
     public function testErrorResponseRestException(): void
     {
         // setup
+        $_SERVER['HTTP_HOST'] = 'http://rest-service';
         $e = new \Mezon\Rest\Exception('msg', 1, 200, 'body');
         $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
 
@@ -299,8 +304,70 @@ class ServiceRestTransportTest extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertEquals('msg', $result['message']);
         $this->assertEquals(1, $result['code']);
-        $this->assertEquals('service', $result['service']);
+        $this->assertEquals('http://rest-service', $result['service']);
         $this->assertEquals(200, $result['http_code']);
         $this->assertEquals('body', $result['http_body']);
+    }
+
+    /**
+     * Testing parentErrorResponse method
+     */
+    public function testParentErrorResponseRestException(): void
+    {
+        // setup
+        $e = new \Exception('msg', 1);
+        $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+
+        // test body
+        $result = $Transport->parentErrorResponse($e);
+
+        // assertions
+        $this->assertEquals('msg', $result['message']);
+        $this->assertEquals(1, $result['code']);
+    }
+
+    /**
+     * Getting tricky mock object
+     */
+    protected function getTransportMockEx(string $mode = 'publicCall')
+    {
+        $mock = $this->getTransportMock();
+
+        $mock->setServiceLogic($this->getServiceLogicMock());
+
+        $mock->method('header')->with($this->equalTo('Content-Type'), $this->equalTo('application/json'));
+
+        $mock->addRoute('connect', 'connect', 'GET', $mode, [
+            'content_type' => 'application/json'
+        ]);
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['r'] = 'connect';
+
+        return $mock;
+    }
+
+    /**
+     * Testing method
+     */
+    public function test(): void
+    {
+        // setup
+        $e = [
+            "message" => "msg",
+            "code" => - 1
+        ];
+        $transport = $this->getTransportMockEx();
+
+        // test body
+        ob_start();
+        $transport->outputException($e);
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertStringContainsString('"msg"', $content);
+        $this->assertStringContainsString('-1', $content);
+        $this->assertTrue(is_array(json_decode($content, true)));
     }
 }

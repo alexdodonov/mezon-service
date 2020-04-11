@@ -49,14 +49,17 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
         $mock->expects($this->once())
             ->method('header');
 
-        $mock->paramsFetcher = $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
-            ->setMethods([
-            'getSessionIdFromHeaders'
-        ])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mock->setParamsFetcher(
+            $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
+                ->setMethods([
+                'getSessionIdFromHeaders'
+            ])
+                ->disableOriginalConstructor()
+                ->getMock());
 
-        $mock->paramsFetcher->method('getSessionIdFromHeaders')->willReturn('token');
+        $mock->getParamsFetcher()
+            ->method('getSessionIdFromHeaders')
+            ->willReturn('token');
 
         return $mock;
     }
@@ -137,7 +140,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->method('header')->with($this->equalTo('Content-type'), $this->equalTo('text/html; charset=utf-8'));
+        $mock->method('header')->with($this->equalTo('Content-Type'), $this->equalTo('text/html; charset=utf-8'));
 
         $serviceLogic = $this->getServiceLogicMock();
 
@@ -151,7 +154,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->method('header')->with($this->equalTo('Content-type'), $this->equalTo('text/html; charset=utf-8'));
+        $mock->method('header')->with($this->equalTo('Content-Type'), $this->equalTo('text/html; charset=utf-8'));
 
         $serviceLogic = $this->getServiceLogicMock();
 
@@ -159,15 +162,15 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Getting tricky mock object.
+     * Getting tricky mock object
      */
-    protected function getMockEx(string $mode)
+    protected function getTransportMockEx(string $mode = 'publicCall')
     {
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
-        $mock->method('header')->with($this->equalTo('Content-type'), $this->equalTo('text/html; charset=utf-8'));
+        $mock->method('header')->with($this->equalTo('Content-Type'), $this->equalTo('text/html; charset=utf-8'));
 
         $mock->addRoute('connect', 'connect', 'GET', $mode, [
             'content_type' => 'text/html; charset=utf-8'
@@ -184,7 +187,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpectedHeaderValuesEx()
     {
-        $mock = $this->getMockEx('callLogic');
+        $mock = $this->getTransportMockEx('callLogic');
 
         $mock->getRouter()->callRoute($_GET['r']);
     }
@@ -194,7 +197,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpectedHeaderValuesPublicEx()
     {
-        $mock = $this->getMockEx('publicCall');
+        $mock = $this->getTransportMockEx('publicCall');
 
         $mock->getRouter()->callRoute($_GET['r']);
     }
@@ -206,7 +209,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->never())
             ->method('createSession');
@@ -221,15 +224,62 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testPrivateCallNoException()
     {
+        // setup
         $mock = $this->getTransportMock();
 
-        $mock->serviceLogic = $this->getServiceLogicMock();
+        $mock->setServiceLogic($this->getServiceLogicMock());
 
         $mock->expects($this->once())
             ->method('createSession');
 
         $mock->addRoute('private-method', 'privateMethod', 'GET', 'private_call');
 
+        // test body and assertions
         $mock->getRouter()->callRoute('/private-method/');
+    }
+
+    /**
+     * Testing creaetSession method
+     */
+    public function testCreateSession(): void
+    {
+        // setup and assertions
+        $securityProvider = $this->getMockBuilder(\Mezon\Service\ServiceMockSecurityProvider::class)
+            ->setMethods([
+            'createSession'
+        ])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $securityProvider->expects($this->once())
+            ->method('createSession');
+
+        $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport($securityProvider);
+
+        // test body
+        $transport->createSession('some-token');
+    }
+
+    /**
+     * Testing method
+     */
+    public function test(): void
+    {
+        // setup
+        $e = [
+            "message" => "msg",
+            "code" => - 1
+        ];
+        $transport = $this->getTransportMockEx();
+
+        // test body
+        ob_start();
+        $transport->outputException($e);
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertStringContainsString('"msg"', $content);
+        $this->assertStringContainsString('-1', $content);
+        $this->assertTrue(is_array(json_decode($content, true)));
     }
 }

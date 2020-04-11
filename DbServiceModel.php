@@ -24,17 +24,17 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
     /**
      * Table name
      */
-    protected $tableName = '';
+    private $tableName = '';
 
     /**
      * Fields algorithms
      */
-    protected $fieldsAlgorithms = false;
+    private $fieldsSet = false;
 
     /**
      * Entity name
      */
-    protected $entityName = false;
+    private $entityName = false;
 
     /**
      * Constructor
@@ -53,19 +53,17 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
         $this->entityName = $entityName;
 
         if (is_string($fields)) {
-            // TODO think how exclude \Mezon\Gui\FieldsAlgorithms to separate package
-            $this->fieldsAlgorithms = new \Mezon\Gui\FieldsAlgorithms(
+            $this->fieldsSet = new \Mezon\FieldsSet(
                 [
                     '*' => [
                         'type' => 'string',
                         'title' => 'All fields'
                     ]
-                ],
-                $tableName);
+                ]);
         } elseif (is_array($fields)) {
-            $this->fieldsAlgorithms = new \Mezon\Gui\FieldsAlgorithms($fields, $tableName);
-        } elseif ($fields instanceof \Mezon\Gui\FieldsAlgorithms) {
-            $this->fieldsAlgorithms = $fields;
+            $this->fieldsSet = new \Mezon\FieldsSet($fields);
+        } elseif ($fields instanceof \Mezon\FieldsSet) {
+            $this->fieldsSet = $fields;
         } else {
             throw (new \Exception('Invalid fields description', - 1));
         }
@@ -103,7 +101,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function getFieldsNames(): string
     {
-        return implode(', ', $this->fieldsAlgorithms->getFieldsNames());
+        return implode(', ', $this->fieldsSet->getFieldsNames());
     }
 
     /**
@@ -115,7 +113,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function hasField(string $fieldName): bool
     {
-        return $this->fieldsAlgorithms->hasField($fieldName);
+        return $this->fieldsSet->hasField($fieldName);
     }
 
     /**
@@ -125,7 +123,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function hasCustomFields(): bool
     {
-        return $this->fieldsAlgorithms->hasCustomFields();
+        return $this->fieldsSet->hasCustomFields();
     }
 
     /**
@@ -136,7 +134,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function validateFieldExistance(string $field)
     {
-        return $this->fieldsAlgorithms->validateFieldExistance($field);
+        return $this->fieldsSet->validateFieldExistance($field);
     }
 
     /**
@@ -146,7 +144,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function getFields(): array
     {
-        return $this->fieldsAlgorithms->getFieldsNames();
+        return $this->fieldsSet->getFieldsNames();
     }
 
     /**
@@ -168,6 +166,6 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
      */
     public function getFieldType(string $fieldName): string
     {
-        return $this->fieldsAlgorithms->getObject($fieldName)->getType();
+        return $this->fieldsSet->getFieldType($fieldName);
     }
 }

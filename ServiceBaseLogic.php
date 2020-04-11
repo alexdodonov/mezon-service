@@ -75,7 +75,7 @@ class ServiceBaseLogic implements \Mezon\Service\ServiceBaseLogicInterface
      */
     protected function getParam($param, $default = false)
     {
-        return $this->paramsFetcher->getParam($param, $default);
+        return $this->getParamsFetcher()->getParam($param, $default);
     }
 
     /**

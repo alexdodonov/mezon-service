@@ -13,6 +13,30 @@ namespace Mezon\Service\Tests;
 define('AS_STRING', 1);
 define('AS_OBJECT', 2);
 
+class ExceptionTestingService extends \Mezon\Service\Service
+{
+
+    protected function initCustomRoutes(): void
+    {
+        // not loading routes from config
+    }
+
+    protected function initCommonRoutes(): void
+    {
+        // and here we emulate error
+        throw (new \Exception("msg", 1));
+    }
+}
+
+class TestingTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport
+{
+
+    // @codeCoverageIgnoreStart
+    protected function die(): void
+    {}
+    // @codeCoverageIgnoreEnd
+}
+
 /**
  * Common service unit tests
  *
@@ -37,23 +61,29 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
         $service = new $this->className(
             \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class);
-        $this->assertInstanceOf($this->getSecurityProvider(AS_STRING), $service->getTransport()->securityProvider);
+        $this->assertInstanceOf(
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            $service->getTransport()->securityProvider);
 
         $service = new $this->className(
             \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
-        $this->assertInstanceOf($this->getSecurityProvider(AS_STRING), $service->getTransport()->securityProvider);
+        $this->assertInstanceOf(
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            $service->getTransport()->securityProvider);
 
         $service = new $this->className(
             \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
             $this->getSecurityProvider(AS_OBJECT),
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
-        $this->assertInstanceOf($this->getSecurityProvider(AS_STRING), $service->getTransport()->securityProvider);
+        $this->assertInstanceOf(
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            $service->getTransport()->securityProvider);
     }
 
     /**
@@ -62,7 +92,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
     public function testInitServiceModel()
     {
         $service = new $this->className(
-            $this->getLogic(AS_STRING),
+            \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
             new \Mezon\Service\ServiceMockSecurityProvider(),
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
@@ -70,7 +100,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             ->getModel());
 
         $service = new $this->className(
-            $this->getLogic(AS_OBJECT),
+            $this->getLogic(),
             \Mezon\Service\ServiceModel::class,
             new \Mezon\Service\ServiceMockSecurityProvider(),
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
@@ -78,7 +108,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             ->getModel());
 
         $service = new $this->className(
-            $this->getLogic(AS_OBJECT),
+            $this->getLogic(),
             new \Mezon\Service\ServiceModel(),
             new \Mezon\Service\ServiceMockSecurityProvider(),
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
@@ -104,23 +134,16 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
     /**
      * Method creates logic
      *
-     * @param int $mode
-     *            - Creation mode
      * @return \Mezon\Service\ServiceLogic|string Service logic object
      */
-    protected function getLogic(int $mode)
+    protected function getLogic()
     {
-        if ($mode == AS_STRING) {
-            return \Mezon\Service\ServiceLogic::class;
-        }
-        if ($mode == AS_OBJECT) {
-            $serviceTransport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
-            return new \Mezon\Service\ServiceLogic(
-                $serviceTransport->getParamsFetcher(),
-                new \Mezon\Service\ServiceMockSecurityProvider(),
-                new \Mezon\Service\ServiceModel());
-        }
-        return null;
+        $serviceTransport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
+
+        return new \Mezon\Service\ServiceLogic(
+            $serviceTransport->getParamsFetcher(),
+            new \Mezon\Service\ServiceMockSecurityProvider(),
+            new \Mezon\Service\ServiceModel());
     }
 
     /**
@@ -134,11 +157,9 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
     {
         if ($mode == AS_STRING) {
             return \Mezon\Service\ServiceMockSecurityProvider::class;
-        }
-        if ($mode == AS_OBJECT) {
+        } else {
             return new \Mezon\Service\ServiceMockSecurityProvider();
         }
-        return null;
     }
 
     /**
@@ -146,7 +167,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
      *
      * @see \Mezon\Service\Service::launch
      */
-    public function testLaunchWithRransport()
+    public function testLaunchWithTransport()
     {
         $localClassName = $this->className;
         $mock = $this->getMock();
@@ -160,9 +181,9 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
         // explicit string
         $service = $localClassName::launch(
             get_class($mock),
-            $this->getLogic(AS_STRING),
+            \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class);
         $this->assertInstanceOf(
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
@@ -171,9 +192,9 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
         // explicit object
         $service = $localClassName::launch(
             get_class($mock),
-            $this->getLogic(AS_STRING),
+            \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
         $this->assertInstanceOf(
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
@@ -191,13 +212,15 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
 
         $service = $localClassName::launch(
             $this->className,
-            $this->getLogic(AS_STRING),
+            \Mezon\Service\ServiceLogic::class,
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
             false);
 
-        $this->assertInstanceOf($this->getSecurityProvider(AS_STRING), $service->getTransport()->securityProvider);
+        $this->assertInstanceOf(
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            $service->getTransport()->securityProvider);
     }
 
     /**
@@ -210,10 +233,10 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
         $service = $localClassName::launch(
             $this->className,
             [
-                $this->getLogic(AS_STRING)
+                \Mezon\Service\ServiceLogic::class
             ],
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
             false);
 
@@ -233,10 +256,10 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
         $service = $localClassName::launch(
             $this->className,
             [
-                $this->getLogic(AS_STRING)
+                \Mezon\Service\ServiceLogic::class
             ],
             \Mezon\Service\ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            \Mezon\Service\ServiceMockSecurityProvider::class,
             \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class,
             false);
 
@@ -251,13 +274,61 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
      */
     public function testStartWithTransport()
     {
+        // setup
         $localClassName = $this->className;
         $mock = $this->getMock();
 
-        // implicit
+        // test body
         $service = $localClassName::start(get_class($mock));
+
+        // assertions
         $this->assertInstanceOf(
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
             $service->getTransport());
+    }
+
+    /**
+     * Testing service creation without running it
+     */
+    public function testCreateServiceWithoutRunningIt(): void
+    {
+        // setup
+        $localClassName = $this->className;
+        $mock = $this->getMock();
+        $mock->expects($this->never())
+            ->method('run');
+
+        // test body
+        $service = $localClassName::start(
+            $this->className,
+            \Mezon\Service\ServiceLogic::class,
+            \Mezon\Service\ServiceModel::class,
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
+            false);
+
+        // assertions
+        $this->assertInstanceOf(\Mezon\Service\Service::class, $service);
+    }
+
+    /**
+     * Testing method
+     */
+    public function testExceptionWhileConstruction(): void
+    {
+        // setup and test body
+        ob_start();
+        new ExceptionTestingService(
+            \Mezon\Service\ServiceLogic::class,
+            \Mezon\Service\ServiceModel::class,
+            \Mezon\Service\ServiceMockSecurityProvider::class,
+            \TestingTransport::class);
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertStringContainsString("message", $content);
+        $this->assertStringContainsString("code", $content);
+        $this->assertTrue(is_array(json_decode($content, true)));
     }
 }

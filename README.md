@@ -190,3 +190,62 @@ class TodoSecurityProvider extends \Mezon\Service\ServiceAuthenticationSecurityP
     
 }
 ```
+
+And our code will look like this:
+
+```PHP
+/**
+ * Logic implementation
+ */
+class TodoLogic extends \Mezon\Service\ServiceBaseLogic
+{
+
+    /**
+     * First endpoint
+     */
+    public function ping(): string
+    {
+        return 'I am alive!';
+    }
+
+    /**
+     * Second route
+     */
+    public function whoAmI(): string
+    {
+        return 'I\'am Batman!';
+    }
+}
+
+/**
+ * Service class
+ */
+class TodoService extends \Mezon\Service\ServiceBase
+{
+}
+
+/**
+ * Security provider
+ */
+class TodoSecurityProvider extends \Mezon\Service\ServiceAuthenticationSecurityProvider{}
+
+\Mezon\Service\Service::start(TodoService::class, TodoLogic::class, null, TodoSecurityProvider::class);
+```
+
+And routes must be described like this:
+
+```JS
+[
+	{
+		"route": "/ping/",
+		"callback": "ping",
+		"method": "GET",
+		"call_type": "public_call"
+	},
+	{
+		"route": "/who-am-i/",
+		"callback": "whoAmI",
+		"method": "GET"
+	}
+]
+```

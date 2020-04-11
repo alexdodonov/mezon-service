@@ -26,7 +26,7 @@ class ServiceMockSecurityProvider implements \Mezon\Service\ServiceAuthorization
      */
     public function createSession(string $token): string
     {
-        if ($token === null) {
+        if ($token === '') {
             return md5(microtime(true));
         } else {
             return $token;

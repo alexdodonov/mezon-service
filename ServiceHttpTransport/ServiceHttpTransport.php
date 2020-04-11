@@ -34,6 +34,18 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
         } else {
             $this->securityProvider = $securityProvider;
         }
+
+        $this->sessionStart();
+    }
+
+    /**
+     * Starting session
+     *
+     * @codeCoverageIgnore
+     */
+    protected function sessionStart(): void
+    {
+        @session_start();
     }
 
     /**
@@ -55,7 +67,7 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
      */
     public function createFetcher(): \Mezon\Service\ServiceRequestParamsInterface
     {
-        return new \Mezon\Service\ServiceHttpTransport\HttpRequestParams($this->router);
+        return new \Mezon\Service\ServiceHttpTransport\HttpRequestParams($this->getRouter());
     }
 
     /**
@@ -69,7 +81,7 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
      */
     protected function header(string $header, string $value)
     {
-        header($header . ':' . $value);
+        @header($header . ':' . $value);
     }
 
     /**
@@ -85,7 +97,7 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
      */
     public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
-        $this->header('Content-type', 'text/html; charset=utf-8');
+        $this->header('Content-Type', 'text/html; charset=utf-8');
 
         return parent::callLogic($serviceLogic, $method, $params);
     }
@@ -106,8 +118,21 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
         string $method,
         array $params = [])
     {
-        $this->header('Content-type', 'text/html; charset=utf-8');
+        $this->header('Content-Type', 'text/html; charset=utf-8');
 
         return parent::callPublicLogic($serviceLogic, $method, $params);
+    }
+
+    /**
+     * Method outputs exception data
+     *
+     * @param array $e
+     *            exception data
+     */
+    public function outputException(array $e): void
+    {
+        $this->header('Content-Type', 'text/html; charset=utf-8');
+
+        print(json_encode($e));
     }
 }
