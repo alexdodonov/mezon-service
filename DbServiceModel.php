@@ -39,7 +39,7 @@ class DbServiceModel extends \Mezon\Service\ServiceModel
     /**
      * Constructor
      *
-     * @param string|array $fields
+     * @param mixed $fields
      *            fields of the model
      * @param string $tableName
      *            name of the table

@@ -18,7 +18,8 @@
 		"mezon/dns-client": "^1.0",
 		"mezon/custom-client": "^1.0",
 		"mezon/rest-exception": "^1.0",
-		"mezon/fields-set": "^1.0"
+		"mezon/fields-set": "^1.0",
+		"phpunit/phpunit": "^9.1"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",

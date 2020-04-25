@@ -67,8 +67,7 @@ class DbServiceModelUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup and test body
         $this->expectException(Exception::class);
-        $model = new \Mezon\Service\DbServiceModel(new stdClass(), 'entity_name');
-        var_dump($model);
+        new \Mezon\Service\DbServiceModel(new stdClass(), 'entity_name');
     }
 
     /**
