@@ -1,4 +1,4 @@
-# Set of classes for creating microservices [![Build Status](https://travis-ci.com/alexdodonov/mezon-service.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-service) [![codecov](https://codecov.io/gh/alexdodonov/mezon-service/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-service)
+# Set of classes for creating microservices [![Build Status](https://travis-ci.com/alexdodonov/mezon-service.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-service) [![codecov](https://codecov.io/gh/alexdodonov/mezon-service/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-service) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/?branch=master)
 
 ## Installation
 
