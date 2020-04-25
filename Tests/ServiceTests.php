@@ -291,7 +291,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals(
             'alexey@dodonov.none',
-            \Mezon\Functional\Functional::getField($result, 'login'),
+            \Mezon\Functional\Fetcher::getField($result, 'login'),
             'Session user must be alexey@dodonov.none');
     }
 }

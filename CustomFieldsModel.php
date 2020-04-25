@@ -68,11 +68,11 @@ class CustomFieldsModel
             'object_id = ' . $objectId);
 
         foreach ($customFields as $field) {
-            $fieldName = \Mezon\Functional\Functional::getField($field, 'field_name');
+            $fieldName = \Mezon\Functional\Fetcher::getField($field, 'field_name');
 
             // if the field in the list or all fields must be fetched
             if (in_array($fieldName, $filter) || in_array('*', $filter)) {
-                $result[$fieldName] = \Mezon\Functional\Functional::getField($field, 'field_value');
+                $result[$fieldName] = \Mezon\Functional\Fetcher::getField($field, 'field_value');
             }
         }
 
@@ -144,7 +144,7 @@ class CustomFieldsModel
     public function getCustomFieldsForRecords(array $records): array
     {
         foreach ($records as $i => $record) {
-            $records[$i]['custom'] = $this->getCustomFieldsForObject(\Mezon\Functional\Functional::getField($record, 'id'));
+            $records[$i]['custom'] = $this->getCustomFieldsForObject(\Mezon\Functional\Fetcher::getField($record, 'id'));
         }
 
         return $records;

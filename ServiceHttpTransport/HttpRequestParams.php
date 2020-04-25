@@ -58,7 +58,7 @@ class HttpRequestParams implements \Mezon\Service\ServiceRequestParamsInterface
     /**
      * Method returns list of the request's headers
      *
-     * @return array[string] Array of headers
+     * @return array Array of headers
      */
     protected function getHttpRequestHeaders(): array
     {

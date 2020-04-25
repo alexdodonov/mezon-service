@@ -20,10 +20,11 @@ class ServiceSimpleRequestParams implements \Mezon\Service\ServiceRequestParamsI
     /**
      * Method returns list of the request's headers
      *
-     * @return array[string] Array of headers
+     * @return array Array of headers
      */
     protected function getHttpRequestHeaders(): array
     {
+        // TODO duplication with the HttpRequestParams::getHttpRequestHeaders
         $headers = getallheaders();
 
         return $headers === false ? [] : $headers;
