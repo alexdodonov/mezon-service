@@ -144,7 +144,13 @@ class CustomFieldsModel
     public function getCustomFieldsForRecords(array $records): array
     {
         foreach ($records as $i => $record) {
-            $records[$i]['custom'] = $this->getCustomFieldsForObject(\Mezon\Functional\Fetcher::getField($record, 'id'));
+            $id = \Mezon\Functional\Fetcher::getField($record, 'id');
+
+            if ($id === null) {
+                throw (new \Exception('Field "id" was not found in record', - 1));
+            }
+
+            $records[$i]['custom'] = $this->getCustomFieldsForObject($id);
         }
 
         return $records;
