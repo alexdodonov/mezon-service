@@ -145,7 +145,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
      *            Requesting URL
      * @return mixed Result off the request
      */
-    protected function getHtmlRequest(string $url)
+    protected function getHttpRequest(string $url)
     {
         $options = $this->prepareGetOptions();
 
