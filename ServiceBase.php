@@ -31,7 +31,7 @@ class ServiceBase
     /**
      * Service's logic
      *
-     * @var \Mezon\Service\ServiceLogic|array Login object or list of logic objects
+     * @var array Login object or list of logic objects
      */
     private $serviceLogic = false;
 
@@ -75,13 +75,9 @@ class ServiceBase
             $this->serviceTransport->fetchActions($this);
         }
 
-        if ($this->serviceLogic instanceof \Mezon\Service\ServiceBaseLogicInterface) {
-            $this->serviceTransport->fetchActions($this->serviceLogic);
-        } elseif (is_array($this->serviceLogic)) {
-            foreach ($this->serviceLogic as $actionsSet) {
-                if ($actionsSet instanceof \Mezon\Service\ServiceBaseLogicInterface) {
-                    $this->serviceTransport->fetchActions($actionsSet);
-                }
+        foreach ($this->serviceLogic as $actionsSet) {
+            if ($actionsSet instanceof \Mezon\Service\ServiceBaseLogicInterface) {
+                $this->serviceTransport->fetchActions($actionsSet);
             }
         }
     }
@@ -143,7 +139,9 @@ class ServiceBase
                 $this->serviceLogic[] = $this->constructServiceLogic($logic, $serviceModel);
             }
         } else {
-            $this->serviceLogic = $this->constructServiceLogic($serviceLogic, $serviceModel);
+            $this->serviceLogic = [
+                $this->constructServiceLogic($serviceLogic, $serviceModel)
+            ];
         }
 
         $this->serviceTransport->setServiceLogic($this->serviceLogic);
