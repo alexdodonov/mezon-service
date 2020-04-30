@@ -86,15 +86,11 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
     }
 
     /**
-     * Method runs router
-     *
-     * @codeCoverageIgnore
+     * Method calls route in transport specific way
      */
-    public function run(): void
+    protected function callRoute(): void
     {
-        if (isset($_GET['r'])) {
-            print(json_encode($this->getRouter()->callRoute($_GET['r'])));
-        } else {}
+        print(json_encode($this->getRouter()->callRoute($_GET['r'])));
     }
 
     /**

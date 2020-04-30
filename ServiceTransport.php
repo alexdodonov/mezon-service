@@ -1,5 +1,6 @@
 <?php
 namespace Mezon\Service;
+// TODO exclude it in separate package
 
 /**
  * Base class for all transports
@@ -101,29 +102,29 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      *
      * @param string $route
      *            Route
-     * @param string $method
+     * @param string $callback
      *            Logic method to be called
      * @param string|array $requestMethod
      *            HTTP request method
      * @param string $callType
      *            Type of the call
      */
-    public function addRoute(string $route, string $method, $requestMethod, string $callType = 'callLogic'): void
+    public function addRoute(string $route, string $callback, $requestMethod, string $callType = 'callLogic'): void
     {
-        $localServiceLogic = $this->getNecessaryLogic($method);
+        $localServiceLogic = $this->getNecessaryLogic($callback);
 
         if ($callType == 'public_call') {
             $this->router->addRoute(
                 $route,
-                function () use ($localServiceLogic, $method) {
-                    return $this->callPublicLogic($localServiceLogic, $method, []);
+                function () use ($localServiceLogic, $callback) {
+                    return $this->callPublicLogic($localServiceLogic, $callback, []);
                 },
                 $requestMethod);
         } else {
             $this->router->addRoute(
                 $route,
-                function () use ($localServiceLogic, $method) {
-                    return $this->callLogic($localServiceLogic, $method, []);
+                function () use ($localServiceLogic, $callback) {
+                    return $this->callLogic($localServiceLogic, $callback, []);
                 },
                 $requestMethod);
         }
@@ -300,10 +301,22 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
      */
     public function run(): void
     {
-        if (isset($_GET['r']) === false) {
-            throw (new \Exception('Route name was not found in $_GET[\'r\']'));
-        }
+        try {
+            if (isset($_GET['r']) === false) {
+                throw (new \Exception('Route name was not found in $_GET[\'r\']'));
+            }
 
+            $this->callRoute();
+        } catch (\Exception $e) {
+            $this->handleException($e);
+        }
+    }
+
+    /**
+     * Method calls route in transport specific way
+     */
+    protected function callRoute(): void
+    {
         print($this->router->callRoute($_GET['r']));
     }
 

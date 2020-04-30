@@ -7,6 +7,17 @@ class FakeSecurityProviderForRestTransport
 class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
 {
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {}
+
+    public function ok()
+    {
+        return "ok";
+    }
+
     public function privateMethod()
     {}
 
@@ -348,9 +359,9 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Testing method
+     * Testing method outputException
      */
-    public function test(): void
+    public function testOutputException(): void
     {
         // setup
         $e = [
@@ -369,5 +380,26 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString('"msg"', $content);
         $this->assertStringContainsString('-1', $content);
         $this->assertTrue(is_array(json_decode($content, true)));
+    }
+
+    /**
+     * Testing that route will be called
+     */
+    public function testCallRoute(): void
+    {
+        // setup
+        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $transport->setServiceLogic(new TestingServiceLogicForRestTransport());
+        $transport->addRoute('/ok/', 'ok', 'GET', 'public_call');
+        $_GET['r'] = 'ok';
+
+        // test body
+        ob_start();
+        $transport->run();
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        // assertions
+        $this->assertEquals('"ok"', $content);
     }
 }

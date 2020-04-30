@@ -1,9 +1,6 @@
 <?php
 namespace Mezon\Service;
 
-// TODO why call without r parameter shows white screen
-// must be exception
-
 /**
  * Class Service
  *
