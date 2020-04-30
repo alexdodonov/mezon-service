@@ -21,27 +21,27 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 {
 
     /**
-     * Session id.
+     * Session id
      */
     protected $sessionId = false;
 
     /**
-     * Server path.
+     * Server path
      */
     protected $serverPath = false;
 
     /**
-     * Headers.
+     * Headers
      *
      * @var string
      */
     protected $headers = false;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param string $service
-     *            - Service name.
+     *            Service name
      */
     public function __construct(string $service)
     {
@@ -51,12 +51,12 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Method asserts for errors and warnings in the html code.
+     * Method asserts for errors and warnings in the html code
      *
      * @param string $content
-     *            - Asserting content.
+     *            Asserting content
      * @param string $message
-     *            - Message to be displayed in case of error.
+     *            Message to be displayed in case of error
      */
     protected function assertErrors($content, $message)
     {
@@ -70,12 +70,12 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Method asserts JSON.
+     * Method asserts JSON
      *
      * @param mixed $jsonResult
-     *            - Result of the call;
+     *            Result of the call
      * @param string $result
-     *            - Raw result of the call.
+     *            Raw result of the call
      */
     protected function assertJsonResponse($jsonResult, string $result)
     {
@@ -93,13 +93,13 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Method sends post request.
+     * Method sends post request
      *
      * @param array $data
-     *            - Request data;
+     *            Request data
      * @param string $url
-     *            - Requesting endpoint.
-     * @return mixed Request result.
+     *            Requesting endpoint
+     * @return mixed Request result
      */
     protected function postHttpRequest(array $data, string $url)
     {
@@ -127,7 +127,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Method prepares GET request options.
+     * Method prepares GET request options
      */
     protected function prepareGetOptions()
     {
