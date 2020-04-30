@@ -80,11 +80,15 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     protected function assertJsonResponse($jsonResult, string $result)
     {
         if ($jsonResult === null && $result !== '') {
-            throw (new \Exception("JSON result is invalid because of:\r\n$result"));
+            $this->fail("JSON result is invalid because of:\r\n$result");
         }
 
         if (isset($jsonResult->message)) {
-            throw (new \Exception($jsonResult->message, $jsonResult->code));
+            print("message    : " . $jsonResult->message . "\r\n");
+            print("code       : " . ($jsonResult->code ?? '') . "\r\n");
+            print("call_stack : ");
+            var_dump($jsonResult->call_stack ?? 'not provided');
+            $this->fail();
         }
     }
 
