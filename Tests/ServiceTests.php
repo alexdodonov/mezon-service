@@ -72,19 +72,19 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     /**
      * Method asserts JSON.
      *
-     * @param mixed $jSONResult
+     * @param mixed $jsonResult
      *            - Result of the call;
      * @param string $result
      *            - Raw result of the call.
      */
-    protected function assertJson($jSONResult, string $result)
+    protected function assertJsonResponse($jsonResult, string $result)
     {
-        if ($jSONResult === null && $result !== '') {
+        if ($jsonResult === null && $result !== '') {
             throw (new \Exception("JSON result is invalid because of:\r\n$result"));
         }
 
-        if (isset($jSONResult->message)) {
-            throw (new \Exception($jSONResult->message, $jSONResult->code));
+        if (isset($jsonResult->message)) {
+            throw (new \Exception($jsonResult->message, $jsonResult->code));
         }
     }
 
@@ -93,11 +93,11 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
      *
      * @param array $data
      *            - Request data;
-     * @param string $uRL
+     * @param string $url
      *            - Requesting endpoint.
      * @return mixed Request result.
      */
-    protected function postHttpRequest(array $data, string $uRL)
+    protected function postHttpRequest(array $data, string $url)
     {
         $options = [
             'http' => [
@@ -111,15 +111,15 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         ];
 
         $context = stream_context_create($options);
-        $result = file_get_contents($uRL, false, $context);
+        $result = file_get_contents($url, false, $context);
 
         $this->assertErrors($result, 'Request have returned warnings/errors');
 
-        $jSONResult = json_decode($result);
+        $jsonResult = json_decode($result);
 
-        $this->assertJson($jSONResult, $result);
+        $this->assertJsonResponse($jsonResult, $result);
 
-        return $jSONResult;
+        return $jsonResult;
     }
 
     /**
@@ -141,24 +141,24 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     /**
      * Method sends GET request
      *
-     * @param string $uRL
+     * @param string $url
      *            Requesting URL
      * @return mixed Result off the request
      */
-    protected function getHtmlRequest(string $uRL)
+    protected function getHtmlRequest(string $url)
     {
         $options = $this->prepareGetOptions();
 
         $context = stream_context_create($options);
-        $result = file_get_contents($uRL, false, $context);
+        $result = file_get_contents($url, false, $context);
 
         $this->assertErrors($result, 'Request have returned warnings/errors');
 
-        $jSONResult = json_decode($result);
+        $jsonResult = json_decode($result);
 
-        $this->assertJson($jSONResult, $result);
+        $this->assertJsonResponse($jsonResult, $result);
 
-        return $jSONResult;
+        return $jsonResult;
     }
 
     /**
@@ -183,9 +183,9 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     {
         $data = $this->getUserData();
 
-        $uRL = $this->serverPath . '/connect/';
+        $url = $this->serverPath . '/connect/';
 
-        $result = $this->postHttpRequest($data, $uRL);
+        $result = $this->postHttpRequest($data, $url);
 
         if (isset($result->session_id) !== false) {
             $this->sessionId = $result->session_id;
@@ -220,10 +220,10 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         $data = $this->getUserData();
         $data['password'] = '1234';
 
-        $uRL = $this->serverPath . '/connect/';
+        $url = $this->serverPath . '/connect/';
 
         $this->expectException(\Exception::class);
-        $this->postHttpRequest($data, $uRL);
+        $this->postHttpRequest($data, $url);
     }
 
     /**
@@ -237,9 +237,9 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
             'token' => $this->sessionId
         ];
 
-        $uRL = $this->serverPath . '/token/' . $this->sessionId . '/';
+        $url = $this->serverPath . '/token/' . $this->sessionId . '/';
 
-        $result = $this->postHttpRequest($data, $uRL);
+        $result = $this->postHttpRequest($data, $url);
 
         $this->assertEquals(isset($result->session_id), true, 'Connection failed');
     }
@@ -256,9 +256,9 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
                 'token' => ''
             ];
 
-            $uRL = $this->serverPath . '/token/unexisting/';
+            $url = $this->serverPath . '/token/unexisting/';
 
-            $this->postHttpRequest($data, $uRL);
+            $this->postHttpRequest($data, $url);
         } catch (\Exception $e) {
             // set token method either throws exception or not
             // both is correct behaviour
@@ -280,14 +280,14 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
             'login' => 'alexey@dodonov.none'
         ];
 
-        $uRL = $this->serverPath . '/login-as/';
+        $url = $this->serverPath . '/login-as/';
 
-        $this->postHttpRequest($data, $uRL);
+        $this->postHttpRequest($data, $url);
 
         // assertions
-        $uRL = $this->serverPath . '/self/login/';
+        $url = $this->serverPath . '/self/login/';
 
-        $result = $this->get_html_request($uRL);
+        $result = $this->get_html_request($url);
 
         $this->assertEquals(
             'alexey@dodonov.none',
