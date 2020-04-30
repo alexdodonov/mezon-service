@@ -87,7 +87,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
             print("message    : " . $jsonResult->message . "\r\n");
             print("code       : " . ($jsonResult->code ?? '') . "\r\n");
             print("call_stack : ");
-            var_dump($jsonResult->call_stack ?? 'not provided');
+            print(json_encode($jsonResult->call_stack ?? 'not provided'));
             $this->fail();
         }
     }
