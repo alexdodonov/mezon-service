@@ -11,6 +11,8 @@ namespace Mezon\Service;
  * @copyright Copyright (c) 2019, aeon.org
  */
 
+//TODO extract security providers in the separate package
+
 /**
  * Interface for security providers
  */
