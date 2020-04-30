@@ -287,7 +287,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         // assertions
         $url = $this->serverPath . '/self/login/';
 
-        $result = $this->get_html_request($url);
+        $result = $this->getHttpRequest($url);
 
         $this->assertEquals(
             'alexey@dodonov.none',
