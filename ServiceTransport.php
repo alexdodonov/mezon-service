@@ -1,5 +1,6 @@
 <?php
 namespace Mezon\Service;
+
 // TODO exclude it in separate package
 
 /**
@@ -42,9 +43,19 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     private $router = false;
 
     /**
-     * Constructor
+     * Security provider
+     * 
+     * @var \Mezon\Service\ServiceMockSecurityProvider
      */
-    public function __construct()
+    protected $securityProvider = null;
+
+    /**
+     * Constructor
+     *
+     * @param mixed $securityProvider
+     *            Security provider
+     */
+    public function __construct($securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
     {
         $this->router = new \Mezon\Router\Router();
 
@@ -54,6 +65,12 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
 
                 $this->handleException($exception);
             });
+
+        if (is_string($securityProvider)) {
+            $this->securityProvider = new $securityProvider($this->getParamsFetcher());
+        } else {
+            $this->securityProvider = $securityProvider;
+        }
     }
 
     /**
@@ -322,6 +339,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
 
     /**
      * Method kills execution thread
+     *
      * @codeCoverageIgnore
      */
     protected function die(): void

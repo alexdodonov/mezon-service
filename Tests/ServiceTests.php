@@ -121,8 +121,6 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $jsonResult = json_decode($result);
 
-        $this->assertJsonResponse($jsonResult, $result);
-
         return $jsonResult;
     }
 
@@ -160,8 +158,6 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $jsonResult = json_decode($result);
 
-        $this->assertJsonResponse($jsonResult, $result);
-
         return $jsonResult;
     }
 
@@ -173,7 +169,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     protected function getUserData(): array
     {
         return [
-            'login' => 'alexey@dodonov.pro',
+            'login' => 'alexey@dodonov.pro', // TODO store this data in configs
             'password' => 'root'
         ];
     }

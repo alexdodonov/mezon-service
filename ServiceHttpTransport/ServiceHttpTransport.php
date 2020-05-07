@@ -27,13 +27,7 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
      */
     public function __construct($securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
     {
-        parent::__construct();
-
-        if (is_string($securityProvider)) {
-            $this->securityProvider = new $securityProvider($this->getParamsFetcher());
-        } else {
-            $this->securityProvider = $securityProvider;
-        }
+        parent::__construct($securityProvider);
 
         $this->sessionStart();
     }

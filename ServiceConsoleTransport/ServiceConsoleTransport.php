@@ -23,23 +23,6 @@ class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
     public $result;
 
     /**
-     * Constructor
-     *
-     * @param mixed $securityProvider
-     *            Security provider
-     */
-    public function __construct($securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
-    {
-        parent::__construct();
-
-        if (is_string($securityProvider)) {
-            $this->securityProvider = new $securityProvider($this->getParamsFetcher());
-        } else {
-            $this->securityProvider = $securityProvider;
-        }
-    }
-
-    /**
      * Method creates parameters fetcher
      *
      * @return \Mezon\Service\ServiceRequestParamsInterface paremeters fetcher
