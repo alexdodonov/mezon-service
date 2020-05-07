@@ -14,7 +14,7 @@ namespace Mezon\Service\ServiceConsoleTransport;
 /**
  * Request params fetcher
  */
-class ConsoleRequestParams implements \Mezon\Service\ServiceRequestParamsInterface
+class ConsoleRequestParams extends \Mezon\Service\ServiceRequestParams
 {
 
     /**
@@ -35,7 +35,7 @@ class ConsoleRequestParams implements \Mezon\Service\ServiceRequestParamsInterfa
      *            - parameter name
      * @param mixed $default
      *            - default value
-     * @return string Parameter value
+     * @return mixed Parameter value
      */
     public function getParam($param, $default = false)
     {

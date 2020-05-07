@@ -113,7 +113,7 @@ class ServiceBase
         if (is_string($serviceLogic)) {
             $result = new $serviceLogic(
                 $this->serviceTransport->getParamsFetcher(),
-                $this->serviceTransport->securityProvider,
+                $this->serviceTransport->getSecurityProvider(),
                 $serviceModel);
         } else {
             $result = $serviceLogic;

@@ -1,6 +1,6 @@
 <?php
 
-class FakeSecurityProviderForRestTransport
+class FakeSecurityProviderForRestTransport implements \Mezon\Service\ServiceSecurityProviderInterface
 {
 }
 
@@ -96,7 +96,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
 
-        $this->assertNotEquals(null, $transport->securityProvider);
+        $this->assertNotEquals(null, $transport->getSecurityProvider());
     }
 
     /**
@@ -105,7 +105,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitDefault()
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->securityProvider);
+        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -115,7 +115,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
             FakeSecurityProviderForRestTransport::class);
-        $this->assertInstanceOf(FakeSecurityProviderForRestTransport::class, $transport->securityProvider);
+        $this->assertInstanceOf(FakeSecurityProviderForRestTransport::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -125,7 +125,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
             new FakeSecurityProviderForRestTransport());
-        $this->assertInstanceOf(FakeSecurityProviderForRestTransport::class, $transport->securityProvider);
+        $this->assertInstanceOf(FakeSecurityProviderForRestTransport::class, $transport->getSecurityProvider());
     }
 
     /**

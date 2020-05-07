@@ -1,6 +1,6 @@
 <?php
 
-class FakeSecurityProviderForHttpTransport
+class FakeSecurityProviderForHttpTransport implements \Mezon\Service\ServiceSecurityProviderInterface
 {
 }
 
@@ -80,7 +80,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitDefault()
     {
         $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->securityProvider);
+        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -90,7 +90,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport(
             FakeSecurityProviderForHttpTransport::class);
-        $this->assertInstanceOf(FakeSecurityProviderForHttpTransport::class, $transport->securityProvider);
+        $this->assertInstanceOf(FakeSecurityProviderForHttpTransport::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -100,7 +100,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport(
             new FakeSecurityProviderForHttpTransport());
-        $this->assertInstanceOf(FakeSecurityProviderForHttpTransport::class, $transport->securityProvider);
+        $this->assertInstanceOf(FakeSecurityProviderForHttpTransport::class, $transport->getSecurityProvider());
     }
 
     /**

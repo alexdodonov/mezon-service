@@ -65,7 +65,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class);
         $this->assertInstanceOf(
             \Mezon\Service\ServiceMockSecurityProvider::class,
-            $service->getTransport()->securityProvider);
+            $service->getTransport()->getSecurityProvider());
 
         $service = new $this->className(
             \Mezon\Service\ServiceLogic::class,
@@ -74,7 +74,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
         $this->assertInstanceOf(
             \Mezon\Service\ServiceMockSecurityProvider::class,
-            $service->getTransport()->securityProvider);
+            $service->getTransport()->getSecurityProvider());
 
         $service = new $this->className(
             \Mezon\Service\ServiceLogic::class,
@@ -83,7 +83,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
             new \Mezon\Service\ServiceRestTransport\ServiceRestTransport());
         $this->assertInstanceOf(
             \Mezon\Service\ServiceMockSecurityProvider::class,
-            $service->getTransport()->securityProvider);
+            $service->getTransport()->getSecurityProvider());
     }
 
     /**
@@ -217,7 +217,7 @@ class ServiceUnitTests extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(
             \Mezon\Service\ServiceMockSecurityProvider::class,
-            $service->getTransport()->securityProvider);
+            $service->getTransport()->getSecurityProvider());
     }
 
     /**

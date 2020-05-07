@@ -14,26 +14,8 @@ namespace Mezon\Service\ServiceHttpTransport;
 /**
  * Request params fetcher.
  */
-class HttpRequestParams implements \Mezon\Service\ServiceRequestParamsInterface
+class HttpRequestParams extends \Mezon\Service\ServiceRequestParams
 {
-
-    /**
-     * Router of the transport
-     *
-     * @var \Mezon\Router\Router
-     */
-    protected $router = false;
-
-    /**
-     * Constructor
-     *
-     * @param \Mezon\Router\Router $router
-     *            Router object
-     */
-    public function __construct(\Mezon\Router\Router &$router)
-    {
-        $this->router = $router;
-    }
 
     /**
      * Fetching auth token from headers

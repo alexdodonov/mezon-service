@@ -45,9 +45,9 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     /**
      * Security provider
      * 
-     * @var \Mezon\Service\ServiceMockSecurityProvider
+     * @var \Mezon\Service\ServiceSecurityProviderInterface
      */
-    protected $securityProvider = null;
+    private $securityProvider = null;
 
     /**
      * Constructor
@@ -458,5 +458,15 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     public function setServiceLogic($serviceLogic): void
     {
         $this->serviceLogic = $serviceLogic;
+    }
+
+    /**
+     * Method returns security provider
+     * 
+     * @return \Mezon\Service\ServiceSecurityProviderInterface
+     */
+    public function getSecurityProvider():\Mezon\Service\ServiceSecurityProviderInterface
+    {
+        return $this->securityProvider;
     }
 }

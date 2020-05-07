@@ -9,7 +9,8 @@ class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetParam(): void
     {
         // setup
-        $requestParams = new Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams();
+        $router = new \Mezon\Router\Router();
+        $requestParams = new Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($router);
         global $argv;
         $argv['param'] = 'value';
 

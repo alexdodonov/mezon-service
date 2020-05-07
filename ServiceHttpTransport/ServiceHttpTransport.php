@@ -51,7 +51,7 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
      */
     public function createSession(string $token): string
     {
-        return $this->securityProvider->createSession($token);
+        return $this->getSecurityProvider()->createSession($token);
     }
 
     /**
