@@ -155,4 +155,28 @@ class CustomFieldsModel
 
         return $records;
     }
+
+    /**
+     * Method sets custom field for object
+     *
+     * @param int $objectId
+     *            - object's id
+     * @param string $fieldName
+     *            - field's name
+     * @return string field's value
+     */
+    public function getFieldForObject(int $objectId, string $fieldName, string $defaultValue): string
+    {
+        $customField = $this->getConnection()->select(
+            '*',
+            $this->getCustomFieldsTemplateBame(),
+            'object_id = ' . $objectId . ' AND field_name LIKE "' . htmlspecialchars($fieldName) . '"');
+
+        if (count($customField) === 0) {
+            // field was not found
+            return $defaultValue;
+        }
+
+        return \Mezon\Functional\Fetcher::getField($customField[0], 'field_value');
+    }
 }

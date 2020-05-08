@@ -1,4 +1,5 @@
-# Set of classes for creating microservices [![Build Status](https://travis-ci.com/alexdodonov/mezon-service.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-service) [![codecov](https://codecov.io/gh/alexdodonov/mezon-service/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-service) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/?branch=master)
+# Set of classes for creating microservices
+[![Build Status](https://travis-ci.com/alexdodonov/mezon-service.svg?branch=master)](https://travis-ci.com/alexdodonov/mezon-service) [![codecov](https://codecov.io/gh/alexdodonov/mezon-service/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdodonov/mezon-service) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alexdodonov/mezon-service/?branch=master)
 
 ## Installation
 
@@ -249,3 +250,17 @@ And routes must be described like this:
 	}
 ]
 ```
+
+## Custom fields
+
+You can extend your models with fields wich configuration will be defined in the client's code. For example you have entity 'user' with some custom fields. But you don't know what custom fields it will have. You don't know will it have field 'skype', or field 'notes', or field 'gender' etc. List of these fields may vary from project to project.
+
+To work with such fields you can use \Mezon\Service\CustomFieldsModel
+
+### Table structure
+
+tba
+
+### Methods reference
+
+tba
