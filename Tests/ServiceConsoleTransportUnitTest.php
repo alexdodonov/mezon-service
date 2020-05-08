@@ -1,9 +1,5 @@
 <?php
 
-class FakeSecurityProviderForConsoleTransport implements \Mezon\Service\ServiceSecurityProviderInterface
-{
-}
-
 class TestingServiceLogicForConsoleTransport extends \Mezon\Service\ServiceLogic
 {
 
@@ -75,8 +71,8 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitString(): void
     {
         $transport = new \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport(
-            FakeSecurityProviderForConsoleTransport::class);
-        $this->assertInstanceOf(FakeSecurityProviderForConsoleTransport::class, $transport->getSecurityProvider());
+            \Mezon\Service\ServiceMockSecurityProvider::class);
+        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -85,8 +81,8 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitObject(): void
     {
         $transport = new \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport(
-            new FakeSecurityProviderForConsoleTransport());
-        $this->assertInstanceOf(FakeSecurityProviderForConsoleTransport::class, $transport->getSecurityProvider());
+            new \Mezon\Service\ServiceMockSecurityProvider());
+        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
     }
 
     /**

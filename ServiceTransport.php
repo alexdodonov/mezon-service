@@ -45,7 +45,7 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     /**
      * Security provider
      * 
-     * @var \Mezon\Service\ServiceSecurityProviderInterface
+     * @var \Mezon\Service\ServiceAuthenticationSecurityProviderInterface
      */
     private $securityProvider = null;
 
@@ -463,9 +463,9 @@ abstract class ServiceTransport implements \Mezon\Service\ServiceTransportInterf
     /**
      * Method returns security provider
      * 
-     * @return \Mezon\Service\ServiceSecurityProviderInterface
+     * @return \Mezon\Service\ServiceAuthenticationSecurityProviderInterface
      */
-    public function getSecurityProvider():\Mezon\Service\ServiceSecurityProviderInterface
+    public function getSecurityProvider():\Mezon\Service\ServiceAuthenticationSecurityProviderInterface
     {
         return $this->securityProvider;
     }
