@@ -20,29 +20,6 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
 {
 
     /**
-     * Constructor
-     *
-     * @param mixed $securityProvider
-     *            Security provider
-     */
-    public function __construct($securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class)
-    {
-        parent::__construct($securityProvider);
-
-        $this->sessionStart();
-    }
-
-    /**
-     * Starting session
-     *
-     * @codeCoverageIgnore
-     */
-    protected function sessionStart(): void
-    {
-        @session_start();
-    }
-
-    /**
      * Method creates session from existing token or fetched from HTTP headers
      *
      * @param string $token
