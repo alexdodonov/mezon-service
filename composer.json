@@ -12,7 +12,7 @@
 	],
 	"require": {
 		"php": ">=7.2.0",
-		"mezon/router" : "^1.0",
+		"mezon/router": "^1.0",
 		"mezon/functional": "^1.0",
 		"mezon/pdocrud": "^1.0",
 		"mezon/dns-client": "^1.0",
@@ -37,8 +37,10 @@
 			"Mezon\\Service\\": ""
 		}
 	},
-	"scripts" : {
+	"scripts": {
 		"post-update-cmd": "php ./vendor/phpunit/phpunit/phpunit",
-		"test": "php ./vendor/phpunit/phpunit/phpunit"
+		"test": [
+			"composer update"
+		]
 	}
 }

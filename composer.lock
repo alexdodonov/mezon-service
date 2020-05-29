@@ -585,16 +585,16 @@
         },
         {
             "name": "mezon/service-transport",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-service-transport.git",
-                "reference": "3687c6624bb291728c2cda2d9d66f520430ae930"
+                "reference": "5598039252318a2c124a338dc686867765a5a01c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-service-transport/zipball/3687c6624bb291728c2cda2d9d66f520430ae930",
-                "reference": "3687c6624bb291728c2cda2d9d66f520430ae930",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-service-transport/zipball/5598039252318a2c124a338dc686867765a5a01c",
+                "reference": "5598039252318a2c124a338dc686867765a5a01c",
                 "shasum": ""
             },
             "require": {
@@ -624,7 +624,7 @@
             ],
             "description": "Basic transport class for services and applications",
             "homepage": "https://github.com/alexdodonov/mezon-service-transport",
-            "time": "2020-05-29T09:50:22+00:00"
+            "time": "2020-05-29T11:47:46+00:00"
         },
         {
             "name": "myclabs/deep-copy",

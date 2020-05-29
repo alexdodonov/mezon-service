@@ -38,19 +38,6 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     protected $headers = false;
 
     /**
-     * Constructor
-     *
-     * @param string $service
-     *            Service name
-     */
-    public function __construct(string $service)
-    {
-        parent::__construct();
-
-        $this->serverPath = \Mezon\DnsClient\DnsClient::resolveHost($service);
-    }
-
-    /**
      * Method asserts for errors and warnings in the html code
      *
      * @param string $content
