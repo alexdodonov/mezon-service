@@ -6,13 +6,7 @@ php:
   - '7.4'
 
 before_script:
-  - composer require "mezon/functional"
-  - composer require "mezon/pdocrud"
-  - composer require "mezon/router"
-  - composer require "mezon/dns-client"
-  - composer require "mezon/custom-client"
-  - composer require "mezon/gui"
-  - composer require "mezon/rest-exception"
+  - composer install -n
 
 script:
   - phpunit --coverage-clover=coverage.xml --configuration=phpunit.xml

@@ -16,7 +16,7 @@ namespace Mezon\Service\ServiceHttpTransport;
  *
  * @author Dodonov A.A.
  */
-class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
+class ServiceHttpTransport extends \Mezon\Service\Transport
 {
 
     /**
@@ -34,11 +34,11 @@ class ServiceHttpTransport extends \Mezon\Service\ServiceTransport
     /**
      * Method creates parameters fetcher
      *
-     * @return \Mezon\Service\ServiceRequestParamsInterface paremeters fetcher
+     * @return \Mezon\Transport\RequestParamsInterface paremeters fetcher
      */
-    public function createFetcher(): \Mezon\Service\ServiceRequestParamsInterface
+    public function createFetcher(): \Mezon\Transport\RequestParamsInterface
     {
-        return new \Mezon\Service\ServiceHttpTransport\HttpRequestParams($this->getRouter());
+        return new \Mezon\Transport\HttpRequestParams($this->getRouter());
     }
 
     /**

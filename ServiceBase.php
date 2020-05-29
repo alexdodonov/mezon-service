@@ -50,7 +50,7 @@ class ServiceBase
     public function __construct(
         $serviceLogic = \Mezon\Service\ServiceBaseLogic::class,
         $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $securityProvider = \Mezon\Security\MockProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
         try {
@@ -175,9 +175,9 @@ class ServiceBase
     /**
      * Method sets transport
      *
-     * @param \Mezon\Service\ServiceTransport $transport
+     * @param \Mezon\Service\Transport $transport
      */
-    public function setTransport(\Mezon\Service\ServiceTransport $transport): void
+    public function setTransport(\Mezon\Service\Transport $transport): void
     {
         $this->serviceTransport = $transport;
     }
@@ -185,9 +185,9 @@ class ServiceBase
     /**
      * Method returns transport
      *
-     * @return \Mezon\Service\ServiceTransport
+     * @return \Mezon\Service\Transport
      */
-    public function getTransport(): \Mezon\Service\ServiceTransport
+    public function getTransport(): \Mezon\Service\Transport
     {
         return $this->serviceTransport;
     }

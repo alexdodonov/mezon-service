@@ -19,7 +19,10 @@
 		"mezon/custom-client": "^1.0",
 		"mezon/rest-exception": "^1.0",
 		"mezon/fields-set": "^1.0",
-		"phpunit/phpunit": "^9.1"
+		"phpunit/phpunit": "^8.5",
+		"mezon/service-logic": "^1.0",
+		"mezon/service-transport": "^1.0",
+		"mezon/http-request-params": "^1.0"
 	},
 	"support": {
 		"email": "alexey@dodonov.pro",
@@ -33,5 +36,9 @@
 		"psr-4": {
 			"Mezon\\Service\\": ""
 		}
+	},
+	"scripts" : {
+		"post-update-cmd": "php ./vendor/phpunit/phpunit/phpunit",
+		"test": "php ./vendor/phpunit/phpunit/phpunit"
 	}
 }

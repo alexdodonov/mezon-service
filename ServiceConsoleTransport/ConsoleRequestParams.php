@@ -14,7 +14,7 @@ namespace Mezon\Service\ServiceConsoleTransport;
 /**
  * Request params fetcher
  */
-class ConsoleRequestParams extends \Mezon\Service\ServiceRequestParams
+class ConsoleRequestParams extends \Mezon\Transport\RequestParams
 {
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use Mezon\Security\MockProvider;
+
 class TestingBaseService extends \Mezon\Service\ServiceBase implements \Mezon\Service\ServiceBaseLogicInterface
 {
 
@@ -43,7 +45,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
         $service = new \Mezon\Service\ServiceBase(
             \Mezon\Service\ServiceBaseLogic::class,
             \Mezon\Service\ServiceModel::class,
-            \Mezon\Service\ServiceMockSecurityProvider::class,
+            MockProvider::class,
             \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport::class);
 
         // test body and assertions
@@ -61,7 +63,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
         $service = new \Mezon\Service\ServiceBase(
             \Mezon\Service\ServiceBaseLogic::class,
             \Mezon\Service\ServiceModel::class,
-            \Mezon\Service\ServiceMockSecurityProvider::class,
+            MockProvider::class,
             \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport::class);
 
         // assertions
@@ -87,7 +89,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
         $service = new TestingBaseService(
             \Mezon\Service\ServiceBaseLogic::class,
             \Mezon\Service\ServiceModel::class,
-            \Mezon\Service\ServiceMockSecurityProvider::class,
+            MockProvider::class,
             \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class);
 
         // test body
@@ -108,7 +110,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
         $service = new TestingBaseService(
             \Mezon\Service\ServiceBaseLogic::class,
             \Mezon\Service\ServiceModel::class,
-            \Mezon\Service\ServiceMockSecurityProvider::class,
+            MockProvider::class,
             \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class);
 
         // test body
@@ -130,7 +132,7 @@ class ServiceBaseUnitTest extends \PHPUnit\Framework\TestCase
         new ExceptionTestingBaseService(
             \Mezon\Service\ServiceBaseLogic::class,
             \Mezon\Service\ServiceModel::class,
-            \Mezon\Service\ServiceMockSecurityProvider::class,
+            MockProvider::class,
             \TestingTransport::class);
         $content = ob_get_contents();
         ob_end_clean();

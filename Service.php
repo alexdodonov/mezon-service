@@ -36,7 +36,7 @@ class Service extends \Mezon\Service\ServiceBase
     public function __construct(
         $serviceLogic = \Mezon\Service\ServiceLogic::class,
         $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $securityProvider = \Mezon\Security\MockProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
     {
         try {
@@ -71,7 +71,7 @@ class Service extends \Mezon\Service\ServiceBase
      *            Model of the service
      * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
      *            name of the service security provider class or the service security provider itself
-     * @param \Mezon\Service\ServiceTransport|string $serviceTransport
+     * @param \Mezon\Service\Transport|string $serviceTransport
      *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
@@ -82,7 +82,7 @@ class Service extends \Mezon\Service\ServiceBase
         $service,
         $serviceLogic = \Mezon\Service\ServiceLogic::class,
         $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $securityProvider = \Mezon\Security\MockProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
         bool $runService = true): \Mezon\Service\ServiceBase
     {
@@ -110,7 +110,7 @@ class Service extends \Mezon\Service\ServiceBase
      *            Model of the service
      * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
      *            name of the service security provider class or the service security provider itself
-     * @param \Mezon\Service\ServiceTransport|string $serviceTransport
+     * @param \Mezon\Service\Transport|string $serviceTransport
      *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
@@ -120,7 +120,7 @@ class Service extends \Mezon\Service\ServiceBase
         $service,
         $serviceLogic = \Mezon\Service\ServiceLogic::class,
         $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Service\ServiceMockSecurityProvider::class,
+        $securityProvider = \Mezon\Security\MockProvider::class,
         $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
         bool $runService = true): \Mezon\Service\ServiceBase
     {

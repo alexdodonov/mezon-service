@@ -62,7 +62,7 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitDefault(): void
     {
         $transport = new \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport();
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -71,8 +71,8 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitString(): void
     {
         $transport = new \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport(
-            \Mezon\Service\ServiceMockSecurityProvider::class);
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+            \Mezon\Security\MockProvider::class);
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -81,8 +81,8 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitObject(): void
     {
         $transport = new \Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport(
-            new \Mezon\Service\ServiceMockSecurityProvider());
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+            new \Mezon\Security\MockProvider());
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**

@@ -56,7 +56,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
         $mock->setParamsFetcher(
-            $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\HttpRequestParams::class)
+            $this->getMockBuilder(\Mezon\Transport\HttpRequestParams::class)
                 ->setMethods([
                 'getSessionIdFromHeaders'
             ])
@@ -101,7 +101,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitDefault()
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -110,8 +110,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitString()
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
-            \Mezon\Service\ServiceMockSecurityProvider::class);
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+            \Mezon\Security\MockProvider::class);
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -120,8 +120,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testSecurityProviderInitObject()
     {
         $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
-            new \Mezon\Service\ServiceMockSecurityProvider());
-        $this->assertInstanceOf(\Mezon\Service\ServiceMockSecurityProvider::class, $transport->getSecurityProvider());
+            new \Mezon\Security\MockProvider());
+        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**

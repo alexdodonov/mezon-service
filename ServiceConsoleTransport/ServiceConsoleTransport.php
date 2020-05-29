@@ -14,7 +14,7 @@ namespace Mezon\Service\ServiceConsoleTransport;
 /**
  * Console transport for all services
  */
-class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
+class ServiceConsoleTransport extends \Mezon\Service\Transport
 {
 
     /**
@@ -25,9 +25,9 @@ class ServiceConsoleTransport extends \Mezon\Service\ServiceTransport
     /**
      * Method creates parameters fetcher
      *
-     * @return \Mezon\Service\ServiceRequestParamsInterface paremeters fetcher
+     * @return \Mezon\Transport\RequestParamsInterface paremeters fetcher
      */
-    public function createFetcher(): \Mezon\Service\ServiceRequestParamsInterface
+    public function createFetcher(): \Mezon\Transport\RequestParamsInterface
     {
         return new \Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($this->getRouter());
     }
