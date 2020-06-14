@@ -28,6 +28,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     /**
      * Server path
      */
+    // TODO make it static
     protected $serverPath = false;
 
     /**
@@ -268,7 +269,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         // test body
         $data = [
-            'login' => 'alexey@dodonov.none'
+            'login' => 'alexey@dodonov.ru'
         ];
 
         $url = $this->serverPath . '/login-as/';
@@ -281,7 +282,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         $result = $this->getHttpRequest($url);
 
         $this->assertEquals(
-            'alexey@dodonov.none',
+            'alexey@dodonov.ru',
             \Mezon\Functional\Fetcher::getField($result, 'login'),
             'Session user must be alexey@dodonov.none');
     }

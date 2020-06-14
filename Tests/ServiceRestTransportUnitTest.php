@@ -1,5 +1,7 @@
 <?php
 
+define('MEZON_DEBUG', true);
+
 class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
 {
 
