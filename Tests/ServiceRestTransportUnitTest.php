@@ -1,6 +1,7 @@
 <?php
-
-define('MEZON_DEBUG', true);
+if (defined('MEZON_DEBUG') === false) {
+    define('MEZON_DEBUG', true);
+}
 
 class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
 {
@@ -111,8 +112,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitString()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
-            \Mezon\Security\MockProvider::class);
+        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(\Mezon\Security\MockProvider::class);
         $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
@@ -121,8 +121,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitObject()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(
-            new \Mezon\Security\MockProvider());
+        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(new \Mezon\Security\MockProvider());
         $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
     }
 
