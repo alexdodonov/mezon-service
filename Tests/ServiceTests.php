@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\Service\Tests;
 
+use Mezon\Functional\Fetcher;
+
 /**
  * Class ServiceTests
  *
@@ -17,7 +19,7 @@ namespace Mezon\Service\Tests;
  * @author Dodonov A.A.
  * @group baseTests
  */
-class ServiceTests extends \PHPUnit\Framework\TestCase
+abstract class ServiceTests extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -28,8 +30,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     /**
      * Server path
      */
-    // TODO make it static
-    protected $serverPath = false;
+    protected static $serverPath = false;
 
     /**
      * Headers
@@ -107,9 +108,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $this->assertErrors($result, 'Request have returned warnings/errors');
 
-        $jsonResult = json_decode($result);
-
-        return $jsonResult;
+        return json_decode($result);
     }
 
     /**
@@ -144,9 +143,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $this->assertErrors($result, 'Request have returned warnings/errors');
 
-        $jsonResult = json_decode($result);
-
-        return $jsonResult;
+        return json_decode($result);
     }
 
     /**
@@ -154,13 +151,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
      *
      * @return array Test data
      */
-    protected function getUserData(): array
-    {
-        return [
-            'login' => 'alexey@dodonov.pro', // TODO store this data in configs
-            'password' => 'root'
-        ];
-    }
+    protected abstract function getUserData(): array;
 
     /**
      * Method performs valid connect.
@@ -171,7 +162,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
     {
         $data = $this->getUserData();
 
-        $url = $this->serverPath . '/connect/';
+        $url = self::serverPath . '/connect/';
 
         $result = $this->postHttpRequest($data, $url);
 
@@ -207,7 +198,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         // setup
         $data = $this->getUserData();
         $data['password'] = '1234';
-        $url = $this->serverPath . '/connect/';
+        $url = self::serverPath . '/connect/';
 
         // test body
         $result = $this->postHttpRequest($data, $url);
@@ -215,7 +206,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertTrue(isset($result->message));
         $this->assertTrue(isset($result->code));
-        $this->assertTrue($result->code == -1 || $result->code == 4);
+        $this->assertTrue($result->code == - 1 || $result->code == 4);
     }
 
     /**
@@ -229,7 +220,7 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
             'token' => $this->sessionId
         ];
 
-        $url = $this->serverPath . '/token/' . $this->sessionId . '/';
+        $url = self::serverPath . '/token/' . $this->sessionId . '/';
 
         $result = $this->postHttpRequest($data, $url);
 
@@ -241,22 +232,22 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
      */
     public function testSetInvalidToken()
     {
-        try {
-            $this->testValidConnect();
+        // setup
+        $this->testValidConnect();
 
-            $data = [
-                'token' => ''
-            ];
+        $data = [
+            'token' => ''
+        ];
 
-            $url = $this->serverPath . '/token/unexisting/';
+        $url = self::serverPath . '/token/unexisting/';
 
-            $this->postHttpRequest($data, $url);
-        } catch (\Exception $e) {
-            // set token method either throws exception or not
-            // both is correct behaviour
-            $this->assertEquals($e->getMessage(), 'Invalid session token', 'Invalid error message');
-            $this->assertEquals($e->getCode(), 2, 'Invalid error code');
-        }
+        // assertions
+        $this->expectException(\Exception::class);
+        $this->expectExceptionCode(2);
+        $this->expectExceptionMessage('Invalid session token');
+
+        // test body
+        $this->postHttpRequest($data, $url);
     }
 
     /**
@@ -267,23 +258,20 @@ class ServiceTests extends \PHPUnit\Framework\TestCase
         // setup
         $this->testValidConnect();
 
-        // test body
         $data = [
             'login' => 'alexey@dodonov.ru'
         ];
-
-        $url = $this->serverPath . '/login-as/';
-
+        $url = self::serverPath . '/login-as/';
         $this->postHttpRequest($data, $url);
 
-        // assertions
-        $url = $this->serverPath . '/self/login/';
-
+        // test body
+        $url = self::serverPath . '/self/login/';
         $result = $this->getHttpRequest($url);
 
+        // assertions
         $this->assertEquals(
             'alexey@dodonov.ru',
-            \Mezon\Functional\Fetcher::getField($result, 'login'),
+            Fetcher::getField($result, 'login'),
             'Session user must be alexey@dodonov.none');
     }
 }
