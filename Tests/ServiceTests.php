@@ -162,7 +162,7 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
     {
         $data = $this->getUserData();
 
-        $url = self::serverPath . '/connect/';
+        $url = self::$serverPath . '/connect/';
 
         $result = $this->postHttpRequest($data, $url);
 
@@ -198,7 +198,7 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
         // setup
         $data = $this->getUserData();
         $data['password'] = '1234';
-        $url = self::serverPath . '/connect/';
+        $url = self::$serverPath . '/connect/';
 
         // test body
         $result = $this->postHttpRequest($data, $url);
@@ -220,7 +220,7 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
             'token' => $this->sessionId
         ];
 
-        $url = self::serverPath . '/token/' . $this->sessionId . '/';
+        $url = self::$serverPath . '/token/' . $this->sessionId . '/';
 
         $result = $this->postHttpRequest($data, $url);
 
@@ -239,7 +239,7 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
             'token' => ''
         ];
 
-        $url = self::serverPath . '/token/unexisting/';
+        $url = self::$serverPath . '/token/unexisting/';
 
         // assertions
         $this->expectException(\Exception::class);
@@ -261,11 +261,11 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
         $data = [
             'login' => 'alexey@dodonov.ru'
         ];
-        $url = self::serverPath . '/login-as/';
+        $url = self::$serverPath . '/login-as/';
         $this->postHttpRequest($data, $url);
 
         // test body
-        $url = self::serverPath . '/self/login/';
+        $url = self::$serverPath . '/self/login/';
         $result = $this->getHttpRequest($url);
 
         // assertions
