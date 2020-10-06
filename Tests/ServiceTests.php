@@ -3,6 +3,7 @@
 namespace Mezon\Service\Tests;
 
 use Mezon\Functional\Fetcher;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ServiceTests
@@ -19,7 +20,7 @@ use Mezon\Functional\Fetcher;
  *
  * @author Dodonov A.A.
  */
-abstract class ServiceTests extends \PHPUnit\Framework\TestCase
+abstract class ServiceTests extends TestCase
 {
 
     /**
