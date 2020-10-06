@@ -18,7 +18,6 @@ use Mezon\Functional\Fetcher;
  * Predefined set of tests for service
  *
  * @author Dodonov A.A.
- * @group baseTests
  */
 abstract class ServiceTests extends \PHPUnit\Framework\TestCase
 {
