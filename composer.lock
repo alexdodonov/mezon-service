@@ -235,25 +235,28 @@
         },
         {
             "name": "mezon/functional",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-functional.git",
-                "reference": "189502548c6b8c68507210f0f44460df6c682b0e"
+                "reference": "2090a21b2d4a3700e6ad33f35f3f36f04addc64f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-functional/zipball/189502548c6b8c68507210f0f44460df6c682b0e",
-                "reference": "189502548c6b8c68507210f0f44460df6c682b0e",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-functional/zipball/2090a21b2d4a3700e6ad33f35f3f36f04addc64f",
+                "reference": "2090a21b2d4a3700e6ad33f35f3f36f04addc64f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0"
             },
+            "require-dev": {
+                "phpunit/phpunit": "^8.5"
+            },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Mezon\\Functional\\": ""
+                    "Mezon\\Functional\\": "Mezon/Functional/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -270,7 +273,7 @@
             ],
             "description": "Small and fast framework for functional programming",
             "homepage": "https://github.com/alexdodonov/mezon-functional",
-            "time": "2020-06-01T09:24:54+00:00"
+            "time": "2020-09-18T14:17:14+00:00"
         },
         {
             "name": "mezon/http-request-params",
@@ -314,16 +317,16 @@
         },
         {
             "name": "mezon/pdocrud",
-            "version": "1.0.13",
+            "version": "1.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-pdocrud.git",
-                "reference": "c195669c644157dacecc406ac717425a594e2268"
+                "reference": "a8d41d2e41b6b01b5601f0eada1fa3619190fef4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-pdocrud/zipball/c195669c644157dacecc406ac717425a594e2268",
-                "reference": "c195669c644157dacecc406ac717425a594e2268",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-pdocrud/zipball/a8d41d2e41b6b01b5601f0eada1fa3619190fef4",
+                "reference": "a8d41d2e41b6b01b5601f0eada1fa3619190fef4",
                 "shasum": ""
             },
             "require": {
@@ -336,7 +339,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Mezon\\PdoCrud\\": ""
+                    "Mezon\\PdoCrud\\": "./Mezon/PdoCrud/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -353,7 +356,7 @@
             ],
             "description": "Simple PDO wrapper",
             "homepage": "https://github.com/alexdodonov/mezon-pdocrud",
-            "time": "2020-09-15T16:24:30+00:00"
+            "time": "2020-10-01T11:43:38+00:00"
         },
         {
             "name": "mezon/request-params",
@@ -436,16 +439,16 @@
         },
         {
             "name": "mezon/router",
-            "version": "1.2.6",
+            "version": "1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-router.git",
-                "reference": "0ee5ba722f1ff0adb1a162cb75912995cf0b5aac"
+                "reference": "41a706a5849cc3e9bfb61be7a80a5dda39ce29ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-router/zipball/0ee5ba722f1ff0adb1a162cb75912995cf0b5aac",
-                "reference": "0ee5ba722f1ff0adb1a162cb75912995cf0b5aac",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-router/zipball/41a706a5849cc3e9bfb61be7a80a5dda39ce29ce",
+                "reference": "41a706a5849cc3e9bfb61be7a80a5dda39ce29ce",
                 "shasum": ""
             },
             "require": {
@@ -457,7 +460,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Mezon\\Router\\": ""
+                    "Mezon\\Router\\": "Mezon/Router/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -474,30 +477,32 @@
             ],
             "description": "Small and fast routing framework",
             "homepage": "https://github.com/alexdodonov/mezon-router",
-            "time": "2020-09-09T09:46:15+00:00"
+            "time": "2020-09-24T06:30:03+00:00"
         },
         {
             "name": "mezon/security-provider",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexdodonov/mezon-security-provider.git",
-                "reference": "03c2ab0ada5a8161b8fe79956db5b836739d5c09"
+                "reference": "de4463d03d35dcaba80c6931879c18e41b4e5cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexdodonov/mezon-security-provider/zipball/03c2ab0ada5a8161b8fe79956db5b836739d5c09",
-                "reference": "03c2ab0ada5a8161b8fe79956db5b836739d5c09",
+                "url": "https://api.github.com/repos/alexdodonov/mezon-security-provider/zipball/de4463d03d35dcaba80c6931879c18e41b4e5cf9",
+                "reference": "de4463d03d35dcaba80c6931879c18e41b4e5cf9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
                 "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Mezon\\Security\\": ""
+                    "Mezon\\Security\\": "Mezon/Security/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -514,7 +519,7 @@
             ],
             "description": "Security provider for services and applications",
             "homepage": "https://github.com/alexdodonov/mezon-security-provider",
-            "time": "2020-05-28T13:32:04+00:00"
+            "time": "2020-09-18T14:25:22+00:00"
         },
         {
             "name": "mezon/service-logic",
@@ -953,28 +958,28 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.11.1",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160"
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b20034be5efcdab4fb60ca3a29cba2949aead160",
-                "reference": "b20034be5efcdab4fb60ca3a29cba2949aead160",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/8ce87516be71aae9b956f81906aaf0338e0d8a2d",
+                "reference": "8ce87516be71aae9b956f81906aaf0338e0d8a2d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/instantiator": "^1.2",
-                "php": "^7.2",
-                "phpdocumentor/reflection-docblock": "^5.0",
+                "php": "^7.2 || ~8.0, <8.1",
+                "phpdocumentor/reflection-docblock": "^5.2",
                 "sebastian/comparator": "^3.0 || ^4.0",
                 "sebastian/recursion-context": "^3.0 || ^4.0"
             },
             "require-dev": {
                 "phpspec/phpspec": "^6.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0 || ^9.0 <9.3"
             },
             "type": "library",
             "extra": {
@@ -1012,7 +1017,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-07-08T12:44:21+00:00"
+            "time": "2020-09-29T09:10:42+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
