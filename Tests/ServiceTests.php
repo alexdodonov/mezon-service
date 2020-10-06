@@ -1,4 +1,5 @@
 <?php
+// TODO fix this:
 namespace Mezon\Service\Tests;
 
 use Mezon\Functional\Fetcher;
@@ -178,9 +179,10 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
      */
     public function testValidConnect()
     {
-        // authorization
+        // setup and test body
         $result = $this->validConnect();
 
+        // assertions
         $this->assertNotEquals($result, null, 'Connection failed');
 
         if (isset($result->session_id) === false) {
@@ -214,6 +216,7 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
      */
     public function testSetValidToken()
     {
+        // setup
         $this->testValidConnect();
 
         $data = [
@@ -222,8 +225,10 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $url = self::$serverPath . '/token/' . $this->sessionId . '/';
 
+        // test body
         $result = $this->postHttpRequest($data, $url);
 
+        // assertions
         $this->assertEquals(isset($result->session_id), true, 'Connection failed');
     }
 
@@ -241,13 +246,11 @@ abstract class ServiceTests extends \PHPUnit\Framework\TestCase
 
         $url = self::$serverPath . '/token/unexisting/';
 
-        // assertions
-        $this->expectException(\Exception::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Invalid session token');
-
         // test body
-        $this->postHttpRequest($data, $url);
+        $result = $this->postHttpRequest($data, $url);
+
+        // assertions
+        $this->assertObjectHasAttribute('message', $result);
     }
 
     /**
