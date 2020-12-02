@@ -1,40 +1,15 @@
 <?php
+namespace Mezon\Service\Tests;
+
+use PHPUnit\Framework\TestCase;
+use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
+use Mezon\Transport\HttpRequestParams;
+use Mezon\Security\MockProvider;
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);
 }
 
-class TestingServiceLogicForRestTransport extends \Mezon\Service\ServiceLogic
-{
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {}
-
-    public function ok()
-    {
-        return "ok";
-    }
-
-    public function privateMethod()
-    {}
-
-    public function publicMethod()
-    {}
-
-    public function methodException()
-    {
-        throw (new \Exception('Msg'));
-    }
-
-    public function methodRestException()
-    {
-        throw (new \Mezon\Rest\Exception('Msg', 0, 1, 1));
-    }
-}
-
-class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
+class ServiceRestTransportUnitTest extends TestCase
 {
 
     /**
@@ -44,7 +19,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getTransportMock()
     {
-        $mock = $this->getMockBuilder(\Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
+        $mock = $this->getMockBuilder(ServiceRestTransport::class)
             ->setMethods([
             'header',
             'createSession',
@@ -59,7 +34,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
         $mock->setParamsFetcher(
-            $this->getMockBuilder(\Mezon\Transport\HttpRequestParams::class)
+            $this->getMockBuilder(HttpRequestParams::class)
                 ->setMethods([
                 'getSessionIdFromHeaders'
             ])
@@ -93,7 +68,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructor()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $transport = new ServiceRestTransport();
 
         $this->assertNotEquals(null, $transport->getSecurityProvider());
     }
@@ -103,8 +78,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitDefault()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceRestTransport();
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -112,8 +87,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitString()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(\Mezon\Security\MockProvider::class);
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceRestTransport(MockProvider::class);
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -121,8 +96,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitObject()
     {
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport(new \Mezon\Security\MockProvider());
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceRestTransport(new MockProvider());
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -230,7 +205,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $mock = $this->setupMethod('methodException');
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         // test body and assertions
         $mock->getRouter()->callRoute('/public-method/');
@@ -244,7 +219,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $mock = $this->setupMethod('methodRestException');
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
         // test body and assertions
         $mock->getRouter()->callRoute('/public-method/');
     }
@@ -257,7 +232,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $mock = $this->setupPrivateMethod('methodException');
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         // test body and assertions
         $mock->getRouter()->callRoute('/private-method/');
@@ -271,7 +246,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $mock = $this->setupPrivateMethod('methodRestException');
 
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         // test body and assertions
         $mock->getRouter()->callRoute('/private-method/');
@@ -284,8 +259,8 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup
         $_SERVER['HTTP_HOST'] = 'http://service';
-        $e = new Exception('msg', 1);
-        $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $e = new \Exception('msg', 1);
+        $Transport = new ServiceRestTransport();
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -304,7 +279,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $_SERVER['HTTP_HOST'] = 'http://rest-service';
         $e = new \Mezon\Rest\Exception('msg', 1, 200, 'body');
-        $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $Transport = new ServiceRestTransport();
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -324,7 +299,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         // setup
         $e = new \Exception('msg', 1);
-        $Transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $Transport = new ServiceRestTransport();
 
         // test body
         $result = $Transport->parentErrorResponse($e);
@@ -385,7 +360,7 @@ class ServiceRestTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testCallRoute(): void
     {
         // setup
-        $transport = new \Mezon\Service\ServiceRestTransport\ServiceRestTransport();
+        $transport = new ServiceRestTransport();
         $transport->setServiceLogic(new TestingServiceLogicForRestTransport());
         $transport->addRoute('/ok/', 'ok', 'GET', 'public_call');
         $_GET['r'] = 'ok';

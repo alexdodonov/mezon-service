@@ -1,16 +1,12 @@
 <?php
+namespace Mezon\Service\Tests;
 
-class TestingServiceLogicForHttpTransport extends \Mezon\Service\ServiceLogic
-{
+use PHPUnit\Framework\TestCase;
+use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
+use Mezon\Transport\HttpRequestParams;
+use Mezon\Security\MockProvider;
 
-    public function privateMethod()
-    {}
-
-    public function publicMethod()
-    {}
-}
-
-class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
+class ServiceHttpTransportUnitTest extends TestCase
 {
 
     /**
@@ -35,7 +31,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     protected function getTransportMock()
     {
-        $mock = $this->getMockBuilder(\Mezon\Service\ServiceHttpTransport\ServiceHttpTransport::class)
+        $mock = $this->getMockBuilder(ServiceHttpTransport::class)
             ->setMethods([
             'header',
             'createSession'
@@ -46,7 +42,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
             ->method('header');
 
         $mock->setParamsFetcher(
-            $this->getMockBuilder(\Mezon\Transport\HttpRequestParams::class)
+            $this->getMockBuilder(HttpRequestParams::class)
                 ->setMethods([
                 'getSessionIdFromHeaders'
             ])
@@ -65,7 +61,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testConstructor()
     {
-        new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
+        new ServiceHttpTransport();
 
         $this->addToAssertionCount(1);
     }
@@ -75,8 +71,8 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitDefault()
     {
-        $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport();
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceHttpTransport();
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -84,9 +80,8 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitString()
     {
-        $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport(
-            \Mezon\Security\MockProvider::class);
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceHttpTransport(MockProvider::class);
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -94,9 +89,8 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
      */
     public function testSecurityProviderInitObject()
     {
-        $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport(
-            new \Mezon\Security\MockProvider());
-        $this->assertInstanceOf(\Mezon\Security\MockProvider::class, $transport->getSecurityProvider());
+        $transport = new ServiceHttpTransport(new MockProvider());
+        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -240,7 +234,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
     public function testCreateSession(): void
     {
         // setup and assertions
-        $securityProvider = $this->getMockBuilder(\Mezon\Security\MockProvider::class)
+        $securityProvider = $this->getMockBuilder(MockProvider::class)
             ->setMethods([
             'createSession'
         ])
@@ -249,7 +243,7 @@ class ServiceHttpTransportUnitTest extends \PHPUnit\Framework\TestCase
         $securityProvider->expects($this->once())
             ->method('createSession');
 
-        $transport = new \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport($securityProvider);
+        $transport = new ServiceHttpTransport($securityProvider);
 
         // test body
         $transport->createSession('some-token');

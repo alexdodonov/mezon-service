@@ -1,5 +1,4 @@
 <?php
-// TODO fix this:
 namespace Mezon\Service\Tests;
 
 use Mezon\Functional\Fetcher;

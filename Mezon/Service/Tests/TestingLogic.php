@@ -1,4 +1,5 @@
 <?php
+namespace Mezon\Service\Tests;
 
 /**
  * The file contains testing classes.
@@ -8,7 +9,7 @@
  *
  * @author Dodonov A.A.
  */
-class TestLogic extends \Mezon\Service\ServiceLogic
+class TestingLogic extends \Mezon\Service\ServiceLogic
 {
 
     public function test()
@@ -20,12 +21,4 @@ class TestLogic extends \Mezon\Service\ServiceLogic
     {
         return 'test2';
     }
-}
-
-/**
- *
- * @author Dodonov A.A.
- */
-class TestService extends Mezon\Service\Service
-{
 }

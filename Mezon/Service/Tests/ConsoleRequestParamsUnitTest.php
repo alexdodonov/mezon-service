@@ -1,4 +1,8 @@
 <?php
+namespace Mezon\Service\Tests;
+
+use Mezon\Router\Router;
+use Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams;
 
 class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
 {
@@ -9,8 +13,8 @@ class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
     public function testGetParam(): void
     {
         // setup
-        $router = new \Mezon\Router\Router();
-        $requestParams = new Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($router);
+        $router = new Router();
+        $requestParams = new ConsoleRequestParams($router);
         global $argv;
         $argv['param'] = 'value';
 

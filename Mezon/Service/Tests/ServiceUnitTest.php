@@ -1,7 +1,10 @@
 <?php
-require_once (__DIR__ . '/TestService.php');
+namespace Mezon\Service\Tests;
 
-class ServiceUnitTest extends \Mezon\Service\Tests\ServiceUnitTests
+use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
+use Mezon\Service\ServiceModel;
+
+class ServiceUnitTest extends ServiceUnitTests
 {
 
     /**
@@ -12,15 +15,15 @@ class ServiceUnitTest extends \Mezon\Service\Tests\ServiceUnitTests
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $transport = $this->getMockBuilder(\Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport::class)
+        $transport = $this->getMockBuilder(ServiceConsoleTransport::class)
             ->setMethods([
             'die'
         ])
             ->getMock();
 
-        $service = new TestService(
-            TestLogic::class,
-            \Mezon\Service\ServiceModel::class,
+        $service = new TestingService(
+            TestingLogic::class,
+            ServiceModel::class,
             $this->getSecurityProvider(AS_STRING),
             $transport);
 
