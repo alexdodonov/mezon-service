@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9574ad4a0e0b0834fa0ec725714bfa71",
+    "content-hash": "ce17599c27488a45df4cfb164efc4483",
     "packages": [
         {
             "name": "mezon/conf",
@@ -1369,29 +1369,29 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "4.0.3",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "5672711b6b07b14d5ab694e700c62eeb82fcf374"
+                "reference": "472b687829041c24b25f475e14c2f38a09edf1c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/5672711b6b07b14d5ab694e700c62eeb82fcf374",
-                "reference": "5672711b6b07b14d5ab694e700c62eeb82fcf374",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/472b687829041c24b25f475e14c2f38a09edf1c2",
+                "reference": "472b687829041c24b25f475e14c2f38a09edf1c2",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "php": "^7.3 || ^8.0"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.0"
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "3.1-dev"
                 }
             },
             "autoload": {
@@ -1416,7 +1416,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-token-stream/issues",
-                "source": "https://github.com/sebastianbergmann/php-token-stream/tree/master"
+                "source": "https://github.com/sebastianbergmann/php-token-stream/tree/3.1.2"
             },
             "funding": [
                 {
@@ -1425,7 +1425,7 @@
                 }
             ],
             "abandoned": true,
-            "time": "2020-06-27T06:36:25+00:00"
+            "time": "2020-11-30T08:38:46+00:00"
         },
         {
             "name": "phpunit/phpunit",
