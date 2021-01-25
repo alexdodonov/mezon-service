@@ -1,5 +1,5 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\Tests\Mocks;
 
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\Transport;

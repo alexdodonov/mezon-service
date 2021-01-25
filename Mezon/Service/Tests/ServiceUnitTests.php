@@ -9,6 +9,7 @@ use Mezon\Security\MockProvider;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
+use Mezon\Service\Tests\Mocks\TestingTransport;
 
 /**
  * Class ServiceUnitTests

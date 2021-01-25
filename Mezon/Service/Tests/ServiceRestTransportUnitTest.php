@@ -13,9 +13,9 @@ class ServiceRestTransportUnitTest extends TestCase
 {
 
     /**
-     * Getting mock object.
+     * Getting mock object
      *
-     * @return object ServiceRestTransport mocked object.
+     * @return object ServiceRestTransport mocked object
      */
     protected function getTransportMock()
     {
@@ -36,13 +36,13 @@ class ServiceRestTransportUnitTest extends TestCase
         $mock->setParamsFetcher(
             $this->getMockBuilder(HttpRequestParams::class)
                 ->setMethods([
-                'getSessionIdFromHeaders'
+                'getParam'
             ])
                 ->disableOriginalConstructor()
                 ->getMock());
 
         $mock->getParamsFetcher()
-            ->method('getSessionIdFromHeaders')
+            ->method('getParam')
             ->willReturn('token');
 
         return $mock;
@@ -51,7 +51,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Getting mock object.
      *
-     * @return object ServiceLogic mocked object.
+     * @return object ServiceLogic mocked object
      */
     protected function getServiceLogicMock()
     {
@@ -64,7 +64,7 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing connect method.
+     * Testing connect method
      */
     public function testConstructor()
     {
@@ -74,7 +74,7 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing that security provider was set.
+     * Testing that security provider was set
      */
     public function testSecurityProviderInitDefault()
     {
@@ -83,7 +83,7 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing that security provider was set.
+     * Testing that security provider was set
      */
     public function testSecurityProviderInitString()
     {
@@ -92,7 +92,7 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing that security provider was set.
+     * Testing that security provider was set
      */
     public function testSecurityProviderInitObject()
     {
@@ -101,22 +101,22 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing that header function is called once for each header.
+     * Testing that header function is called once for each header
      */
     public function testSingleHeaderCall()
     {
-        $mock = $this->getTransportMock();
+        $serviceTransport = $this->getTransportMock();
 
         $serviceLogic = $this->getServiceLogicMock();
 
         $serviceLogic->expects($this->once())
             ->method('connect');
 
-        $mock->callLogic($serviceLogic, 'connect');
+        $serviceTransport->callLogic($serviceLogic, 'connect');
     }
 
     /**
-     * Testing that header function is called once for each header.
+     * Testing that header function is called once for each header
      */
     public function testSingleHeaderCallPublic()
     {

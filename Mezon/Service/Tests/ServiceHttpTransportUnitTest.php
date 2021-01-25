@@ -44,13 +44,13 @@ class ServiceHttpTransportUnitTest extends TestCase
         $mock->setParamsFetcher(
             $this->getMockBuilder(HttpRequestParams::class)
                 ->setMethods([
-                'getSessionIdFromHeaders'
+                'getParam'
             ])
                 ->disableOriginalConstructor()
                 ->getMock());
 
         $mock->getParamsFetcher()
-            ->method('getSessionIdFromHeaders')
+            ->method('getParam')
             ->willReturn('token');
 
         return $mock;

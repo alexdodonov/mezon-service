@@ -9,6 +9,7 @@ use Mezon\Service\ServiceModel;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
+use Mezon\Service\Tests\Mocks\TestingTransport;
 
 class ServiceBaseUnitTest extends TestCase
 {
