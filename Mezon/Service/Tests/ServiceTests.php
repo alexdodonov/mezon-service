@@ -147,7 +147,7 @@ abstract class ServiceTests extends TestCase
     }
 
     /**
-     * Method returns test data
+     * Method returns array ['login' => '' , 'password' => ''], for connecting to service
      *
      * @return array Test data
      */
