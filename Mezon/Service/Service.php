@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\Service;
 
+use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
+use Mezon\Security\MockProvider;
+
 /**
  * Class Service
  *
@@ -18,7 +21,7 @@ namespace Mezon\Service;
  *
  * @author Dodonov A.A.
  */
-class Service extends \Mezon\Service\ServiceBase
+class Service extends ServiceBase
 {
 
     /**
@@ -34,10 +37,10 @@ class Service extends \Mezon\Service\ServiceBase
      *            Service's transport
      */
     public function __construct(
-        $serviceLogic = \Mezon\Service\ServiceLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
+        $serviceLogic = ServiceLogic::class,
+        $serviceModel = ServiceModel::class,
+        $securityProvider = MockProvider::class,
+        $serviceTransport = ServiceRestTransport::class)
     {
         try {
             parent::__construct($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
@@ -65,26 +68,26 @@ class Service extends \Mezon\Service\ServiceBase
      *
      * @param Service|string $service
      *            name of the service class or the service object itself
-     * @param \Mezon\Service\ServiceLogic|string $serviceLogic
+     * @param ServiceLogic|string $serviceLogic
      *            Logic of the service
-     * @param \Mezon\Service\ServiceModel|string $serviceModel
+     * @param ServiceModel|string $serviceModel
      *            Model of the service
-     * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
+     * @param ServiceSecurityProviderInterface|string $securityProvider
      *            name of the service security provider class or the service security provider itself
-     * @param \Mezon\Service\Transport|string $serviceTransport
+     * @param Transport|string $serviceTransport
      *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
-     * @return \Mezon\Service\Service Created service
+     * @return Service Created service
      * @deprecated See Service::run
      */
     public static function launch(
         $service,
-        $serviceLogic = \Mezon\Service\ServiceLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
-        bool $runService = true): \Mezon\Service\ServiceBase
+        $serviceLogic = ServiceLogic::class,
+        $serviceModel = ServiceModel::class,
+        $securityProvider = MockProvider::class,
+        $serviceTransport = ServiceRestTransport::class,
+        bool $runService = true): ServiceBase
     {
         if (is_string($service)) {
             $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
@@ -104,25 +107,25 @@ class Service extends \Mezon\Service\ServiceBase
      *
      * @param Service|string $service
      *            name of the service class or the service object itself
-     * @param \Mezon\Service\ServiceLogic|string $serviceLogic
+     * @param ServiceLogic|string $serviceLogic
      *            Logic of the service
-     * @param \Mezon\Service\ServiceModel|string $serviceModel
+     * @param ServiceModel|string $serviceModel
      *            Model of the service
-     * @param \Mezon\Service\ServiceSecurityProviderInterface|string $securityProvider
+     * @param ServiceSecurityProviderInterface|string $securityProvider
      *            name of the service security provider class or the service security provider itself
-     * @param \Mezon\Service\Transport|string $serviceTransport
+     * @param Transport|string $serviceTransport
      *            name of the service transport class or the service transport itself
      * @param bool $runService
      *            Shold be service lanched
-     * @return \Mezon\Service\Service Created service
+     * @return Service Created service
      */
     public static function start(
         $service,
-        $serviceLogic = \Mezon\Service\ServiceLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class,
-        bool $runService = true): \Mezon\Service\ServiceBase
+        $serviceLogic = ServiceLogic::class,
+        $serviceModel = ServiceModel::class,
+        $securityProvider = MockProvider::class,
+        $serviceTransport = ServiceRestTransport::class,
+        bool $runService = true): ServiceBase
     {
         if (is_string($service)) {
             $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);

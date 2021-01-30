@@ -3,6 +3,7 @@ namespace Mezon\Service\Tests;
 
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\ServiceModel;
+use Mezon\Service\Service;
 
 class ServiceUnitTest extends ServiceUnitTests
 {
@@ -21,11 +22,13 @@ class ServiceUnitTest extends ServiceUnitTests
         ])
             ->getMock();
 
-        $service = new TestingService(
+        $service = new Service(
             TestingLogic::class,
             ServiceModel::class,
             $this->getSecurityProvider(AS_STRING),
             $transport);
+        $service->getTransport()->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
+        $service->getTransport()->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));
 
         // route from routes.php
         $_GET['r'] = 'test';
