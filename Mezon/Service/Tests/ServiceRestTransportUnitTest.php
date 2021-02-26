@@ -103,21 +103,6 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing that header function is called once for each header
      */
-    public function testSingleHeaderCall()
-    {
-        $serviceTransport = $this->getTransportMock();
-
-        $serviceLogic = $this->getServiceLogicMock();
-
-        $serviceLogic->expects($this->once())
-            ->method('connect');
-
-        $serviceTransport->callLogic($serviceLogic, 'connect');
-    }
-
-    /**
-     * Testing that header function is called once for each header
-     */
     public function testSingleHeaderCallPublic()
     {
         $mock = $this->getTransportMock();
@@ -373,5 +358,27 @@ class ServiceRestTransportUnitTest extends TestCase
 
         // assertions
         $this->assertEquals('"ok"', $content);
+    }
+    
+    /**
+     * Testing that header function is called once for each header.
+     */
+    public function testSingleHeaderCall()
+    {
+        // setup
+        global $testHeaders;
+        $testHeaders = [
+            'Authentication' => 'Basic token'
+        ];
+        $mock = $this->getTransportMock();
+        
+        $serviceLogic = $this->getServiceLogicMock();
+        
+        // assertions
+        $serviceLogic->expects($this->once())
+        ->method('connect');
+        
+        // test body
+        $mock->callLogic($serviceLogic, 'connect');
     }
 }
