@@ -48,10 +48,10 @@ class ServiceBase
      *            Service's transport
      */
     public function __construct(
-        $serviceLogic = \Mezon\Service\ServiceBaseLogic::class,
-        $serviceModel = \Mezon\Service\ServiceModel::class,
+        $serviceLogic = ServiceBaseLogic::class,
+        $serviceModel = ServiceModel::class,
         $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = \Mezon\Service\ServiceRestTransport\ServiceRestTransport::class)
+        $serviceTransport = ServiceRestTransport\ServiceRestTransport::class)
     {
         try {
             $this->initTransport($serviceTransport, $securityProvider);
@@ -71,12 +71,12 @@ class ServiceBase
      */
     protected function fetchActions(): void
     {
-        if ($this instanceof \Mezon\Service\ServiceBaseLogicInterface) {
+        if ($this instanceof ServiceBaseLogicInterface) {
             $this->serviceTransport->fetchActions($this);
         }
 
         foreach ($this->serviceLogic as $actionsSet) {
-            if ($actionsSet instanceof \Mezon\Service\ServiceBaseLogicInterface) {
+            if ($actionsSet instanceof ServiceBaseLogicInterface) {
                 $this->serviceTransport->fetchActions($actionsSet);
             }
         }
@@ -106,7 +106,7 @@ class ServiceBase
      *            Service logic class name of object itself
      * @param mixed $serviceModel
      *            Service model class name of object itself
-     * @return \Mezon\Service\ServiceLogic logic object
+     * @return ServiceLogic logic object
      */
     protected function constructServiceLogic($serviceLogic, $serviceModel)
     {
@@ -175,9 +175,9 @@ class ServiceBase
     /**
      * Method sets transport
      *
-     * @param \Mezon\Service\Transport $transport
+     * @param Transport $transport
      */
-    public function setTransport(\Mezon\Service\Transport $transport): void
+    public function setTransport(Transport $transport): void
     {
         $this->serviceTransport = $transport;
     }
@@ -185,9 +185,9 @@ class ServiceBase
     /**
      * Method returns transport
      *
-     * @return \Mezon\Service\Transport
+     * @return Transport
      */
-    public function getTransport(): \Mezon\Service\Transport
+    public function getTransport(): Transport
     {
         return $this->serviceTransport;
     }
@@ -195,7 +195,7 @@ class ServiceBase
     /**
      * Method returns logic
      *
-     * @return \Mezon\Service\ServiceLogic|array
+     * @return ServiceLogic|array
      */
     public function getLogic()
     {

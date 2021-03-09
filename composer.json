@@ -41,9 +41,6 @@
 		}
 	},
 	"scripts": {
-		"post-update-cmd": "php ./vendor/phpunit/phpunit/phpunit",
-		"test": [
-			"composer update"
-		]
+		"test": "php ./vendor/phpunit/phpunit/phpunit"
 	}
 }
