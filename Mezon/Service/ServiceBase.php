@@ -155,6 +155,7 @@ class ServiceBase
         $reflector = new \ReflectionClass(get_class($this));
         $classPath = dirname($reflector->getFileName());
 
+        // TODO make /Conf/...
         if (file_exists($classPath . '/conf/routes.php')) {
             $this->serviceTransport->loadRoutesFromConfig($classPath . '/conf/routes.php');
         }
