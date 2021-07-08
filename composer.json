@@ -16,7 +16,7 @@
 	},
 	"require": {
 		"php": ">=7.2.0",
-		"mezon/router": "1.2.*",
+		"mezon/router": "1.3.*",
 		"mezon/functional": "1.0.*",
 		"mezon/dns-client": "1.0.*",
 		"mezon/custom-client": "1.0.*",
