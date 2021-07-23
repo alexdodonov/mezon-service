@@ -273,7 +273,6 @@ abstract class ServiceTests extends TestCase
         // assertions
         $this->assertEquals(
             'alexey@dodonov.ru',
-            Fetcher::getField($result, 'login'),
-            'Session user must be alexey@dodonov.none');
+            Fetcher::getField($result, 'login'));
     }
 }
