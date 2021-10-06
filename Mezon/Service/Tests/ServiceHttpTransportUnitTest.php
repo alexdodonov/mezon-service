@@ -10,6 +10,16 @@ class ServiceHttpTransportUnitTest extends TestCase
 {
 
     /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+    }
+
+    /**
      * Getting mock object.
      *
      * @return object ServiceLogic mocked object.

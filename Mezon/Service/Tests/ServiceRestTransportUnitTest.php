@@ -13,6 +13,16 @@ class ServiceRestTransportUnitTest extends TestCase
 {
 
     /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+    }
+
+    /**
      * Getting mock object
      *
      * @return object ServiceRestTransport mocked object
@@ -359,7 +369,7 @@ class ServiceRestTransportUnitTest extends TestCase
         // assertions
         $this->assertEquals('"ok"', $content);
     }
-    
+
     /**
      * Testing that header function is called once for each header.
      */
@@ -371,13 +381,13 @@ class ServiceRestTransportUnitTest extends TestCase
             'Authentication' => 'Basic token'
         ];
         $mock = $this->getTransportMock();
-        
+
         $serviceLogic = $this->getServiceLogicMock();
-        
+
         // assertions
         $serviceLogic->expects($this->once())
-        ->method('connect');
-        
+            ->method('connect');
+
         // test body
         $mock->callLogic($serviceLogic, 'connect');
     }
