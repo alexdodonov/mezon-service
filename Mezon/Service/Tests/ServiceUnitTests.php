@@ -114,7 +114,7 @@ class ServiceUnitTests extends TestCase
     /**
      * Method creates logic
      *
-     * @return \Mezon\Service\ServiceLogic|string Service logic object
+     * @return ServiceLogic|string Service logic object
      */
     protected function getLogic()
     {
@@ -127,7 +127,7 @@ class ServiceUnitTests extends TestCase
      * Method creates security provider
      *
      * @param int $mode
-     *            - Creation mode
+     *            creation mode
      * @return ServiceSecurityProviderInterface|string Service security provider object
      */
     protected function getSecurityProvider(int $mode)
