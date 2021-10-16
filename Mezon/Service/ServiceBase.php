@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\Service;
 
+use Mezon\Security\ProviderInterface;
+use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
+
 /**
  * Class Service
  *
@@ -38,20 +41,20 @@ class ServiceBase
     /**
      * Constructor
      *
-     * @param mixed $serviceLogic
-     *            Service's logic
-     * @param mixed $serviceModel
-     *            Service's model
-     * @param mixed $securityProvider
-     *            Service's security provider
-     * @param mixed $serviceTransport
-     *            Service's transport
+     * @param ServiceBaseLogic $serviceLogic
+     *            service's logic
+     * @param ServiceModel $serviceModel
+     *            service's model
+     * @param ProviderInterface $securityProvider
+     *            service's security provider
+     * @param TransportInterface $serviceTransport
+     *            service's transport
      */
     public function __construct(
-        $serviceLogic = ServiceBaseLogic::class,
-        $serviceModel = ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = ServiceRestTransport\ServiceRestTransport::class)
+        ServiceBaseLogic $serviceLogic,
+        ServiceModel $serviceModel,
+        ProviderInterface $securityProvider,
+        TransportInterface $serviceTransport)
     {
         try {
             $this->initTransport($serviceTransport, $securityProvider);
@@ -75,7 +78,7 @@ class ServiceBase
             $this->serviceTransport->fetchActions($this);
         }
 
-        foreach ($this->serviceLogic as $actionsSet) {
+        foreach ($this->serviceLogics as $actionsSet) {
             if ($actionsSet instanceof ServiceBaseLogicInterface) {
                 $this->serviceTransport->fetchActions($actionsSet);
             }
@@ -133,18 +136,18 @@ class ServiceBase
     protected function initServiceLogic($serviceLogic, $serviceModel): void
     {
         if (is_array($serviceLogic)) {
-            $this->serviceLogic = [];
+            $this->serviceLogics = [];
 
             foreach ($serviceLogic as $logic) {
-                $this->serviceLogic[] = $this->constructServiceLogic($logic, $serviceModel);
+                $this->serviceLogics[] = $this->constructServiceLogic($logic, $serviceModel);
             }
         } else {
-            $this->serviceLogic = [
+            $this->serviceLogics = [
                 $this->constructServiceLogic($serviceLogic, $serviceModel)
             ];
         }
 
-        $this->serviceTransport->setServiceLogic($this->serviceLogic);
+        $this->serviceTransport->setServiceLogics($this->serviceLogics);
     }
 
     /**
@@ -194,12 +197,12 @@ class ServiceBase
     }
 
     /**
-     * Method returns logic
+     * Method returns logic objects
      *
-     * @return ServiceLogic|array
+     * @return ServiceLogic[]
      */
-    public function getLogic()
+    public function getLogics()
     {
-        return $this->serviceLogic;
+        return $this->serviceLogics;
     }
 }

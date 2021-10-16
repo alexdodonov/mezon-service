@@ -4,7 +4,13 @@ namespace Mezon\Service\Tests;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\ServiceModel;
 use Mezon\Service\Service;
+use Mezon\Security\MockProvider;
+use Mezon\Transport\Tests\MockParamsFetcher;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ServiceUnitTest extends ServiceUnitTests
 {
 
@@ -16,16 +22,21 @@ class ServiceUnitTest extends ServiceUnitTests
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
+        $provider = new MockProvider();
+
         $transport = $this->getMockBuilder(ServiceConsoleTransport::class)
-            ->setMethods([
+            ->setConstructorArgs([
+            $provider
+        ])
+            ->onlyMethods([
             'die'
         ])
             ->getMock();
 
         $service = new Service(
-            TestingLogic::class,
-            ServiceModel::class,
-            $this->getSecurityProvider(AS_STRING),
+            new TestingLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
+            new ServiceModel(),
+            $provider,
             $transport);
         $service->getTransport()->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
         $service->getTransport()->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));

@@ -23,8 +23,8 @@
 		"mezon/custom-client": "1.0.*",
 		"mezon/rest-exception": "1.0.*",
 		"mezon/fields-set": "1.0.*",
-		"mezon/service-logic": "1.1.*",
-		"mezon/service-transport": "1.1.*",
+		"mezon/service-logic": "1.2.*",
+		"mezon/service-transport": "1.2.*",
 		"mezon/http-request-params": "1.0.*"
 	},
 	"support": {

@@ -10,6 +10,8 @@ use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\Tests\Mocks\TestingTransport;
+use Mezon\Service\ServiceBaseLogic;
+use Mezon\Transport\Tests\MockParamsFetcher;
 
 /**
  * Class ServiceUnitTests
@@ -27,7 +29,7 @@ define('AS_OBJECT', 2);
  * Common service unit tests
  *
  * @author Dodonov A.A.
- * @group baseTests
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ServiceUnitTests extends TestCase
 {
@@ -40,63 +42,6 @@ class ServiceUnitTests extends TestCase
     protected $className = Service::class;
 
     /**
-     * Testing initialization of the security provider
-     */
-    public function testInitSecurityProviderDefault()
-    {
-        $service = new $this->className(
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceRestTransport::class);
-        $this->assertInstanceOf(MockProvider::class, $service->getTransport()
-            ->getSecurityProvider());
-
-        $service = new $this->className(
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            new ServiceRestTransport());
-        $this->assertInstanceOf(MockProvider::class, $service->getTransport()
-            ->getSecurityProvider());
-
-        $service = new $this->className(
-            ServiceLogic::class,
-            ServiceModel::class,
-            $this->getSecurityProvider(AS_OBJECT),
-            new ServiceRestTransport());
-        $this->assertInstanceOf(MockProvider::class, $service->getTransport()
-            ->getSecurityProvider());
-    }
-
-    /**
-     * Testing initialization of the service model
-     */
-    public function testInitServiceModel()
-    {
-        $service = new $this->className(
-            ServiceLogic::class,
-            ServiceModel::class,
-            new MockProvider(),
-            new ServiceRestTransport());
-        $this->assertInstanceOf(ServiceModel::class, $service->getLogic()[0]->getModel());
-
-        $service = new $this->className(
-            $this->getLogic(),
-            ServiceModel::class,
-            new MockProvider(),
-            new ServiceRestTransport());
-        $this->assertInstanceOf(ServiceModel::class, $service->getLogic()[0]->getModel());
-
-        $service = new $this->className(
-            $this->getLogic(),
-            new ServiceModel(),
-            new MockProvider(),
-            new ServiceRestTransport());
-        $this->assertInstanceOf(ServiceModel::class, $service->getLogic()[0]->getModel());
-    }
-
-    /**
      * Method returns mock
      *
      * @return object Mock of the testing class
@@ -105,7 +50,7 @@ class ServiceUnitTests extends TestCase
     {
         return $this->getMockBuilder($this->className)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
             'run'
         ])
             ->getMock();
@@ -124,55 +69,6 @@ class ServiceUnitTests extends TestCase
     }
 
     /**
-     * Method creates security provider
-     *
-     * @param int $mode
-     *            creation mode
-     * @return ServiceSecurityProviderInterface|string Service security provider object
-     */
-    protected function getSecurityProvider(int $mode)
-    {
-        if ($mode == AS_STRING) {
-            return MockProvider::class;
-        } else {
-            return new MockProvider();
-        }
-    }
-
-    /**
-     * Testing launcher with transport
-     *
-     * @see \Mezon\Service\Service::launch
-     */
-    public function testLaunchWithTransport()
-    {
-        $localClassName = $this->className;
-        $mock = $this->getMock();
-
-        // implicit
-        $service = $localClassName::launch(get_class($mock));
-        $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
-
-        // explicit string
-        $service = $localClassName::launch(
-            get_class($mock),
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceRestTransport::class);
-        $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
-
-        // explicit object
-        $service = $localClassName::launch(
-            get_class($mock),
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            new ServiceRestTransport());
-        $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
-    }
-
-    /**
      * Testing launcher with security provider
      *
      * @see Service::launch
@@ -181,12 +77,13 @@ class ServiceUnitTests extends TestCase
     {
         $localClassName = $this->className;
 
+        $provider = new MockProvider();
         $service = $localClassName::launch(
             $this->className,
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceRestTransport::class,
+            new ServiceLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceRestTransport($provider),
             false);
 
         $this->assertInstanceOf(MockProvider::class, $service->getTransport()
@@ -200,11 +97,16 @@ class ServiceUnitTests extends TestCase
     {
         $localClassName = $this->className;
 
-        $service = $localClassName::launch($this->className, [
-            ServiceLogic::class
-        ], ServiceModel::class, MockProvider::class, ServiceRestTransport::class, false);
+        $provider = new MockProvider();
+        $service = $localClassName::launch(
+            $this->className,
+            new ServiceLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceRestTransport($provider),
+            false);
 
-        $this->assertTrue(is_array($service->getLogic()), 'Array of logic objects was not created');
+        $this->assertTrue(is_array($service->getLogics()), 'Array of logic objects was not created');
     }
 
     /**
@@ -217,12 +119,17 @@ class ServiceUnitTests extends TestCase
         $_GET['r'] = 'connect';
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-        $service = $localClassName::launch($this->className, [
-            ServiceLogic::class
-        ], ServiceModel::class, MockProvider::class, ServiceConsoleTransport::class, false);
+        $provider = new MockProvider();
+        $service = $localClassName::launch(
+            $this->className,
+            new ServiceLogic(new MockParamsFetcher(), new MockProvider(), new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceConsoleTransport($provider),
+            false);
 
         $service->run();
-        $this->addToAssertionCount(1);
+        $this->assertTrue(true);
     }
 
     /**
@@ -237,7 +144,13 @@ class ServiceUnitTests extends TestCase
         $mock = $this->getMock();
 
         // test body
-        $service = $localClassName::start(get_class($mock));
+        $provider = new MockProvider();
+        $service = $localClassName::start(
+            get_class($mock),
+            new ServiceLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceRestTransport($provider));
 
         // assertions
         $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
@@ -255,16 +168,19 @@ class ServiceUnitTests extends TestCase
             ->method('run');
 
         // test body
+        $provider = new MockProvider();
         $service = $localClassName::start(
             $this->className,
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceRestTransport::class,
+            new ServiceLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceRestTransport($provider),
             false);
 
+        // TODO create logic with StandartSecurityMethods but without model
+
         // assertions
-        $this->assertInstanceOf(Service::class, $service);
+        $this->assertInstanceOf($this->className, $service);
     }
 
     /**
@@ -274,11 +190,12 @@ class ServiceUnitTests extends TestCase
     {
         // setup and test body
         ob_start();
+        $provider = new MockProvider();
         new ExceptionTestingService(
-            ServiceLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            TestingTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), $provider),
+            new ServiceModel(),
+            $provider,
+            new TestingTransport($provider));
         $content = ob_get_contents();
         ob_end_clean();
 

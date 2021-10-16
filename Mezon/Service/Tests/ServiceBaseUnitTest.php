@@ -10,7 +10,12 @@ use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\Tests\Mocks\TestingTransport;
+use Mezon\Transport\Tests\MockParamsFetcher;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ServiceBaseUnitTest extends TestCase
 {
 
@@ -20,11 +25,12 @@ class ServiceBaseUnitTest extends TestCase
     public function testGetTransport()
     {
         // setup
+        $provider = new MockProvider();
         $service = new ServiceBase(
-            ServiceBaseLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceHttpTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
+            new ServiceModel(),
+            $provider,
+            new ServiceHttpTransport($provider));
 
         // test body and assertions
         $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
@@ -36,17 +42,18 @@ class ServiceBaseUnitTest extends TestCase
     public function testSetTransport()
     {
         // setup
+        $provider = new MockProvider();
         $service = new ServiceBase(
-            ServiceBaseLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceHttpTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider(), new ServiceModel()),
+            new ServiceModel(),
+            $provider,
+            new ServiceHttpTransport($provider));
 
         // assertions
         $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
 
         // test body
-        $service->setTransport(new ServiceRestTransport());
+        $service->setTransport(new ServiceRestTransport($provider));
 
         // assertions
         $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
@@ -58,11 +65,12 @@ class ServiceBaseUnitTest extends TestCase
     public function testFetchActionsGet(): void
     {
         // setup
+        $provider = new MockProvider();
         $service = new TestingBaseService(
-            ServiceBaseLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceConsoleTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
+            new ServiceModel(),
+            $provider,
+            new ServiceConsoleTransport($provider));
 
         // test body
         $_GET['r'] = 'test';
@@ -79,11 +87,12 @@ class ServiceBaseUnitTest extends TestCase
     public function testFetchActionsPost(): void
     {
         // setup
+        $provider = new MockProvider();
         $service = new TestingBaseService(
-            ServiceBaseLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            ServiceConsoleTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
+            new ServiceModel(),
+            $provider,
+            new ServiceConsoleTransport($provider));
 
         // test body
         $_GET['r'] = 'test';
@@ -101,11 +110,12 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup and assertions
         ob_start();
+        $provider = new MockProvider();
         new ExceptionTestingBaseService(
-            ServiceBaseLogic::class,
-            ServiceModel::class,
-            MockProvider::class,
-            TestingTransport::class);
+            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
+            new ServiceModel(),
+            $provider,
+            new TestingTransport($provider));
         $content = ob_get_contents();
         ob_end_clean();
 

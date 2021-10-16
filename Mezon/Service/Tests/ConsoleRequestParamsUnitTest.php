@@ -4,6 +4,10 @@ namespace Mezon\Service\Tests;
 use Mezon\Router\Router;
 use Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams;
 
+/**
+ * 
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
 {
 

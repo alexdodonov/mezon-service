@@ -4,6 +4,10 @@ namespace Mezon\Service\Tests;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Security\MockProvider;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -15,7 +19,8 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     protected function getTransportMock(): object
     {
         return $this->getMockBuilder(ServiceConsoleTransport::class)
-            ->setMethods([
+        ->setConstructorArgs([new MockProvider()])
+            ->onlyMethods([
             'createSession'
         ])
             ->getMock();
@@ -30,38 +35,10 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
     {
         return $this->getMockBuilder(TestingServiceLogicForConsoleTransport::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
             'connect'
         ])
             ->getMock();
-    }
-
-    /**
-     * Testing connect method.
-     */
-    public function testConstructor(): void
-    {
-        $transport = new ServiceConsoleTransport();
-
-        $this->assertNotEquals(null, $transport->getSecurityProvider());
-    }
-
-    /**
-     * Testing that security provider was set.
-     */
-    public function testSecurityProviderInitDefault(): void
-    {
-        $transport = new ServiceConsoleTransport();
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
-    }
-
-    /**
-     * Testing that security provider was set.
-     */
-    public function testSecurityProviderInitString(): void
-    {
-        $transport = new ServiceConsoleTransport(MockProvider::class);
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**

@@ -6,6 +6,10 @@ use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ServiceHttpTransportUnitTest extends TestCase
 {
 
@@ -28,7 +32,7 @@ class ServiceHttpTransportUnitTest extends TestCase
     {
         return $this->getMockBuilder(TestingServiceLogicForHttpTransport::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
             'connect'
         ])
             ->getMock();
@@ -42,7 +46,10 @@ class ServiceHttpTransportUnitTest extends TestCase
     protected function getTransportMock()
     {
         $mock = $this->getMockBuilder(ServiceHttpTransport::class)
-            ->setMethods([
+            ->setConstructorArgs([
+            new MockProvider()
+        ])
+            ->onlyMethods([
             'header',
             'createSession'
         ])
@@ -53,7 +60,7 @@ class ServiceHttpTransportUnitTest extends TestCase
 
         $mock->setParamsFetcher(
             $this->getMockBuilder(HttpRequestParams::class)
-                ->setMethods([
+                ->onlyMethods([
                 'getParam'
             ])
                 ->disableOriginalConstructor()
@@ -64,34 +71,6 @@ class ServiceHttpTransportUnitTest extends TestCase
             ->willReturn('token');
 
         return $mock;
-    }
-
-    /**
-     * Testing connect method.
-     */
-    public function testConstructor()
-    {
-        new ServiceHttpTransport();
-
-        $this->addToAssertionCount(1);
-    }
-
-    /**
-     * Testing that security provider was set.
-     */
-    public function testSecurityProviderInitDefault()
-    {
-        $transport = new ServiceHttpTransport();
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
-    }
-
-    /**
-     * Testing that security provider was set.
-     */
-    public function testSecurityProviderInitString()
-    {
-        $transport = new ServiceHttpTransport(MockProvider::class);
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -245,7 +224,7 @@ class ServiceHttpTransportUnitTest extends TestCase
     {
         // setup and assertions
         $securityProvider = $this->getMockBuilder(MockProvider::class)
-            ->setMethods([
+            ->onlyMethods([
             'createSession'
         ])
             ->disableOriginalConstructor()

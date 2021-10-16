@@ -5,10 +5,17 @@ use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
+use Mezon\Rest;
+use Mezon\Transport\Tests\Headers;
+
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);
 }
 
+/**
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class ServiceRestTransportUnitTest extends TestCase
 {
 
@@ -30,7 +37,8 @@ class ServiceRestTransportUnitTest extends TestCase
     protected function getTransportMock()
     {
         $mock = $this->getMockBuilder(ServiceRestTransport::class)
-            ->setMethods([
+        ->setConstructorArgs([new MockProvider()])
+            ->onlyMethods([
             'header',
             'createSession',
             'errorResponse',
@@ -40,12 +48,12 @@ class ServiceRestTransportUnitTest extends TestCase
 
         $mock->expects($this->once())
             ->method('header');
-        $mock->method('errorResponse')->willThrowException(new \Mezon\Rest\Exception('Msg', 0, 1, 1));
+        $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, 1));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
         $mock->setParamsFetcher(
             $this->getMockBuilder(HttpRequestParams::class)
-                ->setMethods([
+                ->onlyMethods([
                 'getParam'
             ])
                 ->disableOriginalConstructor()
@@ -67,38 +75,10 @@ class ServiceRestTransportUnitTest extends TestCase
     {
         return $this->getMockBuilder(TestingServiceLogicForRestTransport::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
             'connect'
         ])
             ->getMock();
-    }
-
-    /**
-     * Testing connect method
-     */
-    public function testConstructor()
-    {
-        $transport = new ServiceRestTransport();
-
-        $this->assertNotEquals(null, $transport->getSecurityProvider());
-    }
-
-    /**
-     * Testing that security provider was set
-     */
-    public function testSecurityProviderInitDefault()
-    {
-        $transport = new ServiceRestTransport();
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
-    }
-
-    /**
-     * Testing that security provider was set
-     */
-    public function testSecurityProviderInitString()
-    {
-        $transport = new ServiceRestTransport(MockProvider::class);
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -255,7 +235,7 @@ class ServiceRestTransportUnitTest extends TestCase
         // setup
         $_SERVER['HTTP_HOST'] = 'http://service';
         $e = new \Exception('msg', 1);
-        $Transport = new ServiceRestTransport();
+        $Transport = new ServiceRestTransport(new MockProvider());
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -273,8 +253,8 @@ class ServiceRestTransportUnitTest extends TestCase
     {
         // setup
         $_SERVER['HTTP_HOST'] = 'http://rest-service';
-        $e = new \Mezon\Rest\Exception('msg', 1, 200, 'body');
-        $Transport = new ServiceRestTransport();
+        $e = new Rest\Exception('msg', 1, 200, 'body');
+        $Transport = new ServiceRestTransport(new MockProvider());
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -294,7 +274,7 @@ class ServiceRestTransportUnitTest extends TestCase
     {
         // setup
         $e = new \Exception('msg', 1);
-        $Transport = new ServiceRestTransport();
+        $Transport = new ServiceRestTransport(new MockProvider());
 
         // test body
         $result = $Transport->parentErrorResponse($e);
@@ -355,7 +335,7 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testCallRoute(): void
     {
         // setup
-        $transport = new ServiceRestTransport();
+        $transport = new ServiceRestTransport(new MockProvider());
         $transport->setServiceLogic(new TestingServiceLogicForRestTransport());
         $transport->addRoute('/ok/', 'ok', 'GET', 'public_call');
         $_GET['r'] = 'ok';
@@ -376,10 +356,9 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testSingleHeaderCall()
     {
         // setup
-        global $testHeaders;
-        $testHeaders = [
+        Headers::setAllHeaders([
             'Authentication' => 'Basic token'
-        ];
+        ]);
         $mock = $this->getTransportMock();
 
         $serviceLogic = $this->getServiceLogicMock();
