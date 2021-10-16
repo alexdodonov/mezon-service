@@ -33,11 +33,12 @@ class ServiceUnitTest extends ServiceUnitTests
         ])
             ->getMock();
 
-        $service = new Service(
-            new TestingLogic(new MockParamsFetcher(), $provider, new ServiceModel()),
-            new ServiceModel(),
-            $provider,
-            $transport);
+        $logic = new TestingLogic($transport->getParamsFetcher(), $transport->getSecurityProvider(), new ServiceModel());
+
+        $transport->setServiceLogic($logic);
+
+        $service = new Service($transport);
+
         $service->getTransport()->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
         $service->getTransport()->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));
 

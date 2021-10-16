@@ -26,11 +26,7 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new ServiceBase(
-            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
-            new ServiceModel(),
-            $provider,
-            new ServiceHttpTransport($provider));
+        $service = new ServiceBase(new ServiceHttpTransport($provider));
 
         // test body and assertions
         $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
@@ -43,11 +39,7 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new ServiceBase(
-            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider(), new ServiceModel()),
-            new ServiceModel(),
-            $provider,
-            new ServiceHttpTransport($provider));
+        $service = new ServiceBase(new ServiceHttpTransport($provider));
 
         // assertions
         $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
@@ -66,11 +58,7 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new TestingBaseService(
-            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
-            new ServiceModel(),
-            $provider,
-            new ServiceConsoleTransport($provider));
+        $service = new TestingBaseService(new ServiceConsoleTransport($provider));
 
         // test body
         $_GET['r'] = 'test';
@@ -88,11 +76,7 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new TestingBaseService(
-            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
-            new ServiceModel(),
-            $provider,
-            new ServiceConsoleTransport($provider));
+        $service = new TestingBaseService(new ServiceConsoleTransport($provider));
 
         // test body
         $_GET['r'] = 'test';
@@ -111,11 +95,7 @@ class ServiceBaseUnitTest extends TestCase
         // setup and assertions
         ob_start();
         $provider = new MockProvider();
-        new ExceptionTestingBaseService(
-            new ServiceBaseLogic(new MockParamsFetcher(), new MockProvider()),
-            new ServiceModel(),
-            $provider,
-            new TestingTransport($provider));
+        new ExceptionTestingBaseService(new TestingTransport($provider));
         $content = ob_get_contents();
         ob_end_clean();
 

@@ -29,37 +29,18 @@ class ServiceBase
      *
      * @var object Service transport object
      */
-    private $serviceTransport = false;
-
-    /**
-     * Service's logic
-     *
-     * @var array Login object or list of logic objects
-     */
-    private $serviceLogic = false;
+    private $serviceTransport;
 
     /**
      * Constructor
      *
-     * @param ServiceBaseLogic $serviceLogic
-     *            service's logic
-     * @param ServiceModel $serviceModel
-     *            service's model
-     * @param ProviderInterface $securityProvider
-     *            service's security provider
      * @param TransportInterface $serviceTransport
      *            service's transport
      */
-    public function __construct(
-        ServiceBaseLogic $serviceLogic,
-        ServiceModel $serviceModel,
-        ProviderInterface $securityProvider,
-        TransportInterface $serviceTransport)
+    public function __construct(TransportInterface $serviceTransport)
     {
         try {
-            $this->initTransport($serviceTransport, $securityProvider);
-
-            $this->initServiceLogic($serviceLogic, $serviceModel);
+            $this->serviceTransport = $serviceTransport;
 
             $this->initCustomRoutes();
 
@@ -78,27 +59,11 @@ class ServiceBase
             $this->serviceTransport->fetchActions($this);
         }
 
-        foreach ($this->serviceLogics as $actionsSet) {
+        // TODO move to the Transport class
+        foreach ($this->serviceTransport->getServiceLogics() as $actionsSet) {
             if ($actionsSet instanceof ServiceBaseLogicInterface) {
                 $this->serviceTransport->fetchActions($actionsSet);
             }
-        }
-    }
-
-    /**
-     * Method inits service's transport
-     *
-     * @param mixed $serviceTransport
-     *            Service's transport
-     * @param mixed $securityProvider
-     *            Service's security provider
-     */
-    protected function initTransport($serviceTransport, $securityProvider): void
-    {
-        if (is_string($serviceTransport)) {
-            $this->serviceTransport = new $serviceTransport($securityProvider);
-        } else {
-            $this->serviceTransport = $serviceTransport;
         }
     }
 

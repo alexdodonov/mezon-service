@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\Service;
 
+use Mezon\Security\ProviderInterface;
+
 /**
  * Class Service
  *
@@ -24,23 +26,13 @@ class Service extends ServiceBase
     /**
      * Constructor
      *
-     * @param mixed $serviceLogic
-     *            Service's logic
-     * @param mixed $serviceModel
-     *            Service's model
-     * @param mixed $securityProvider
-     *            Service's security provider
-     * @param mixed $serviceTransport
+     * @param TransportInterface $serviceTransport
      *            Service's transport
      */
-    public function __construct(
-        $serviceLogic = ServiceLogic::class,
-        $serviceModel = ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = ServiceRestTransport\ServiceRestTransport::class)
+    public function __construct(TransportInterface $serviceTransport)
     {
         try {
-            parent::__construct($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
+            parent::__construct($serviceTransport);
 
             $this->initCommonRoutes();
         } catch (\Exception $e) {
@@ -58,82 +50,5 @@ class Service extends ServiceBase
         $this->getTransport()->addRoute('/self/id/', 'getSelfId', 'GET');
         $this->getTransport()->addRoute('/self/login/', 'getSelfLogin', 'GET');
         $this->getTransport()->addRoute('/login-as/', 'loginAs', 'POST');
-    }
-
-    /**
-     * Method launches service
-     *
-     * @param Service|string $service
-     *            name of the service class or the service object itself
-     * @param ServiceLogic|string $serviceLogic
-     *            Logic of the service
-     * @param ServiceModel|string $serviceModel
-     *            Model of the service
-     * @param ServiceSecurityProviderInterface|string $securityProvider
-     *            name of the service security provider class or the service security provider itself
-     * @param Transport|string $serviceTransport
-     *            name of the service transport class or the service transport itself
-     * @param bool $runService
-     *            Shold be service lanched
-     * @return Service Created service
-     * @deprecated See Service::run
-     */
-    public static function launch(
-        $service,
-        $serviceLogic = ServiceLogic::class,
-        $serviceModel = ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = ServiceRestTransport\ServiceRestTransport::class,
-        bool $runService = true): ServiceBase
-    {
-        if (is_string($service)) {
-            $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
-        }
-
-        if ($runService === false) {
-            return $service;
-        }
-
-        $service->run();
-
-        return $service;
-    }
-
-    /**
-     * Method launches service
-     *
-     * @param Service|string $service
-     *            name of the service class or the service object itself
-     * @param ServiceLogic|string $serviceLogic
-     *            Logic of the service
-     * @param ServiceModel|string $serviceModel
-     *            Model of the service
-     * @param ServiceSecurityProviderInterface|string $securityProvider
-     *            name of the service security provider class or the service security provider itself
-     * @param Transport|string $serviceTransport
-     *            name of the service transport class or the service transport itself
-     * @param bool $runService
-     *            Shold be service lanched
-     * @return Service Created service
-     */
-    public static function start(
-        $service,
-        $serviceLogic = ServiceLogic::class,
-        $serviceModel = ServiceModel::class,
-        $securityProvider = \Mezon\Security\MockProvider::class,
-        $serviceTransport = ServiceRestTransport\ServiceRestTransport::class,
-        bool $runService = true): ServiceBase
-    {
-        if (is_string($service)) {
-            $service = new $service($serviceLogic, $serviceModel, $securityProvider, $serviceTransport);
-        }
-
-        if ($runService === false) {
-            return $service;
-        }
-
-        $service->run();
-
-        return $service;
     }
 }
