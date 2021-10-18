@@ -1,9 +1,6 @@
 <?php
 namespace Mezon\Service;
 
-use Mezon\Security\ProviderInterface;
-use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
-
 /**
  * Class Service
  *
@@ -65,54 +62,6 @@ class ServiceBase
                 $this->serviceTransport->fetchActions($actionsSet);
             }
         }
-    }
-
-    /**
-     * Method constructs service logic if necessary
-     *
-     * @param mixed $serviceLogic
-     *            Service logic class name of object itself
-     * @param mixed $serviceModel
-     *            Service model class name of object itself
-     * @return ServiceLogic logic object
-     */
-    protected function constructServiceLogic($serviceLogic, $serviceModel)
-    {
-        if (is_string($serviceLogic)) {
-            $result = new $serviceLogic(
-                $this->serviceTransport->getParamsFetcher(),
-                $this->serviceTransport->getSecurityProvider(),
-                $serviceModel);
-        } else {
-            $result = $serviceLogic;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Method inits service's logic
-     *
-     * @param mixed $serviceLogic
-     *            Service's logic
-     * @param mixed $serviceModel
-     *            Service's Model
-     */
-    protected function initServiceLogic($serviceLogic, $serviceModel): void
-    {
-        if (is_array($serviceLogic)) {
-            $this->serviceLogics = [];
-
-            foreach ($serviceLogic as $logic) {
-                $this->serviceLogics[] = $this->constructServiceLogic($logic, $serviceModel);
-            }
-        } else {
-            $this->serviceLogics = [
-                $this->constructServiceLogic($serviceLogic, $serviceModel)
-            ];
-        }
-
-        $this->serviceTransport->setServiceLogics($this->serviceLogics);
     }
 
     /**
