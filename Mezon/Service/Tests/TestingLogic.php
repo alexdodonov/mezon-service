@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\Service\Tests;
 
+use Mezon\Service\ServiceLogic;
+
 /**
  * The file contains testing classes.
  */
@@ -9,15 +11,15 @@ namespace Mezon\Service\Tests;
  *
  * @author Dodonov A.A.
  */
-class TestingLogic extends \Mezon\Service\ServiceLogic
+class TestingLogic extends ServiceLogic
 {
 
-    public function test()
+    public function test(): string
     {
         return 'test';
     }
 
-    public function test2()
+    public function test2(): string
     {
         return 'test2';
     }

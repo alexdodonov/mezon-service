@@ -47,7 +47,7 @@ abstract class ServiceTests extends TestCase
      * @param string $message
      *            Message to be displayed in case of error
      */
-    protected function assertErrors($content, $message)
+    protected function assertErrors($content, $message): void
     {
         if (strpos($content, 'Warning') !== false || strpos($content, 'Error') !== false ||
             strpos($content, 'Fatal error') !== false || strpos($content, 'Access denied') !== false ||
@@ -66,7 +66,7 @@ abstract class ServiceTests extends TestCase
      * @param string $result
      *            Raw result of the call
      */
-    protected function assertJsonResponse($jsonResult, string $result)
+    protected function assertJsonResponse($jsonResult, string $result): void
     {
         if ($jsonResult === null && $result !== '') {
             $this->fail("JSON result is invalid because of:\r\n$result");
@@ -113,8 +113,10 @@ abstract class ServiceTests extends TestCase
 
     /**
      * Method prepares GET request options
+     *
+     * @return array GET request options
      */
-    protected function prepareGetOptions()
+    protected function prepareGetOptions(): array
     {
         return [
             'http' => [
@@ -154,9 +156,9 @@ abstract class ServiceTests extends TestCase
     protected abstract function getUserData(): array;
 
     /**
-     * Method performs valid connect.
+     * Method performs valid connect
      *
-     * @return mixed Result of the connection.
+     * @return mixed Result of the connection
      */
     protected function validConnect()
     {
@@ -174,9 +176,9 @@ abstract class ServiceTests extends TestCase
     }
 
     /**
-     * Testing API connection.
+     * Testing API connection
      */
-    public function testValidConnect()
+    public function testValidConnect(): void
     {
         // setup and test body
         $result = $this->validConnect();
@@ -192,9 +194,9 @@ abstract class ServiceTests extends TestCase
     }
 
     /**
-     * Testing API invalid connection.
+     * Testing API invalid connection
      */
-    public function testInvalidConnect()
+    public function testInvalidConnect(): void
     {
         // setup
         $data = $this->getUserData();
@@ -211,9 +213,9 @@ abstract class ServiceTests extends TestCase
     }
 
     /**
-     * Testing setting valid token.
+     * Testing setting valid token
      */
-    public function testSetValidToken()
+    public function testSetValidToken(): void
     {
         // setup
         $this->testValidConnect();
@@ -232,9 +234,9 @@ abstract class ServiceTests extends TestCase
     }
 
     /**
-     * Testing setting invalid token.
+     * Testing setting invalid token
      */
-    public function testSetInvalidToken()
+    public function testSetInvalidToken(): void
     {
         // setup
         $this->testValidConnect();
@@ -255,7 +257,7 @@ abstract class ServiceTests extends TestCase
     /**
      * Testing login under another user
      */
-    public function testLoginAs()
+    public function testLoginAs(): void
     {
         // setup
         $this->testValidConnect();
@@ -271,8 +273,6 @@ abstract class ServiceTests extends TestCase
         $result = $this->getHttpRequest($url);
 
         // assertions
-        $this->assertEquals(
-            'alexey@dodonov.ru',
-            Fetcher::getField($result, 'login'));
+        $this->assertEquals('alexey@dodonov.ru', Fetcher::getField($result, 'login'));
     }
 }

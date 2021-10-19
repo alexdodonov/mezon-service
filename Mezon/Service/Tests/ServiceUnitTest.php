@@ -5,7 +5,6 @@ use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\ServiceModel;
 use Mezon\Service\Service;
 use Mezon\Security\MockProvider;
-use Mezon\Transport\Tests\MockParamsFetcher;
 
 /**
  *
@@ -18,7 +17,7 @@ class ServiceUnitTest extends ServiceUnitTests
      * Method tests does custom routes were loaded.
      * Trying to read routes both from php and json file and call routes from them.
      */
-    public function testCustomRoutesLoading()
+    public function testCustomRoutesLoading(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 

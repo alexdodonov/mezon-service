@@ -14,28 +14,28 @@ class TestingServiceLogicForRestTransport extends ServiceLogic
         // nop
     }
 
-    public function ok()
+    public function ok(): string
     {
         return "ok";
     }
 
-    public function privateMethod()
+    public function privateMethod(): void
     {
         // nop
     }
 
-    public function publicMethod()
+    public function publicMethod(): void
     {
         // nop
     }
 
-    public function methodException()
+    public function methodException(): void
     {
         throw (new \Exception('Msg'));
     }
 
-    public function methodRestException()
+    public function methodRestException(): void
     {
-        throw (new \Mezon\Rest\Exception('Msg', 0, 1, 1));
+        throw (new \Mezon\Rest\Exception('Msg', 0, 1, '1'));
     }
 }

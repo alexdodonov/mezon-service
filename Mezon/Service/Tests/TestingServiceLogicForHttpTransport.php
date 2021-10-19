@@ -6,12 +6,12 @@ use Mezon\Service\ServiceLogic;
 class TestingServiceLogicForHttpTransport extends ServiceLogic
 {
 
-    public function privateMethod()
+    public function privateMethod(): void
     {
         // nop
     }
 
-    public function publicMethod()
+    public function publicMethod(): void
     {
         // nop
     }

@@ -6,12 +6,12 @@ use Mezon\Service\ServiceLogic;
 class TestingServiceLogicForConsoleTransport extends ServiceLogic
 {
 
-    public function privateMethod()
+    public function privateMethod(): string
     {
         return 'private';
     }
 
-    public function publicMethod()
+    public function publicMethod(): string
     {
         return 'public';
     }

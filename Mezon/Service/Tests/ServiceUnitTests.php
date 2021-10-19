@@ -2,16 +2,8 @@
 namespace Mezon\Service\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Mezon\Service\Service;
-use Mezon\Service\ServiceLogic;
-use Mezon\Service\ServiceModel;
 use Mezon\Security\MockProvider;
-use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
-use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
-use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\Tests\Mocks\TestingTransport;
-use Mezon\Service\ServiceBaseLogic;
-use Mezon\Transport\Tests\MockParamsFetcher;
 
 /**
  * Class ServiceUnitTests
@@ -22,8 +14,6 @@ use Mezon\Transport\Tests\MockParamsFetcher;
  * @version v.1.0 (2019/08/17)
  * @copyright Copyright (c) 2019, aeon.org
  */
-define('AS_STRING', 1);
-define('AS_OBJECT', 2);
 
 /**
  * Common service unit tests
