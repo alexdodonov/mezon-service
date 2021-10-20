@@ -45,6 +45,15 @@ class Service extends ServiceBase
      */
     protected function initCommonRoutes(): void
     {
+        // TODO create these methods in the Transport module, this is transport's responsibility
+        // TODO in ServiceBaseLogic::__construct remove parameters $paramsFetcher and $securityProvider and make setters. It will allow us to avoid
+        // code like this:
+        // $serviceLogic = new Logic($serviceTransport->getParamsFetcher(), $serviceTransport->getSecurityProvider());
+        // $serviceTransport->setServiceLogic($serviceLogic);
+        // and setup $paramsFetcher and $securityProvider in this call $serviceTransport->setServiceLogic($serviceLogic);
+        // this will make our code more neat and short
+        // TODO make Transport accept null instead of $securityProvider - in this way no security is provided for the implemented logic, this will 
+        // help us to make code shortener and avoid creating $securityProvider = new MockProvider(); wich does nothing
         $this->getTransport()->addRoute('/connect/', 'connect', 'POST', 'public_call');
         $this->getTransport()->addRoute('/token/[a:token]/', 'setToken', 'POST');
         $this->getTransport()->addRoute('/self/id/', 'getSelfId', 'GET');
