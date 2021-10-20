@@ -109,14 +109,4 @@ class ServiceBase
     {
         return $this->serviceTransport;
     }
-
-    /**
-     * Method returns logic objects
-     *
-     * @return ServiceLogic[]
-     */
-    public function getLogics()
-    {
-        return $this->serviceLogics;
-    }
 }
