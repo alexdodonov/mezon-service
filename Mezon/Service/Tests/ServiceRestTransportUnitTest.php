@@ -7,7 +7,6 @@ use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
 use Mezon\Transport\Tests\Headers;
-
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);
 }
@@ -34,10 +33,12 @@ class ServiceRestTransportUnitTest extends TestCase
      *
      * @return object ServiceRestTransport mocked object
      */
-    protected function getTransportMock()
+    protected function getTransportMock(): object
     {
         $mock = $this->getMockBuilder(ServiceRestTransport::class)
-        ->setConstructorArgs([new MockProvider()])
+            ->setConstructorArgs([
+            new MockProvider()
+        ])
             ->onlyMethods([
             'header',
             'createSession',
@@ -71,7 +72,7 @@ class ServiceRestTransportUnitTest extends TestCase
      *
      * @return object ServiceLogic mocked object
      */
-    protected function getServiceLogicMock()
+    protected function getServiceLogicMock(): object
     {
         return $this->getMockBuilder(TestingServiceLogicForRestTransport::class)
             ->disableOriginalConstructor()
@@ -84,7 +85,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing that security provider was set
      */
-    public function testSecurityProviderInitObject()
+    public function testSecurityProviderInitObject(): void
     {
         $transport = new ServiceRestTransport(new MockProvider());
         $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
@@ -93,7 +94,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing that header function is called once for each header
      */
-    public function testSingleHeaderCallPublic()
+    public function testSingleHeaderCallPublic(): void
     {
         $mock = $this->getTransportMock();
 
@@ -130,7 +131,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing public call without createSession method.
      */
-    public function testPublicCall()
+    public function testPublicCall(): void
     {
         // setup
         $mock = $this->setupMethod('publicMethod');
@@ -163,7 +164,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing private call with createSession method.
      */
-    public function testPrivateCall()
+    public function testPrivateCall(): void
     {
         // setup
         $mock = $this->setupPrivateMethod('privateMethod');
@@ -175,7 +176,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing public call with exception throwing
      */
-    public function testPublicCallException()
+    public function testPublicCallException(): void
     {
         // setup
         $mock = $this->setupMethod('methodException');
@@ -189,7 +190,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing public call with exception throwing
      */
-    public function testPublicCallRestException()
+    public function testPublicCallRestException(): void
     {
         // setup
         $mock = $this->setupMethod('methodRestException');
@@ -202,7 +203,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing private call with exception throwing
      */
-    public function testPrivateCallException()
+    public function testPrivateCallException(): void
     {
         // setup
         $mock = $this->setupPrivateMethod('methodException');
@@ -216,7 +217,7 @@ class ServiceRestTransportUnitTest extends TestCase
     /**
      * Testing private call with exception throwing
      */
-    public function testPrivateCallRestException()
+    public function testPrivateCallRestException(): void
     {
         // setup
         $mock = $this->setupPrivateMethod('methodRestException');
@@ -286,8 +287,10 @@ class ServiceRestTransportUnitTest extends TestCase
 
     /**
      * Getting tricky mock object
+     *
+     * @return object mock object
      */
-    protected function getTransportMockEx(string $mode = 'publicCall')
+    protected function getTransportMockEx(string $mode = 'publicCall'): object
     {
         $mock = $this->getTransportMock();
 
@@ -351,9 +354,9 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing that header function is called once for each header.
+     * Testing that header function is called once for each header
      */
-    public function testSingleHeaderCall()
+    public function testSingleHeaderCall(): void
     {
         // setup
         Headers::setAllHeaders([

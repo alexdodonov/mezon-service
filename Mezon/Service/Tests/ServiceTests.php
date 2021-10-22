@@ -24,20 +24,24 @@ abstract class ServiceTests extends TestCase
 
     /**
      * Session id
+     *
+     * @var string
      */
-    protected $sessionId = false;
+    protected $sessionId = '';
 
     /**
      * Server path
+     *
+     * @var string
      */
-    protected static $serverPath = false;
+    protected static $serverPath = '';
 
     /**
      * Headers
      *
-     * @var string
+     * @var ?array
      */
-    protected $headers = false;
+    protected $headers = null;
 
     /**
      * Method asserts for errors and warnings in the html code
@@ -55,7 +59,7 @@ abstract class ServiceTests extends TestCase
             throw (new \Exception($message . "\r\n" . $content));
         }
 
-        $this->addToAssertionCount(1);
+        $this->assertTrue(true);
     }
 
     /**
@@ -96,8 +100,8 @@ abstract class ServiceTests extends TestCase
             'http' => [
                 'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0\r\n" .
-                ($this->sessionId !== false ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
-                ($this->headers !== false ? implode("\r\n", $this->headers) . "\r\n" : ''),
+                ($this->sessionId !== '' ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
+                ($this->headers !== null ? implode("\r\n", $this->headers) . "\r\n" : ''),
                 'method' => 'POST',
                 'content' => http_build_query($data)
             ]
@@ -122,8 +126,8 @@ abstract class ServiceTests extends TestCase
             'http' => [
                 'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0\r\n" .
-                ($this->sessionId !== false ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
-                ($this->headers !== false ? implode("\r\n", $this->headers) . "\r\n" : ''),
+                ($this->sessionId !== '' ? "Cgi-Authorization: Basic " . $this->sessionId . "\r\n" : '') .
+                ($this->headers !== null ? implode("\r\n", $this->headers) . "\r\n" : ''),
                 'method' => 'GET'
             ]
         ];
