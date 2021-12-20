@@ -7,6 +7,7 @@ use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
 use Mezon\Transport\Tests\Headers;
+// TODO remove this crap!!!
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);
 }
@@ -35,7 +36,7 @@ class ServiceRestTransportUnitTest extends TestCase
      */
     protected function getTransportMock(): object
     {
-        $mock = $this->getMockBuilder(ServiceRestTransport::class)
+        $mock = $this->getMockBuilder(ServiceRestTransportMock::class)
             ->setConstructorArgs([
             new MockProvider()
         ])
@@ -52,17 +53,7 @@ class ServiceRestTransportUnitTest extends TestCase
         $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, 1));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
-        $mock->setParamsFetcher(
-            $this->getMockBuilder(HttpRequestParams::class)
-                ->onlyMethods([
-                'getParam'
-            ])
-                ->disableOriginalConstructor()
-                ->getMock());
-
-        $mock->getParamsFetcher()
-            ->method('getParam')
-            ->willReturn('token');
+        $mock->setParamsFetcher(new HttpRequestParamsMock());
 
         return $mock;
     }
