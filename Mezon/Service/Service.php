@@ -1,8 +1,6 @@
 <?php
 namespace Mezon\Service;
 
-use Mezon\Security\ProviderInterface;
-
 /**
  * Class Service
  *

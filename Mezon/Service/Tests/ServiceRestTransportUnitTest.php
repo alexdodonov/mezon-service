@@ -3,7 +3,6 @@ namespace Mezon\Service\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
-use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
 use Mezon\Transport\Tests\Headers;
@@ -50,7 +49,7 @@ class ServiceRestTransportUnitTest extends TestCase
 
         $mock->expects($this->once())
             ->method('header');
-        $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, 1));
+        $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, '1'));
         $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
 
         $mock->setParamsFetcher(new HttpRequestParamsMock());

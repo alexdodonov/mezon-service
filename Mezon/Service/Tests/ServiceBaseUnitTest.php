@@ -4,13 +4,10 @@ namespace Mezon\Service\Tests;
 use Mezon\Security\MockProvider;
 use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceBase;
-use Mezon\Service\ServiceBaseLogic;
-use Mezon\Service\ServiceModel;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\Tests\Mocks\TestingTransport;
-use Mezon\Transport\Tests\MockParamsFetcher;
 
 /**
  *
@@ -22,7 +19,7 @@ class ServiceBaseUnitTest extends TestCase
     /**
      * Testing getTransport method
      */
-    public function testGetTransport()
+    public function testGetTransport(): void
     {
         // setup
         $provider = new MockProvider();
@@ -35,7 +32,7 @@ class ServiceBaseUnitTest extends TestCase
     /**
      * Testing getTransport method
      */
-    public function testSetTransport()
+    public function testSetTransport(): void
     {
         // setup
         $provider = new MockProvider();
