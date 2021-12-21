@@ -28,7 +28,7 @@ class ServiceHttpTransportUnitTest extends TestCase
      *
      * @return object ServiceLogic mocked object
      */
-    protected function getServiceLogicMock(): void
+    protected function getServiceLogicMock(): object
     {
         return $this->getMockBuilder(TestingServiceLogicForHttpTransport::class)
             ->disableOriginalConstructor()
@@ -142,8 +142,10 @@ class ServiceHttpTransportUnitTest extends TestCase
 
     /**
      * Getting tricky mock object
+     * 
+     * @return object mock object
      */
-    protected function getTransportMockEx(string $mode = 'publicCall'): void
+    protected function getTransportMockEx(string $mode = 'publicCall'): object
     {
         $mock = $this->getTransportMock();
 
