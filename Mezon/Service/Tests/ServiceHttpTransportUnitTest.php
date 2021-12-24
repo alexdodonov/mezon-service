@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
+use Mezon\Transport\Tests\MockParamsFetcher;
 
 /**
  *
@@ -58,17 +59,9 @@ class ServiceHttpTransportUnitTest extends TestCase
         $mock->expects($this->once())
             ->method('header');
 
-        $mock->setParamsFetcher(
-            $this->getMockBuilder(HttpRequestParams::class)
-                ->onlyMethods([
-                'getParam'
-            ])
-                ->disableOriginalConstructor()
-                ->getMock());
+        $paramFetcher = new MockParamsFetcher('token');
 
-        $mock->getParamsFetcher()
-            ->method('getParam')
-            ->willReturn('token');
+        $mock->setParamsFetcher($paramFetcher);
 
         return $mock;
     }
@@ -142,7 +135,7 @@ class ServiceHttpTransportUnitTest extends TestCase
 
     /**
      * Getting tricky mock object
-     * 
+     *
      * @return object mock object
      */
     protected function getTransportMockEx(string $mode = 'publicCall'): object
@@ -241,9 +234,9 @@ class ServiceHttpTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing method
+     * Testing trace outputting
      */
-    public function test(): void
+    public function testTraceOutput(): void
     {
         // setup
         $e = [

@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\Service\ServiceConsoleTransport;
 
+use Mezon\Service\Transport;
+use Mezon\Transport\RequestParamsInterface;
+
 /**
  * Class ServiceConsoleTransport
  *
@@ -14,22 +17,22 @@ namespace Mezon\Service\ServiceConsoleTransport;
 /**
  * Console transport for all services
  */
-class ServiceConsoleTransport extends \Mezon\Service\Transport
+class ServiceConsoleTransport extends Transport
 {
 
     /**
      * Execution result
      */
-    public $result;
+    public static $result;
 
     /**
      * Method creates parameters fetcher
      *
-     * @return \Mezon\Transport\RequestParamsInterface paremeters fetcher
+     * @return RequestParamsInterface paremeters fetcher
      */
-    public function createFetcher(): \Mezon\Transport\RequestParamsInterface
+    public function createFetcher(): RequestParamsInterface
     {
-        return new \Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams($this->getRouter());
+        return new ConsoleRequestParams($this->getRouter());
     }
 
     /**
@@ -37,7 +40,7 @@ class ServiceConsoleTransport extends \Mezon\Service\Transport
      */
     public function run(): void
     {
-        $this->result = $this->getRouter()->callRoute($_GET['r']);
+        static::$result = $this->getRouter()->callRoute($_GET['r']);
     }
 
     /**

@@ -1,6 +1,10 @@
 <?php
 namespace Mezon\Service\ServiceHttpTransport;
 
+use Mezon\Service\Transport;
+use Mezon\Transport\RequestParamsInterface;
+use Mezon\Transport\HttpRequestParams;
+
 /**
  * Class ServiceHttpTransport
  *
@@ -16,7 +20,7 @@ namespace Mezon\Service\ServiceHttpTransport;
  *
  * @author Dodonov A.A.
  */
-class ServiceHttpTransport extends \Mezon\Service\Transport
+class ServiceHttpTransport extends Transport
 {
 
     /**
@@ -34,11 +38,11 @@ class ServiceHttpTransport extends \Mezon\Service\Transport
     /**
      * Method creates parameters fetcher
      *
-     * @return \Mezon\Transport\RequestParamsInterface paremeters fetcher
+     * @return RequestParamsInterface paremeters fetcher
      */
-    public function createFetcher(): \Mezon\Transport\RequestParamsInterface
+    public function createFetcher(): RequestParamsInterface
     {
-        return new \Mezon\Transport\HttpRequestParams($this->getRouter());
+        return new HttpRequestParams($this->getRouter());
     }
 
     /**
@@ -50,7 +54,7 @@ class ServiceHttpTransport extends \Mezon\Service\Transport
      *            Header value
      * @codeCoverageIgnore
      */
-    protected function header(string $header, string $value)
+    protected function header(string $header, string $value): void
     {
         @header($header . ':' . $value);
     }

@@ -63,7 +63,7 @@ class ServiceBaseUnitTest extends TestCase
         $service->run();
 
         // assertions
-        $this->assertEquals('Action!', $service->getTransport()->result);
+        $this->assertEquals('Action!', ServiceConsoleTransport::$result);
     }
 
     /**
@@ -81,7 +81,7 @@ class ServiceBaseUnitTest extends TestCase
         $service->run();
 
         // assertions
-        $this->assertEquals('Action!', $service->getTransport()->result);
+        $this->assertEquals('Action!', ServiceConsoleTransport::$result);
     }
 
     /**

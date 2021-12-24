@@ -6,6 +6,8 @@ use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
 use Mezon\Transport\Tests\Headers;
+use Mezon\Service\Tests\Mocks\ServiceRestTransportMock;
+use Mezon\Service\Tests\Mocks\HttpRequestParamsMock;
 // TODO remove this crap!!!
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);

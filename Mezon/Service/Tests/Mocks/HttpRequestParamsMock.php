@@ -1,5 +1,5 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\Tests\Mocks;
 
 use Mezon\Transport\HttpRequestParams;
 use Mezon\Router\Router;

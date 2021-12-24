@@ -143,6 +143,6 @@ class ServiceConsoleTransportUnitTest extends \PHPUnit\Framework\TestCase
         $mock->run();
 
         // assertions
-        $this->assertEquals('public', $mock->result);
+        $this->assertEquals('public', ServiceConsoleTransport::$result);
     }
 }
