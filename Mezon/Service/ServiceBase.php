@@ -24,7 +24,7 @@ class ServiceBase
     /**
      * Service's ransport
      *
-     * @var object Service transport object
+     * @var TransportInterface service transport object
      */
     private $serviceTransport;
 
@@ -103,9 +103,9 @@ class ServiceBase
     /**
      * Method returns transport
      *
-     * @return Transport
+     * @return TransportInterface transport
      */
-    public function getTransport(): Transport
+    public function getTransport(): TransportInterface
     {
         return $this->serviceTransport;
     }

@@ -22,6 +22,8 @@ class ServiceConsoleTransport extends Transport
 
     /**
      * Execution result
+     * 
+     * @var mixed
      */
     public static $result;
 
@@ -46,8 +48,8 @@ class ServiceConsoleTransport extends Transport
     /**
      * Method creates session
      *
-     * @param bool|string $token
-     *            Session token
+     * @param string $token
+     *            session token
      */
     public function createSession(string $token): string
     {

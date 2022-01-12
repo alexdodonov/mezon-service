@@ -5,7 +5,7 @@ use Mezon\Router\Router;
 use Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams;
 
 /**
- * 
+ *
  * @psalm-suppress PropertyNotSetInConstructor
  */
 class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
@@ -19,13 +19,11 @@ class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
         // setup
         $router = new Router();
         $requestParams = new ConsoleRequestParams($router);
-        global $argv;
-        $argv['param'] = 'value';
 
         // test body
-        $result = $requestParams->getParam('param');
+        $result = $requestParams->getParam(0);
 
         // assertions
-        $this->assertEquals('value', $result);
+        $this->assertEquals('./vendor/phpunit/phpunit/phpunit', $result);
     }
 }

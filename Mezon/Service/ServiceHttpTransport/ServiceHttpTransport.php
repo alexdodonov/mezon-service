@@ -4,6 +4,7 @@ namespace Mezon\Service\ServiceHttpTransport;
 use Mezon\Service\Transport;
 use Mezon\Transport\RequestParamsInterface;
 use Mezon\Transport\HttpRequestParams;
+use Mezon\Service\ServiceBaseLogicInterface;
 
 /**
  * Class ServiceHttpTransport
@@ -27,8 +28,8 @@ class ServiceHttpTransport extends Transport
      * Method creates session from existing token or fetched from HTTP headers
      *
      * @param string $token
-     *            Session token
-     * @return string Session token
+     *            session token
+     * @return string session token
      */
     public function createSession(string $token): string
     {
@@ -49,9 +50,9 @@ class ServiceHttpTransport extends Transport
      * Method outputs HTTP header
      *
      * @param string $header
-     *            Header name
+     *            header name
      * @param string $value
-     *            Header value
+     *            header value
      * @codeCoverageIgnore
      */
     protected function header(string $header, string $value): void
@@ -62,7 +63,7 @@ class ServiceHttpTransport extends Transport
     /**
      * Method runs logic functions
      *
-     * @param \Mezon\Service\ServiceBaseLogicInterface $serviceLogic
+     * @param ServiceBaseLogicInterface $serviceLogic
      *            object with all service logic
      * @param string $method
      *            logic's method to be executed
@@ -70,7 +71,7 @@ class ServiceHttpTransport extends Transport
      *            logic's parameters
      * @return mixed Result of the called method
      */
-    public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
+    public function callLogic(ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
         $this->header('Content-Type', 'text/html; charset=utf-8');
 
@@ -80,7 +81,7 @@ class ServiceHttpTransport extends Transport
     /**
      * Method runs logic functions
      *
-     * @param \Mezon\Service\ServiceBaseLogicInterface $serviceLogic
+     * @param ServiceBaseLogicInterface $serviceLogic
      *            object with all service logic
      * @param string $method
      *            logic's method to be executed
@@ -89,7 +90,7 @@ class ServiceHttpTransport extends Transport
      * @return mixed Result of the called method
      */
     public function callPublicLogic(
-        \Mezon\Service\ServiceBaseLogicInterface $serviceLogic,
+        ServiceBaseLogicInterface $serviceLogic,
         string $method,
         array $params = [])
     {

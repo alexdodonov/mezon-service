@@ -1,6 +1,8 @@
 <?php
 namespace Mezon\Service\ServiceConsoleTransport;
 
+use Mezon\Transport\RequestParams;
+
 /**
  * Class ConsoleRequestParams
  *
@@ -14,13 +16,13 @@ namespace Mezon\Service\ServiceConsoleTransport;
 /**
  * Request params fetcher
  */
-class ConsoleRequestParams extends \Mezon\Transport\RequestParams
+class ConsoleRequestParams extends RequestParams
 {
 
     /**
      * Method returns session id from HTTP header
      *
-     * @return string Session id
+     * @return string session id
      * @codeCoverageIgnore
      */
     protected function getSessionId()
@@ -32,17 +34,17 @@ class ConsoleRequestParams extends \Mezon\Transport\RequestParams
      * Method returns parameter
      *
      * @param string $param
-     *            - parameter name
+     *            parameter name
      * @param mixed $default
-     *            - default value
-     * @return mixed Parameter value
+     *            default value
+     * @return mixed parameter value
      */
     public function getParam($param, $default = false)
     {
         global $argv;
 
-        if (isset($argv[$param])) {
-            return $argv[$param];
+        if (isset($argv[(int) $param])) {
+            return $argv[(int) $param];
         }
 
         return $default;

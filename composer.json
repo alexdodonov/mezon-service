@@ -42,6 +42,10 @@
 	},
 	"scripts": {
 		"test": "php ./vendor/phpunit/phpunit/phpunit",
-		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache"
+		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
+		"psalm-self": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache --config=psalm-self.xml"
+	},
+	"config": {
+		"process-timeout": 0
 	}
 }
