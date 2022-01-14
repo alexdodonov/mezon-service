@@ -39,9 +39,9 @@ class Service extends ServiceBase
     }
 
     /**
-     * Method inits common servoce's routes
+     * Method inits common service's routes
      */
-    protected function initCommonRoutes(): void
+    private function initCommonRoutes(): void
     {
         // TODO create these methods in the Transport module, this is transport's responsibility
         // TODO in ServiceBaseLogic::__construct remove parameters $paramsFetcher and $securityProvider and make setters. It will allow us to avoid

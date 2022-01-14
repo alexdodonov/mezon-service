@@ -1,6 +1,9 @@
 <?php
 namespace Mezon\Service\ServiceRestTransport;
 
+use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
+use Mezon\Service\ServiceBaseLogicInterface;
+
 /**
  * Class ServiceRestTransport
  *
@@ -16,13 +19,13 @@ namespace Mezon\Service\ServiceRestTransport;
  *
  * @author Dodonov A.A.
  */
-class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHttpTransport
+class ServiceRestTransport extends ServiceHttpTransport
 {
 
     /**
      * Method runs logic functions.
      *
-     * @param \Mezon\Service\ServiceBaseLogicInterface $serviceLogic
+     * @param ServiceBaseLogicInterface $serviceLogic
      *            -
      *            object with all service logic.
      * @param string $method
@@ -33,7 +36,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
      *            logic's parameters.
      * @return mixed Result of the called method.
      */
-    public function callLogic(\Mezon\Service\ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
+    public function callLogic(ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
         $this->header('Content-Type', 'application/json');
 
@@ -55,7 +58,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
     /**
      * Method runs logic functions.
      *
-     * @param \Mezon\Service\ServiceBaseLogicInterface $serviceLogic
+     * @param ServiceBaseLogicInterface $serviceLogic
      *            -
      *            object with all service logic.
      * @param string $method
@@ -66,10 +69,7 @@ class ServiceRestTransport extends \Mezon\Service\ServiceHttpTransport\ServiceHt
      *            logic's parameters.
      * @return mixed Result of the called method.
      */
-    public function callPublicLogic(
-        \Mezon\Service\ServiceBaseLogicInterface $serviceLogic,
-        string $method,
-        array $params = [])
+    public function callPublicLogic(ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
     {
         $this->header('Content-Type', 'application/json');
 

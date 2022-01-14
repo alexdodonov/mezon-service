@@ -28,4 +28,20 @@ class ConsoleRequestParamsUnitTest extends \PHPUnit\Framework\TestCase
         // assertions
         $this->assertEquals('./vendor/phpunit/phpunit/phpunit', $result);
     }
+
+    /**
+     * Testing getParam method
+     */
+    public function testGetParamDefault(): void
+    {
+        // setup
+        $router = new Router();
+        $requestParams = new ConsoleRequestParams($router);
+
+        // test body
+        $result = $requestParams->getParam(1000, 'default');
+
+        // assertions
+        $this->assertEquals('default', $result);
+    }
 }

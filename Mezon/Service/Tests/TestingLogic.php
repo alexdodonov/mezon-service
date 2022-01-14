@@ -23,4 +23,16 @@ class TestingLogic extends ServiceLogic
     {
         return 'test2';
     }
+
+    /**
+     * Method creates connection
+     *
+     * @return array session id
+     */
+    public function connect(): array
+    {
+        return [
+            'session-id' => 'connect'
+        ];
+    }
 }
