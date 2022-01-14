@@ -32,7 +32,7 @@ class ServiceUnitTest extends ServiceUnitTests
         ])
             ->getMock();
 
-        $logic = new TestingLogic($transport->getParamsFetcher(), $transport->getAuthorizationProvider(), new ServiceModel());
+        $logic = new TestingLogic($transport->getParamsFetcher(), $transport->getSecurityProvider(), new ServiceModel());
 
         $transport->setServiceLogic($logic);
 
