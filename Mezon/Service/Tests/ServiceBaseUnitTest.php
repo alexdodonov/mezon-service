@@ -7,7 +7,7 @@ use Mezon\Service\ServiceBase;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
-use Mezon\Service\Tests\Mocks\TestingTransport;
+use Mezon\Conf\Conf;
 
 /**
  *
@@ -15,6 +15,18 @@ use Mezon\Service\Tests\Mocks\TestingTransport;
  */
 class ServiceBaseUnitTest extends TestCase
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        Conf::setConfigStringValue('system/layer', 'mock');
+    }
+
+    // TODO split this file into parts
 
     /**
      * Testing getTransport method
@@ -92,7 +104,7 @@ class ServiceBaseUnitTest extends TestCase
         // setup and assertions
         ob_start();
         $provider = new MockProvider();
-        new ExceptionTestingBaseService(new TestingTransport($provider));
+        new ExceptionTestingBaseService(new ServiceConsoleTransport($provider));
         $content = ob_get_contents();
         ob_end_clean();
 

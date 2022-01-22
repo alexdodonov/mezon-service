@@ -3,13 +3,14 @@ namespace Mezon\Service\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\Security\MockProvider;
-use Mezon\Service\Tests\Mocks\TestingTransport;
+use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
+use Mezon\Conf\Conf;
 
 /**
- * Class ServiceUnitTests
+ * Class ConstructorUnitTest
  *
  * @package Service
- * @subpackage ServiceUnitTests
+ * @subpackage ConstructorUnitTest
  * @author Dodonov A.A.
  * @version v.1.0 (2019/08/17)
  * @copyright Copyright (c) 2019, aeon.org
@@ -21,8 +22,18 @@ use Mezon\Service\Tests\Mocks\TestingTransport;
  * @author Dodonov A.A.
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class ServiceUnitTests extends TestCase
+class ConstructorUnitTest extends TestCase
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        Conf::setConfigStringValue('system/layer', 'mock');
+    }
 
     /**
      * Testing method
@@ -31,7 +42,7 @@ class ServiceUnitTests extends TestCase
     {
         // setup and test body
         ob_start();
-        new ExceptionTestingService(new TestingTransport(new MockProvider()));
+        new ExceptionTestingService(new ServiceConsoleTransport(new MockProvider()));
         $content = ob_get_contents();
         ob_end_clean();
 

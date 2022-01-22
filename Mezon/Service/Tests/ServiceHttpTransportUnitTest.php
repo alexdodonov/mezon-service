@@ -3,7 +3,6 @@ namespace Mezon\Service\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
-use Mezon\Transport\HttpRequestParams;
 use Mezon\Security\MockProvider;
 use Mezon\Transport\Tests\MockParamsFetcher;
 

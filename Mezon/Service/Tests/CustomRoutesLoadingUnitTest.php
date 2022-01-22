@@ -5,13 +5,26 @@ use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Service\ServiceModel;
 use Mezon\Service\Service;
 use Mezon\Security\MockProvider;
+use Mezon\Conf\Conf;
+use PHPUnit\Framework\TestCase;
 
 /**
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class ServiceUnitTest extends ServiceUnitTests
+class CustomRoutesLoadingUnitTest extends TestCase
 {
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see TestCase::setUp()
+     */
+    protected function setUp(): void
+    {
+        // TODO move to the base class
+        Conf::setConfigStringValue('system/layer', 'mock');
+    }
 
     /**
      * Method tests does custom routes were loaded.
@@ -23,23 +36,15 @@ class ServiceUnitTest extends ServiceUnitTests
 
         $provider = new MockProvider();
 
-        $transport = $this->getMockBuilder(ServiceConsoleTransport::class)
-            ->setConstructorArgs([
-            $provider
-        ])
-            ->onlyMethods([
-            'die'
-        ])
-            ->getMock();
+        $transport = new ServiceConsoleTransport($provider);
 
-        $logic = new TestingLogic($transport->getParamsFetcher(), $transport->getSecurityProvider(), new ServiceModel());
+        $logic = new TestingLogic($transport->getParamsFetcher(), $provider, new ServiceModel());
 
         $transport->setServiceLogic($logic);
+        $transport->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
+        $transport->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));
 
         $service = new Service($transport);
-
-        $service->getTransport()->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
-        $service->getTransport()->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));
 
         // route from routes.php
         $_GET['r'] = 'test';
