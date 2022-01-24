@@ -8,6 +8,8 @@ use Mezon\Rest;
 use Mezon\Transport\Tests\Headers;
 use Mezon\Service\Tests\Mocks\ServiceRestTransportMock;
 use Mezon\Service\Tests\Mocks\HttpRequestParamsMock;
+use Mezon\Headers\Layer;
+use Mezon\Conf\Conf;
 // TODO remove this crap!!!
 if (defined('MEZON_DEBUG') === false) {
     define('MEZON_DEBUG', true);
@@ -28,6 +30,7 @@ class ServiceRestTransportUnitTest extends TestCase
     protected function setUp(): void
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
+        Conf::setConfigStringValue('headers/layer', 'mock');
     }
 
     /**
@@ -351,7 +354,7 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testSingleHeaderCall(): void
     {
         // setup
-        Headers::setAllHeaders([
+        Layer::setAllHeaders([
             'Authentication' => 'Basic token'
         ]);
         $mock = $this->getTransportMock();
