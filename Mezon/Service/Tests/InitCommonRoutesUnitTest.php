@@ -27,14 +27,13 @@ class InitCommonRoutesUnitTest extends TestCase
     }
 
     /**
-     * Testing initCommonRoute for connect method
+     * Testing initCommonRoutes for connect method
      */
     public function testInitCommonConnectRoute(): void
     {
         // setup
         Layer::setAllHeaders([]);
         $securityProvider = new MockProvider();
-        // TODO make it work for the ServiceHttpTransport
         $transport = new ServiceRestTransport($securityProvider);
 
         $logic = new TestingLogic($transport->getParamsFetcher(), $securityProvider, new ServiceModel());
@@ -90,7 +89,6 @@ class InitCommonRoutesUnitTest extends TestCase
             'Authentication' => 'Basic some-token'
         ]);
         $securityProvider = new MockProvider();
-        // TODO make it work for the ServiceHttpTransport
         $transport = new ServiceRestTransport($securityProvider);
 
         $logic = new TestingLogic($transport->getParamsFetcher(), $securityProvider, new ServiceModel());

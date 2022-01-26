@@ -7,13 +7,8 @@ use Mezon\Service\ServiceBaseLogicInterface;
 class TestingBaseService extends ServiceBase implements ServiceBaseLogicInterface
 {
 
-    public function actionTest(): string
+    public function actionTest3(): string
     {
         return 'Action!';
-    }
-
-    protected function initCustomRoutes(): void
-    {
-        // we don't need to load custom routes
     }
 }

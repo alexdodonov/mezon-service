@@ -17,6 +17,7 @@ namespace Mezon\Service;
  * It bounds together transport, request parameters fetcher, logic, authorization and model
  *
  * @author Dodonov A.A.
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ServiceBase
 {

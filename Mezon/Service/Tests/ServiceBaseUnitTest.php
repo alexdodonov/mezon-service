@@ -8,6 +8,7 @@ use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Conf\Conf;
+use Mezon\Service\ServiceModel;
 
 /**
  *
@@ -67,10 +68,12 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new TestingBaseService(new ServiceConsoleTransport($provider));
+        $transport = new ServiceConsoleTransport($provider);
+        $transport->setServiceLogic(new TestingLogic($transport->getParamsFetcher(), $provider, new ServiceModel()));
+        $service = new TestingBaseService($transport);
 
         // test body
-        $_GET['r'] = 'test';
+        $_GET['r'] = 'test3';
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $service->run();
 
@@ -85,10 +88,12 @@ class ServiceBaseUnitTest extends TestCase
     {
         // setup
         $provider = new MockProvider();
-        $service = new TestingBaseService(new ServiceConsoleTransport($provider));
+        $transport = new ServiceConsoleTransport($provider);
+        $transport->setServiceLogic(new TestingLogic($transport->getParamsFetcher(), $provider, new ServiceModel()));
+        $service = new TestingBaseService($transport);
 
         // test body
-        $_GET['r'] = 'test';
+        $_GET['r'] = 'test3';
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $service->run();
 

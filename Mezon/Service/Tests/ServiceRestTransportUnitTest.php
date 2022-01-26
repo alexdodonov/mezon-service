@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
-use Mezon\Transport\Tests\Headers;
 use Mezon\Service\Tests\Mocks\ServiceRestTransportMock;
 use Mezon\Service\Tests\Mocks\HttpRequestParamsMock;
 use Mezon\Headers\Layer;
