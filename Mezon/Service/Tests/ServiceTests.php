@@ -96,6 +96,7 @@ abstract class ServiceTests extends TestCase
      */
     protected function postHttpRequest(array $data, string $url)
     {
+        // TODO use CurlWrapper
         $options = [
             'http' => [
                 'header' => "Content-Type: application/x-www-form-urlencoded\r\n" .
@@ -143,7 +144,8 @@ abstract class ServiceTests extends TestCase
     protected function getHttpRequest(string $url)
     {
         $options = $this->prepareGetOptions();
-
+ 
+        // TODO use CurlWrapper
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
 

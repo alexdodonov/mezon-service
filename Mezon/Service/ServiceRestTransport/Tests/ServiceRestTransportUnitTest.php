@@ -1,18 +1,17 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\ServiceRestTransport\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Security\MockProvider;
 use Mezon\Rest;
-use Mezon\Service\Tests\Mocks\ServiceRestTransportMock;
-use Mezon\Service\Tests\Mocks\HttpRequestParamsMock;
 use Mezon\Headers\Layer;
 use Mezon\Conf\Conf;
-// TODO remove this crap!!!
-if (defined('MEZON_DEBUG') === false) {
-    define('MEZON_DEBUG', true);
-}
+use Mezon\Service\Tests\FakeServiceLogic;
+use Mezon\Transport\Tests\MockParamsFetcher;
+use Mezon\Service\ServiceLogic;
+use Mezon\Service\ServiceModel;
+use Mezon\Functional\Fetcher;
 
 /**
  *
@@ -44,19 +43,11 @@ class ServiceRestTransportUnitTest extends TestCase
             new MockProvider()
         ])
             ->onlyMethods([
-            'header',
-            'createSession',
-            'errorResponse',
-            'parentErrorResponse'
+            'errorResponse'
         ])
             ->getMock();
 
-        $mock->expects($this->once())
-            ->method('header');
         $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, '1'));
-        $mock->method('parentErrorResponse')->willThrowException(new \Exception('Msg', 0));
-
-        $mock->setParamsFetcher(new HttpRequestParamsMock());
 
         return $mock;
     }
@@ -74,15 +65,6 @@ class ServiceRestTransportUnitTest extends TestCase
             'connect'
         ])
             ->getMock();
-    }
-
-    /**
-     * Testing that security provider was set
-     */
-    public function testSecurityProviderInitObject(): void
-    {
-        $transport = new ServiceRestTransport(new MockProvider());
-        $this->assertInstanceOf(MockProvider::class, $transport->getSecurityProvider());
     }
 
     /**
@@ -111,13 +93,11 @@ class ServiceRestTransportUnitTest extends TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->setServiceLogic($this->getServiceLogicMock());
-
-        $mock->expects($this->never())
-            ->method('createSession');
+        $serviceLogic = new FakeServiceLogic();
+        $mock->setServiceLogic($serviceLogic);
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $mock->addRoute('public-method', $methodName, 'GET', 'public_call');
+        $mock->addRoute('public-logic', $methodName, 'GET', 'public_call');
 
         return $mock;
     }
@@ -128,10 +108,19 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testPublicCall(): void
     {
         // setup
-        $mock = $this->setupMethod('publicMethod');
+        Layer::setAllHeaders([]);
+        $serviceTransport = new ServiceRestTransport();
 
-        // test body and assertions
-        $mock->getRouter()->callRoute('/public-method/');
+        $serviceLogic = new FakeServiceLogic();
+        $serviceTransport->setServiceLogic($serviceLogic);
+
+        $serviceTransport->addRoute('public-logic', 'publicLogic', 'GET', 'public_call');
+
+        // test body
+        $result = $serviceTransport->getRouter()->callRoute('/public-logic/');
+
+        // assertions
+        $this->assertEquals('public', $result);
     }
 
     /**
@@ -145,81 +134,36 @@ class ServiceRestTransportUnitTest extends TestCase
     {
         $mock = $this->getTransportMock();
 
-        $mock->setServiceLogic($this->getServiceLogicMock());
+        // TODO create FakeServiceBaseLogic wich will work without `new ServiceModel()`
+        $serviceLogic = new FakeServiceLogic();
+        $mock->setServiceLogic($serviceLogic);
 
-        $mock->expects($this->once())
-            ->method('createSession');
-
-        $mock->addRoute('private-method', $methodName, 'GET', 'private_call');
+        $mock->addRoute('secure-logic', $methodName, 'GET', 'private_call');
 
         return $mock;
     }
 
     /**
-     * Testing private call with createSession method.
+     * Testing private call with createSession method
      */
     public function testPrivateCall(): void
     {
         // setup
-        $mock = $this->setupPrivateMethod('privateMethod');
+        Layer::setAllHeaders([
+            'Authentication' => 'Basic token'
+        ]);
+        $serviceTransport = new ServiceRestTransport();
 
-        // test body and assertions
-        $mock->getRouter()->callRoute('/private-method/');
-    }
+        $serviceLogic = new FakeServiceLogic();
+        $serviceTransport->setServiceLogic($serviceLogic);
 
-    /**
-     * Testing public call with exception throwing
-     */
-    public function testPublicCallException(): void
-    {
-        // setup
-        $mock = $this->setupMethod('methodException');
+        $serviceTransport->addRoute('secure-logic', 'secureLogic', 'GET', 'private_call');
 
-        $this->expectException(\Exception::class);
+        // test body
+        $result = $serviceTransport->getRouter()->callRoute('/secure-logic/');
 
-        // test body and assertions
-        $mock->getRouter()->callRoute('/public-method/');
-    }
-
-    /**
-     * Testing public call with exception throwing
-     */
-    public function testPublicCallRestException(): void
-    {
-        // setup
-        $mock = $this->setupMethod('methodRestException');
-
-        $this->expectException(\Exception::class);
-        // test body and assertions
-        $mock->getRouter()->callRoute('/public-method/');
-    }
-
-    /**
-     * Testing private call with exception throwing
-     */
-    public function testPrivateCallException(): void
-    {
-        // setup
-        $mock = $this->setupPrivateMethod('methodException');
-
-        $this->expectException(\Exception::class);
-
-        // test body and assertions
-        $mock->getRouter()->callRoute('/private-method/');
-    }
-
-    /**
-     * Testing private call with exception throwing
-     */
-    public function testPrivateCallRestException(): void
-    {
-        // setup
-        $mock = $this->setupPrivateMethod('methodRestException');
-
-        $this->expectException(\Exception::class);
-
-        // test body and assertions
-        $mock->getRouter()->callRoute('/private-method/');
+        // assertions
+        $this->assertEquals('secure', $result);
     }
 
     /**
@@ -230,7 +174,7 @@ class ServiceRestTransportUnitTest extends TestCase
         // setup
         $_SERVER['HTTP_HOST'] = 'http://service';
         $e = new \Exception('msg', 1);
-        $Transport = new ServiceRestTransport(new MockProvider());
+        $Transport = new ServiceRestTransport();
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -249,7 +193,7 @@ class ServiceRestTransportUnitTest extends TestCase
         // setup
         $_SERVER['HTTP_HOST'] = 'http://rest-service';
         $e = new Rest\Exception('msg', 1, 200, 'body');
-        $Transport = new ServiceRestTransport(new MockProvider());
+        $Transport = new ServiceRestTransport();
 
         // test body
         $result = $Transport->errorResponse($e);
@@ -263,23 +207,6 @@ class ServiceRestTransportUnitTest extends TestCase
     }
 
     /**
-     * Testing parentErrorResponse method
-     */
-    public function testParentErrorResponseRestException(): void
-    {
-        // setup
-        $e = new \Exception('msg', 1);
-        $Transport = new ServiceRestTransport(new MockProvider());
-
-        // test body
-        $result = $Transport->parentErrorResponse($e);
-
-        // assertions
-        $this->assertEquals('msg', $result['message']);
-        $this->assertEquals(1, $result['code']);
-    }
-
-    /**
      * Getting tricky mock object
      *
      * @return object mock object
@@ -289,8 +216,6 @@ class ServiceRestTransportUnitTest extends TestCase
         $mock = $this->getTransportMock();
 
         $mock->setServiceLogic($this->getServiceLogicMock());
-
-        $mock->method('header')->with($this->equalTo('Content-Type'), $this->equalTo('application/json'));
 
         $mock->addRoute('connect', 'connect', 'GET', $mode, [
             'content_type' => 'application/json'
@@ -332,7 +257,7 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testCallRoute(): void
     {
         // setup
-        $transport = new ServiceRestTransport(new MockProvider());
+        $transport = new ServiceRestTransport();
         $transport->setServiceLogic(new TestingServiceLogicForRestTransport());
         $transport->addRoute('/ok/', 'ok', 'GET', 'public_call');
         $_GET['r'] = 'ok';
@@ -353,18 +278,20 @@ class ServiceRestTransportUnitTest extends TestCase
     public function testSingleHeaderCall(): void
     {
         // setup
+        $serviceLogic = new ServiceLogic(new MockParamsFetcher(), new MockProvider(), new ServiceModel());
+
         Layer::setAllHeaders([
             'Authentication' => 'Basic token'
         ]);
-        $mock = $this->getTransportMock();
 
-        $serviceLogic = $this->getServiceLogicMock();
-
-        // assertions
-        $serviceLogic->expects($this->once())
-            ->method('connect');
+        // TODO make constructor Transport::__construct($serviceLogic = null) to make possible use it in this way: new ServiceRestTransport($serviceLogic)
+        $transport = new ServiceRestTransport();
+        $transport->setServiceLogic($serviceLogic);
 
         // test body
-        $mock->callLogic($serviceLogic, 'connect');
+        $result = $transport->callLogic($serviceLogic, 'connect');
+
+        // assertions
+        $this->assertEquals(32, strlen(Fetcher::getField($result, 'session_id')));
     }
 }

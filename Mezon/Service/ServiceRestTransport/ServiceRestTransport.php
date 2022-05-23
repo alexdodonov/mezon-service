@@ -2,7 +2,7 @@
 namespace Mezon\Service\ServiceRestTransport;
 
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
-use Mezon\Service\ServiceBaseLogicInterface;
+use Mezon\Service\Transport;
 
 /**
  * Class ServiceRestTransport
@@ -21,68 +21,15 @@ use Mezon\Service\ServiceBaseLogicInterface;
  */
 class ServiceRestTransport extends ServiceHttpTransport
 {
-
+    
     /**
-     * Method runs logic functions.
      *
-     * @param ServiceBaseLogicInterface $serviceLogic
-     *            -
-     *            object with all service logic.
-     * @param string $method
-     *            -
-     *            logic's method to be executed.
-     * @param array $params
-     *            -
-     *            logic's parameters.
-     * @return mixed Result of the called method.
+     * {@inheritDoc}
+     * @see Transport::logicCallPrepend()
      */
-    public function callLogic(ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
+    protected function logicCallPrepend(): void
     {
         $this->header('Content-Type', 'application/json');
-
-        try {
-            $params['SessionId'] = $this->createSession($this->getParamsFetcher()
-                ->getParam('session_id'));
-
-            return call_user_func_array([
-                $serviceLogic,
-                $method
-            ], $params);
-        } catch (\Mezon\Rest\Exception $e) {
-            return $this->errorResponse($e);
-        } catch (\Exception $e) {
-            return $this->parentErrorResponse($e);
-        }
-    }
-
-    /**
-     * Method runs logic functions.
-     *
-     * @param ServiceBaseLogicInterface $serviceLogic
-     *            -
-     *            object with all service logic.
-     * @param string $method
-     *            -
-     *            logic's method to be executed.
-     * @param array $params
-     *            -
-     *            logic's parameters.
-     * @return mixed Result of the called method.
-     */
-    public function callPublicLogic(ServiceBaseLogicInterface $serviceLogic, string $method, array $params = [])
-    {
-        $this->header('Content-Type', 'application/json');
-
-        try {
-            return call_user_func_array([
-                $serviceLogic,
-                $method
-            ], $params);
-        } catch (\Mezon\Rest\Exception $e) {
-            return $this->errorResponse($e);
-        } catch (\Exception $e) {
-            return $this->parentErrorResponse($e);
-        }
     }
 
     /**
@@ -97,8 +44,8 @@ class ServiceRestTransport extends ServiceHttpTransport
      * Error response compilator
      *
      * @param mixed $e
-     *            Exception object
-     * @return array Error data
+     *            exception object
+     * @return array error data
      */
     public function errorResponse($e): array
     {
@@ -108,9 +55,7 @@ class ServiceRestTransport extends ServiceHttpTransport
             'service' => $_SERVER['HTTP_HOST'] ?? 'unknown'
         ];
 
-        if ($this->isDebug()) {
-            $return['call_stack'] = $this->formatCallStack($e);
-        }
+        $return['call_stack'] = $this->formatCallStack($e);
 
         if ($e instanceof \Mezon\Rest\Exception) {
             $return['http_code'] = $e->getHttpCode();
@@ -118,18 +63,6 @@ class ServiceRestTransport extends ServiceHttpTransport
         }
 
         return $return;
-    }
-
-    /**
-     * Error response compilator
-     *
-     * @param mixed $e
-     *            Exception object
-     * @return array Error data
-     */
-    public function parentErrorResponse($e): array
-    {
-        return parent::errorResponse($e);
     }
 
     /**

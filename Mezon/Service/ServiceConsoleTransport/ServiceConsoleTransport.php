@@ -44,15 +44,4 @@ class ServiceConsoleTransport extends Transport
     {
         static::$result = $this->getRouter()->callRoute($_GET['r']);
     }
-
-    /**
-     * Method creates session
-     *
-     * @param string $token
-     *            session token
-     */
-    public function createSession(string $token): string
-    {
-        return $token;
-    }
 }

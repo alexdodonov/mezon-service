@@ -1,5 +1,5 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\ServiceConsoleTransport\Tests;
 
 use Mezon\Router\Router;
 use Mezon\Service\ServiceConsoleTransport\ConsoleRequestParams;

@@ -34,11 +34,9 @@ class CustomRoutesLoadingUnitTest extends TestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        $provider = new MockProvider();
+        $transport = new ServiceConsoleTransport();
 
-        $transport = new ServiceConsoleTransport($provider);
-
-        $logic = new TestingLogic($transport->getParamsFetcher(), $provider, new ServiceModel());
+        $logic = new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel());
 
         $transport->setServiceLogic($logic);
         $transport->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');

@@ -42,7 +42,7 @@ class ConstructorUnitTest extends TestCase
     {
         // setup and test body
         ob_start();
-        new ExceptionTestingService(new ServiceConsoleTransport(new MockProvider()));
+        new ExceptionTestingService(new ServiceConsoleTransport());
         $content = ob_get_contents();
         ob_end_clean();
 

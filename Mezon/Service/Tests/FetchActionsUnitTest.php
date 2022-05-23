@@ -14,7 +14,7 @@ use Mezon\Service\ServiceModel;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-class ServiceBaseUnitTest extends TestCase
+class FetchActionsUnitTest extends TestCase
 {
 
     /**
@@ -27,36 +27,44 @@ class ServiceBaseUnitTest extends TestCase
         Conf::setConfigStringValue('system/layer', 'mock');
     }
 
-    // TODO split this file into parts
-
     /**
-     * Testing getTransport method
+     * Testing fetchActions call
      */
-    public function testGetTransport(): void
+    public function testFetchActionsGet(): void
     {
         // setup
-        $service = new ServiceBase(new ServiceHttpTransport());
+        $transport = new ServiceConsoleTransport();
+        $transport->setServiceLogic(
+            new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel()));
+        $service = new TestingBaseService($transport);
 
-        // test body and assertions
-        $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
+        // test body
+        $_GET['r'] = 'test3';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $service->run();
+
+        // assertions
+        $this->assertEquals('Action!', ServiceConsoleTransport::$result);
     }
 
     /**
-     * Testing getTransport method
+     * Testing fetchActions call
      */
-    public function testSetTransport(): void
+    public function testFetchActionsPost(): void
     {
         // setup
-        $service = new ServiceBase(new ServiceHttpTransport());
-
-        // assertions
-        $this->assertInstanceOf(ServiceHttpTransport::class, $service->getTransport());
+        $transport = new ServiceConsoleTransport();
+        $transport->setServiceLogic(
+            new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel()));
+        $service = new TestingBaseService($transport);
 
         // test body
-        $service->setTransport(new ServiceRestTransport());
+        $_GET['r'] = 'test3';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $service->run();
 
         // assertions
-        $this->assertInstanceOf(ServiceRestTransport::class, $service->getTransport());
+        $this->assertEquals('Action!', ServiceConsoleTransport::$result);
     }
 
     /**

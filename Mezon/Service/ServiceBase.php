@@ -53,13 +53,13 @@ class ServiceBase
      */
     protected function fetchActions(): void
     {
-        if ($this instanceof ServiceBaseLogicInterface) {
+        if ($this instanceof ServiceActionsInterface) {
             $this->serviceTransport->fetchActions($this);
         }
 
         // TODO move to the Transport class
         foreach ($this->serviceTransport->getServiceLogics() as $actionsSet) {
-            if ($actionsSet instanceof ServiceBaseLogicInterface) {
+            if ($actionsSet instanceof ServiceActionsInterface) {
                 $this->serviceTransport->fetchActions($actionsSet);
             }
         }

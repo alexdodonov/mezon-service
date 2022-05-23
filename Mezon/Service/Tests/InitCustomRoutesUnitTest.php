@@ -33,9 +33,8 @@ class InitCustomRoutesUnitTest extends TestCase
     {
         // setup
         Layer::setAllHeaders([]);
-        $securityProvider = new MockProvider();
-        $transport = new ServiceRestTransport($securityProvider);
-        $logic = new TestingLogic($transport->getParamsFetcher(), $securityProvider, new ServiceModel());
+        $transport = new ServiceRestTransport();
+        $logic = new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel());
         $transport->setServiceLogic($logic);
         new TestingBaseService($transport);
 

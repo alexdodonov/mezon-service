@@ -33,10 +33,9 @@ class InitCommonRoutesUnitTest extends TestCase
     {
         // setup
         Layer::setAllHeaders([]);
-        $securityProvider = new MockProvider();
-        $transport = new ServiceRestTransport($securityProvider);
+        $transport = new ServiceRestTransport();
 
-        $logic = new TestingLogic($transport->getParamsFetcher(), $securityProvider, new ServiceModel());
+        $logic = new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel());
 
         $transport->setServiceLogic($logic);
 
@@ -88,10 +87,9 @@ class InitCommonRoutesUnitTest extends TestCase
         Layer::setAllHeaders([
             'Authentication' => 'Basic some-token'
         ]);
-        $securityProvider = new MockProvider();
-        $transport = new ServiceRestTransport($securityProvider);
+        $transport = new ServiceRestTransport();
 
-        $logic = new TestingLogic($transport->getParamsFetcher(), $securityProvider, new ServiceModel());
+        $logic = new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel());
 
         $transport->setServiceLogic($logic);
 
