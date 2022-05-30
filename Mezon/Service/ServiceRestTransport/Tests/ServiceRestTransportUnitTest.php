@@ -47,8 +47,6 @@ class ServiceRestTransportUnitTest extends TestCase
         ])
             ->getMock();
 
-        $mock->method('errorResponse')->willThrowException(new Rest\Exception('Msg', 0, 1, '1'));
-
         return $mock;
     }
 
