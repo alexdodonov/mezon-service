@@ -7,6 +7,9 @@ use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use PHPUnit\Framework\TestCase;
 use Mezon\Headers\Layer;
 use Mezon\Conf\Conf;
+use Mezon\Service\Tests\Mocks\TestingLogic;
+use Mezon\Service\Tests\Mocks\TestingBaseService;
+use Mezon\Service\Tests\Mocks\NoRoutes\BaseService;
 
 /**
  *
@@ -41,5 +44,20 @@ class InitCustomRoutesUnitTest extends TestCase
         // assertions
         $this->assertTrue($transport->routeExists('test'));
         $this->assertTrue($transport->routeExists('test2'));
+    }
+
+    /**
+     * Testing PHP config load
+     */
+    public function testConstructorForUnexistingConfigs(): void
+    {
+        // setup
+        $transport = new ServiceRestTransport();
+
+        // test body
+        $service = new BaseService($transport);
+
+        // assertions
+        $this->assertInstanceOf(BaseService::class, $service);
     }
 }

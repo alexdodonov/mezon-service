@@ -1,7 +1,8 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\Tests\Mocks;
 
 use Mezon\Service\ServiceLogic;
+use Mezon\Service\ServiceActionsInterface;
 
 /**
  * The file contains testing classes.
@@ -11,7 +12,7 @@ use Mezon\Service\ServiceLogic;
  *
  * @author Dodonov A.A.
  */
-class TestingLogic extends ServiceLogic
+class TestingLogic extends ServiceLogic implements ServiceActionsInterface
 {
 
     public function test(): string
@@ -34,5 +35,15 @@ class TestingLogic extends ServiceLogic
         return [
             'session-id' => 'connect'
         ];
+    }
+
+    /**
+     * Logic from action
+     *
+     * @return string action result
+     */
+    public function actionTest4(): string
+    {
+        return 'test4';
     }
 }

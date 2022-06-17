@@ -2,9 +2,9 @@
 namespace Mezon\Service\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Mezon\Security\MockProvider;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Conf\Conf;
+use Mezon\Service\Tests\Mocks\ExceptionTestingService;
 
 /**
  * Class ConstructorUnitTest

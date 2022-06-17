@@ -8,6 +8,7 @@ use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use PHPUnit\Framework\TestCase;
 use Mezon\Headers\Layer;
 use Mezon\Conf\Conf;
+use Mezon\Service\Tests\Mocks\TestingLogic;
 
 /**
  *

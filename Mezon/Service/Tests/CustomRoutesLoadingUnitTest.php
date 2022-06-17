@@ -7,6 +7,7 @@ use Mezon\Service\Service;
 use Mezon\Security\MockProvider;
 use Mezon\Conf\Conf;
 use PHPUnit\Framework\TestCase;
+use Mezon\Service\Tests\Mocks\TestingLogic;
 
 /**
  *
@@ -39,8 +40,8 @@ class CustomRoutesLoadingUnitTest extends TestCase
         $logic = new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel());
 
         $transport->setServiceLogic($logic);
-        $transport->loadRoutesFromConfig(__DIR__ . '/conf/routes.php');
-        $transport->loadRoutes(json_decode(file_get_contents(__DIR__ . '/conf/routes.json'), true));
+        $transport->loadRoutesFromConfig(__DIR__ . '/Mocks/Conf/Routes.php');
+        $transport->loadRoutes(json_decode(file_get_contents(__DIR__ . '/Mocks/Conf/Routes.json'), true));
 
         $service = new Service($transport);
 

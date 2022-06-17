@@ -1,7 +1,8 @@
 <?php
+namespace Mezon\Service\Tests\Mocks\Conf;
 
 /**
- * Test routes
+ * Test Routes
  *
  * @package     Service
  * @subpackage  ServiceUnitTest

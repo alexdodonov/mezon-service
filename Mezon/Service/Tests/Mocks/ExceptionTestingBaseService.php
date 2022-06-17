@@ -1,5 +1,5 @@
 <?php
-namespace Mezon\Service\Tests;
+namespace Mezon\Service\Tests\Mocks;
 
 class ExceptionTestingBaseService extends TestingBaseService
 {

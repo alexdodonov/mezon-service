@@ -1,14 +1,13 @@
 <?php
 namespace Mezon\Service\Tests;
 
-use Mezon\Security\MockProvider;
 use PHPUnit\Framework\TestCase;
 use Mezon\Service\ServiceBase;
 use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
 use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Conf\Conf;
-use Mezon\Service\ServiceModel;
+use Mezon\Service\Tests\Mocks\ExceptionTestingBaseService;
 
 /**
  *

@@ -51,7 +51,7 @@ class ServiceBase
     /**
      * Method fetches actions if they are existing
      */
-    protected function fetchActions(): void
+    private function fetchActions(): void
     {
         if ($this instanceof ServiceActionsInterface) {
             $this->serviceTransport->fetchActions($this);
@@ -73,13 +73,12 @@ class ServiceBase
         $reflector = new \ReflectionClass(get_class($this));
         $classPath = dirname($reflector->getFileName());
 
-        // TODO make /Conf/...
-        if (file_exists($classPath . '/conf/routes.php')) {
-            $this->serviceTransport->loadRoutesFromConfig($classPath . '/conf/routes.php');
+        if (file_exists($classPath . '/Conf/Routes.php')) {
+            $this->serviceTransport->loadRoutesFromConfig($classPath . '/Conf/Routes.php');
         }
 
-        if (file_exists($classPath . '/conf/routes.json')) {
-            $this->serviceTransport->loadRoutes(json_decode(file_get_contents($classPath . '/conf/routes.json'), true));
+        if (file_exists($classPath . '/Conf/Routes.json')) {
+            $this->serviceTransport->loadRoutes(json_decode(file_get_contents($classPath . '/Conf/Routes.json'), true));
         }
     }
 

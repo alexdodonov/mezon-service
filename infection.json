@@ -14,6 +14,12 @@
 		"text": ".\/tmp\/infection.txt"
 	},
 	"mutators": {
-		"@default": true
+		"@default": true,
+		"ProtectedVisibility": {
+			"ignore": [
+				"Mezon\\Service\\Service::initCommonRoutes::44",
+				"Mezon\\Service\\ServiceBase::initCustomRoutes::71"
+			]
+		}
 	}
 }

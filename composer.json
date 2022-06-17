@@ -47,7 +47,7 @@
 		"test": "php ./vendor/phpunit/phpunit/phpunit",
 		"psalm": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache",
 		"psalm-self": "php ./vendor/vimeo/psalm/psalm --show-info=true --no-cache --config=psalm-self.xml",
-		"infection": "php ./vendor/infection/infection/bin/infection --min-msi=71"
+		"infection": "php ./vendor/infection/infection/bin/infection --min-msi=82"
 	},
 	"config": {
 		"process-timeout": 0,

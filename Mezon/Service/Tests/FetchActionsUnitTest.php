@@ -3,12 +3,12 @@ namespace Mezon\Service\Tests;
 
 use Mezon\Security\MockProvider;
 use PHPUnit\Framework\TestCase;
-use Mezon\Service\ServiceBase;
-use Mezon\Service\ServiceHttpTransport\ServiceHttpTransport;
-use Mezon\Service\ServiceRestTransport\ServiceRestTransport;
 use Mezon\Service\ServiceConsoleTransport\ServiceConsoleTransport;
 use Mezon\Conf\Conf;
 use Mezon\Service\ServiceModel;
+use Mezon\Service\Tests\Mocks\TestingBaseService;
+use Mezon\Service\Tests\Mocks\TestingLogic;
+use Mezon\Service\Tests\Mocks\ExceptionTestingBaseService;
 
 /**
  *
@@ -28,15 +28,25 @@ class FetchActionsUnitTest extends TestCase
     }
 
     /**
+     * Method creates service object
+     *
+     * @return TestingBaseService
+     */
+    private function buildService(): TestingBaseService
+    {
+        $transport = new ServiceConsoleTransport();
+        $transport->setServiceLogic(
+            new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel()));
+        return new TestingBaseService($transport);
+    }
+
+    /**
      * Testing fetchActions call
      */
     public function testFetchActionsGet(): void
     {
         // setup
-        $transport = new ServiceConsoleTransport();
-        $transport->setServiceLogic(
-            new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel()));
-        $service = new TestingBaseService($transport);
+        $service = $this->buildService();
 
         // test body
         $_GET['r'] = 'test3';
@@ -53,10 +63,7 @@ class FetchActionsUnitTest extends TestCase
     public function testFetchActionsPost(): void
     {
         // setup
-        $transport = new ServiceConsoleTransport();
-        $transport->setServiceLogic(
-            new TestingLogic($transport->getParamsFetcher(), new MockProvider(), new ServiceModel()));
-        $service = new TestingBaseService($transport);
+        $service = $this->buildService();
 
         // test body
         $_GET['r'] = 'test3';
@@ -82,5 +89,22 @@ class FetchActionsUnitTest extends TestCase
         $this->assertStringContainsString('"message"', $content);
         $this->assertStringContainsString('"code"', $content);
         $this->assertTrue(is_array(json_decode($content, true)));
+    }
+
+    /**
+     * Testing fetchActions call for logics
+     */
+    public function testFetchActionsFromLogic(): void
+    {
+        // setup
+        $service = $this->buildService();
+
+        // test body
+        $_GET['r'] = 'test4';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $service->run();
+
+        // assertions
+        $this->assertEquals('test4', ServiceConsoleTransport::$result);
     }
 }
