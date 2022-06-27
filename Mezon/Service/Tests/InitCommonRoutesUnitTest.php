@@ -67,6 +67,16 @@ class InitCommonRoutesUnitTest extends TestCase
                 'POST',
                 'token/newToken',
                 '"newToken"'
+            ],
+            [
+                'GET',
+                'self/id',
+                '{"id":1}'
+            ],
+            [
+                'GET',
+                'self/login',
+                '{"login":"admin@localhost"}'
             ]
         ];
     }

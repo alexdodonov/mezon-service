@@ -23,6 +23,10 @@
 			<exclude>
 				<directory>./vendor</directory>
 				<file>*UnitTest.php</file>
+				<directory>./Mezon/Service/Tests</directory>
+				<directory>./Mezon/Service/ServiceConsoleTransport/Tests</directory>
+				<directory>./Mezon/Service/ServiceHttpTransport/Tests</directory>
+				<directory>./Mezon/Service/ServiceRestTransport/Tests</directory>
 			</exclude>
 		</whitelist>
 	</filter>
